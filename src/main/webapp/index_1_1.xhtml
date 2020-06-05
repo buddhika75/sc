@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>
+
+        <ui:composition template="./template.xhtml">
+
+
+
+            <ui:define name="content">
+
+
+
+                <h:form >
+
+
+
+
+                    <div class="w3-row">
+                        <div class="w3-col s12 m6 l10 w3-padding">
+                            <p:inputText value="#{solutionController.searchingName}"  autocomplete="off" 
+                                         style="width: 98%;"
+                                         placeholder="Search Here"></p:inputText>
+                        </div>
+                        <div class="w3-col s6 m3 l1  w3-padding">
+                            <h:commandButton value="Search" action="#{solutionController.searchByNamePublic()}" ></h:commandButton>
+                        </div>
+                        <div class="w3-col s6 m3 l1  w3-padding">
+                            <h:commandButton  value="Clear" action="#{solutionController.clearSearchByName()}" ></h:commandButton>
+                        </div>
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col m6 l6 w3-padding">
+                            <div class="w3-card-4 w3-padding" >
+                                <h3>By Category</h3>
+
+                                <h:dataTable value="#{solutionController.findItemsByCode('solution_categories')}" var="c" 
+                                             class="w3-table w3-striped w3-bordered w3-table-all w3-card-4"
+                                             rows="10" >
+                                    <p:column>
+                                        <p:commandLink ajax="false" action="#{solutionController.searchByPropertyValuePublic()}" 
+                                                       value="#{c.name}"  >
+                                            <f:setPropertyActionListener target="#{solutionController.indexItem}" value="#{c}" ></f:setPropertyActionListener>
+                                        </p:commandLink>
+                                    </p:column>
+                                </h:dataTable>
+
+                            </div>
+
+                            <div class="w3-card-4 w3-padding" >
+                                <h3>Most Popular</h3>
+
+                                <h:dataTable value="#{solutionController.popularSolutions}" var="item" 
+                                             class="w3-table w3-striped w3-bordered w3-table-all w3-card-4"
+                                             rows="10" >
+                                    <p:column>
+                                        <p:commandLink ajax="false" action="#{solutionController.toSolutionProfilePublic()}" 
+                                                       value="#{item.name}"  >
+                                            <f:setPropertyActionListener target="#{solutionController.selected}" value="#{item}" ></f:setPropertyActionListener>
+                                        </p:commandLink>
+                                    </p:column>
+                                </h:dataTable>
+
+                            </div>
+
+                        </div>
+                        <div class="w3-col m6 l6 w3-padding">
+
+                            <div class="w3-card-4 w3-padding" >
+                                <h3>Featured</h3>
+
+                                <h:commandLink action="#{solutionController.toSolutionProfilePublic()}" >
+                                    <p:graphicImage style="width: 99%;" id="featured" class="w3-center"
+                                                    value="#{solutionController.getFeaturedImage()}" cache="FALSE">
+                                    </p:graphicImage>
+                                    <f:setPropertyActionListener target="#{solutionController.selected}"
+                                                                 value="#{solutionController.featuredSolution}" ></f:setPropertyActionListener>
+                                </h:commandLink>
+
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </h:form>
+
+
+            </ui:define>
+
+
+
+
+        </ui:composition>
+
+
+        <br />
+        <h:link outcome="/queryComponent/List" value="Show All QueryComponent Items"/>
+    </h:body>
+
+
+
+</html>

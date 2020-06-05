@@ -1,0 +1,416 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+        <title>COVID Digital Solutions</title>
+        <meta name="description" content=""/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <!-- <link rel="manifest" href="site.webmanifest"/> -->
+        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png"/>
+        <!-- Place favicon.ico in the root directory -->
+
+        <!-- CSS here -->
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/owl.carousel.min.css"/>
+        <link rel="stylesheet" href="css/magnific-popup.css"/>
+        <link rel="stylesheet" href="css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="css/themify-icons.css"/>
+        <link rel="stylesheet" href="css/nice-select.css"/>
+        <link rel="stylesheet" href="css/flaticon.css"/>
+        <link rel="stylesheet" href="css/jquery-ui.css"/>
+        <link rel="stylesheet" href="css/gijgo.css"/>
+        <link rel="stylesheet" href="css/animate.min.css"/>
+        <link rel="stylesheet" href="css/slicknav.css"/>
+
+        <link rel="stylesheet" href="css/style.css"/>
+        <!-- <link rel="stylesheet" href="css/responsive.css"/> -->
+    </h:head>
+    <h:body>
+
+        <!--[if lte IE 9]>
+                <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+            <![endif]-->
+
+        <!-- header-start -->
+        <header>
+            <div class="header-area ">
+                <div id="sticky-header" class="main-header-area">
+                    <div class="container-fluid ">
+                        <div class="header_bottom_border">
+                            <div class="row align-items-center">
+                                <div class="col-xl-3 col-lg-2">
+                                    <div class="logo">
+
+                                        <img src="img/logo.png" alt=""/>
+
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-7">
+                                    <div class="main-menu  d-none d-lg-block">
+                                        <nav>
+                                            <ul id="navigation">
+
+                                                <ez:navigation/>
+
+
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 d-none d-lg-block">
+                                    <div class="Appointment">
+                                        <div class="phone_num d-none d-xl-block">
+                                            <h:form>
+                                                <h:commandLink value="Log in" action="/index_1" ></h:commandLink>
+                                            </h:form>
+                                        </div>
+                                        <!--                                     <div class="d-none d-lg-block">
+                                                                                <a class="boxed-btn3" href="#">Post a Job</a>
+                                                                            </div> -->
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mobile_menu d-block d-lg-none"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header-end -->
+
+        <!-- bradcam_area  -->
+        <div class="bradcam_area bradcam_bg_1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="bradcam_text">
+                            <h3>#{solutionController.selected.sname}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ bradcam_area  -->
+
+        <div class="job_details_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="job_details_header">
+                            <div class="single_jobs white-bg d-flex justify-content-between">
+                                <div class="jobs_left d-flex align-items-center">
+                                    <div class="thumb">
+                                        <p:graphicImage  value="#{solutionController.selectedImageThumb}" cache="false">
+                                        </p:graphicImage> 
+                                    </div>
+                                    <div class="jobs_conetent">
+                                        <h4>#{solutionController.selected.name}</h4>
+                                        <div class="links_locat d-flex align-items-center">
+                                            <div class="location">
+                                                <p> 
+                                                    <h:outputLabel value="#{solutionController.selected.findSlutionData('abbreviation')}"></h:outputLabel>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="jobs_right">
+                                    <div class="apply_now">
+                                        <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="descript_wrap white-bg">
+                            <div class="single_wrap">
+                                <!--<h4>Screenshot</h4>-->
+                                <p:graphicImage  value="#{solutionController.selectedImage}" cache="false" class="img-fluid">
+                                </p:graphicImage> 
+                            </div>
+
+                            <ui:repeat value="#{solutionController.selectedItemsDisplay}" var="i" >
+
+                                <h:panelGroup  rendered="#{i.item.code ne 'name_of_the_solution' and i.item.code ne 'abbreviation'}" >
+
+
+
+                                    <div class="single_wrap" style="border-bottom: 1px solid #EAEAEA">
+                                        <h4>
+                                            <h:panelGroup  rendered="#{i.item.code ne 'description'}" >
+                                                <p:outputLabel value="#{i.item.name}"  >
+                                                </p:outputLabel>
+                                            </h:panelGroup>
+
+                                        </h4>
+                                        <p style="color:black;">
+                                            <p:outputLabel value="#{i.valueAsStringDisplay}" rendered="#{i.displayAsLabel}" ></p:outputLabel>
+                                            <h:outputLink value="#{i.valueAsStringDisplay}"  rendered="#{i.displayAsLink}"
+                                                          target="_blank">
+                                                #{i.valueAsStringDisplay}
+                                            </h:outputLink> 
+                                        </p>
+                                    </div>
+
+                                </h:panelGroup>
+
+                            </ui:repeat>
+
+
+
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="job_sumary">
+                            <div class="descript_wrap white-bg" style="border-bottom: 1px solid #EAEAEA">
+                                <p> <h3>Thematic Areas</h3></p>
+                                <p style="text-align:center">
+                                    <img src="img/solutions/pppp.png" alt=""></img></p>
+                            </div>
+
+                        </div><div class="job_sumary">
+                            <div class="summery_header">
+                                <h3>Summary</h3>
+                            </div>
+                            <div class="job_content">
+                                <ul>
+                                    <li>Operational Languages: <span>#{solutionController.selected.findSlutionData('operational_language')}</span></li>
+                                    <li>Internationalization: <span>#{solutionController.selected.findSlutionData('de_internationalisation')}</span></li>
+                                    <li>License: <span>#{solutionController.selected.findSlutionData('license_type')}</span></li>
+                                    <li>Location: <span>#{solutionController.selected.findSlutionData('de_country')}</span></li>
+                                    <li>Website: 
+                                        <span> 
+                                            <h:outputLink value="#{solutionController.selected.findSlutionData('application_link')}"
+                                                          target="_blank">
+                                                Link
+                                            </h:outputLink>
+                                        </span>
+                                    </li>
+                                    <li>Application Category: <span>#{solutionController.selected.findSlutionData('solution_category')}</span></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="share_wrap d-flex">
+                            <span>Share at:</span>
+                            <ul>
+                                <li><a href="#"> <i class="fa fa-facebook"></i></a> </li>
+                                <li><a href="#"> <i class="fa fa-google-plus"></i></a> </li>
+                                <li><a href="#"> <i class="fa fa-twitter"></i></a> </li>
+                                <li><a href="#"> <i class="fa fa-envelope"></i></a> </li>
+                            </ul>
+                        </div>
+                        <!--                    <div class="job_location_wrap">
+                                                 <div class="job_lok_inner">
+                                                    <div id="map" style="height: 200px;"></div>
+                                                    <script>
+                                                      function initMap() {
+                                                        var uluru = {lat: -25.363, lng: 131.044};
+                                                        var grayStyles = [
+                                                          {
+                                                            featureType: "all",
+                                                            stylers: [
+                                                              { saturation: -90 },
+                                                              { lightness: 50 }
+                                                            ]
+                                                          },
+                                                          {elementType: 'labels.text.fill', stylers: [{color: '#ccdee9'}]}
+                                                        ];
+                                                        var map = new google.maps.Map(document.getElementById('map'), {
+                                                          center: {lat: -31.197, lng: 150.744},
+                                                          zoom: 9,
+                                                          styles: grayStyles,
+                                                          scrollwheel:  false
+                                                        });
+                                                      }
+                                                      
+                                                    </script>
+                                                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&callback=initMap"></script>
+                                                    
+                                                  </div>
+                                            </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer start -->
+        <footer class="footer">
+            <div class="footer_top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 col-lg-3">
+                            <div class="footer_widget wow fadeInUp" data-wow-duration="1s" data-wow-delay=".3s">
+                                <div class="footer_logo">
+                                    <a href="#">
+                                        <img src="img/logo.png" alt=""/>
+                                    </a>
+                                </div>
+                                <p>
+                                    Commonwealth Centre for Digital Health<br/>
+                                    (Southampton Hub) <br/>
+                                    University of Southampton<br/>
+                                    University Road<br/>
+                                    Southampton<br/>
+                                    SO17 1BJ<br/>
+                                    United Kingdom
+                                </p>
+                                <div class="socail_links">
+                                    <ul>
+                                        <li>
+                                            <a href="https://www.facebook.com/CWCDH/" target="_blank">
+                                                <i class="ti-facebook"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.youtube.com/channel/UCNvFDD1e1rln9n4ummSkxNQ" target="_blank">
+                                                <i class="ti-youtube"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://twitter.com/CWCDH_info" target="_blank">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        <!--                                     <li>
+                                                                                <a href="#">
+                                                                                    <i class="fa fa-instagram"></i>
+                                                                                </a>
+                                                                            </li> -->
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-6 col-lg-2">
+                            <div class="footer_widget wow fadeInUp" data-wow-duration="1.1s" data-wow-delay=".4s">
+                                <div class="footer_logo">
+                                    <a href="https://cwcdh.org/">
+                                        <img src="img/partorg/cwcdh.png" alt=""/>
+                                    </a>
+                                </div>
+                                <!--                             <h3 class="footer_title">
+                                                                Company
+                                                            </h3>
+                                                            <ul>
+                                                                <li><a href="#">About </a></li>
+                                                                <li><a href="#"> Pricing</a></li>
+                                                                <li><a href="#">Carrier Tips</a></li>
+                                                                <li><a href="#">FAQ</a></li>
+                                                            </ul> -->
+
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-lg-3">
+                            <div class="footer_widget wow fadeInUp" data-wow-duration="1.2s" data-wow-delay=".5s">
+                                <div class="footer_logo">
+                                    <a href="https://commonwealthdoctors.org/">
+                                        <img src="img/partorg/cma_logo.png" alt=""/>
+                                    </a>
+                                </div>
+                                <!--                             <h3 class="footer_title">
+                                                                Category
+                                                            </h3>
+                                                            <ul>
+                                                                <li><a href="#">Design & Art</a></li>
+                                                                <li><a href="#">Engineering</a></li>
+                                                                <li><a href="#">Sales & Marketing</a></li>
+                                                                <li><a href="#">Finance</a></li>
+                                                            </ul> -->
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6 col-lg-4">
+                            <div class="footer_widget wow fadeInUp" data-wow-duration="1.3s" data-wow-delay=".6s">
+                                <h3 class="footer_title">
+                                    Subscribe
+                                </h3>
+                                <form action="#" class="newsletter_form">
+                                    <input type="text" placeholder="Enter your mail"/>
+                                    <button type="submit">Subscribe</button>
+                                </form>
+                                <p class="newsletter_text"> </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copy-right_text wow fadeInUp" data-wow-duration="1.4s" data-wow-delay=".3s">
+                <div class="container">
+                    <div class="footer_border"></div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <p class="copy_right text-center">
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!--/ footer end  -->
+
+        <!-- link that opens popup -->
+        <!-- JS here -->
+        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+        <script src="js/vendor/jquery-1.12.4.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/owl.carousel.min.js"></script>
+        <script src="js/isotope.pkgd.min.js"></script>
+        <script src="js/ajax-form.js"></script>
+        <script src="js/waypoints.min.js"></script>
+        <script src="js/jquery.counterup.min.js"></script>
+        <script src="js/imagesloaded.pkgd.min.js"></script>
+        <script src="js/scrollIt.js"></script>
+        <script src="js/jquery.scrollUp.min.js"></script>
+        <script src="js/wow.min.js"></script>
+        <script src="js/nice-select.min.js"></script>
+        <script src="js/jquery.slicknav.min.js"></script>
+        <script src="js/jquery.magnific-popup.min.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/gijgo.min.js"></script>
+
+
+
+        <!--contact js-->
+        <!--<script src="js/contact.js"></script>-->
+        <script src="js/jquery.ajaxchimp.min.js"></script>
+        <script src="js/jquery.form.js"></script>
+        <script src="js/jquery.validate.min.js"></script>
+        <script src="js/mail-script.js"></script>
+
+
+        <script src="js/main.js"></script>
+
+
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async="async"  src="https://www.googletagmanager.com/gtag/js?id=UA-166653731-1"></script>
+        <script>
+                                            window.dataLayer = window.dataLayer || [];
+                                            function gtag() {
+                                                dataLayer.push(arguments);
+                                            }
+                                            gtag('js', new Date());
+
+                                            gtag('config', 'UA-166653731-1');
+        </script>
+
+
+    </h:body>
+</html>
+
