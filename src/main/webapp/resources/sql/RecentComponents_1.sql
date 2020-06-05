@@ -27,6 +27,6 @@
  */
 
 set foreign_key_checks = 0;
-delete from solution where `ID` > 10000;
+delete from product where `ID` > 10000;
 delete from person where id > 10000;
 set foreign_key_checks = 1;

@@ -18,7 +18,7 @@ public enum Privilege {
     User,
     Institution_Administration,
     System_Administration,
-    //Solution Management
+    //Product Management
     Add_Client,
     Search_any_Client_by_IDs,
     Search_any_Client_by_Details,

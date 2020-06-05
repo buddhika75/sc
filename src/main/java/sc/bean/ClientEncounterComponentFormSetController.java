@@ -74,7 +74,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
     @Inject
     private SiComponentItemController clientEncounterComponentItemController;
     @Inject
-    private ProductController solutionController;
+    private ProductController productController;
     @Inject
     private WebUserController webUserController;
     @Inject
@@ -238,7 +238,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 
     }
 
-    //TODO:Save Values to solution Component
+    //TODO:Save Values to product Component
     public void updateToClientValue(SiComponentItem vi) {
         // //System.out.println("updateToClientValue");
         // //System.out.println("vi = " + vi);
@@ -268,12 +268,12 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 
         SiComponentItem ti;
         String j = "select vi from SiComponentItem vi where vi.retired=false "
-                + " and vi.solution=:c "
+                + " and vi.product=:c "
                 + " and vi.item=:i "
                 + " and vi.dataRepresentationType=:r "
                 + " order by vi.id desc";
         Map m = new HashMap();
-        m.put("r", DataRepresentationType.Solution);
+        m.put("r", DataRepresentationType.Product);
         m.put("c", c);
         m.put("i", vi.getItem());
 
@@ -287,7 +287,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             ti.setCreatedBy(webUserController.getLoggedUser());
             ti.setClient(c);
 //            ti.setSelectionDataType(vi.getSelectionDataType());
-            ti.setDataRepresentationType(DataRepresentationType.Solution);
+            ti.setDataRepresentationType(DataRepresentationType.Product);
             getItemFacade().create(ti);
         } else {
             ti.setLastEditBy(webUserController.getLoggedUser());
@@ -406,7 +406,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
     }
 
     public List<SiFormSet> fillEncountersFormSets(EncounterType type) {
-        Product c = getsolutionController().getSelected();
+        Product c = getproductController().getSelected();
         if (c == null) {
             return new ArrayList<>();
         }
@@ -414,7 +414,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
     }
 
 //    public List<SiFormSet> fillLastFiveEncountersFormSets(EncounterType type) {
-//        Product c = getsolutionController().getSelected();
+//        Product c = getproductController().getSelected();
 //        if (c == null) {
 //            return new ArrayList<>();
 //        }
@@ -428,7 +428,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         EncounterType ec = null;
         try {
             ec = EncounterType.valueOf(type);
-            Product c = getsolutionController().getSelected();
+            Product c = getproductController().getSelected();
             if (c == null) {
                 return new ArrayList<>();
             }
@@ -448,7 +448,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         EncounterType ec = null;
         try {
             ec = EncounterType.valueOf(type);
-            Product c = getsolutionController().getSelected();
+            Product c = getproductController().getSelected();
             if (c == null) {
                 return new ArrayList<>();
             }
@@ -496,7 +496,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         String j = "select s from SiFormSet s where "
                 + " s.retired=false "
                 + " and s.implementation.encounterType=:t "
-                + " and s.implementation.solution=:c ";
+                + " and s.implementation.product=:c ";
         if (completeOnly == null) {
 
         } else if (completeOnly == true) {
@@ -531,9 +531,9 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         String j = "select s from SiFormSet s where "
                 + " s.retired=false "
                 + " and s.implementation.encounterType=:t "
-                + " and s.implementation.solution=:c ";
+                + " and s.implementation.product=:c ";
         j += " order by s.implementation.encounterFrom desc";
-        m.put("c", getsolutionController().getSelected());
+        m.put("c", getproductController().getSelected());
         m.put("t", type);
 
         fs = getFacade().findByJpql(j, m, 5);
@@ -550,16 +550,16 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         String j = "select s from SiFormSet s where "
                 + " s.retired=false "
                 + " and s.implementation.encounterType=:t "
-                + " and s.implementation.solution=:c ";
+                + " and s.implementation.product=:c ";
         j += " order by s.implementation.encounterFrom desc";
-        m.put("c", getsolutionController().getSelected());
+        m.put("c", getproductController().getSelected());
         m.put("t", type);
         fs = getFacade().findByJpql(j, m);
         if (fs == null) {
             fs = new ArrayList<>();
         }
         items = fs;
-        return "/solution/client_encounters";
+        return "/product/client_encounters";
     }
 
     public String fillRetiredEncountersFormSets() {
@@ -595,13 +595,13 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 + " and f.retired<>:fr "
                 + " and f.completed<>:fc "
                 + " and f.referenceComponent=:dfs "
-                + " and e.solution=:c "
+                + " and e.product=:c "
                 + " and e.institution=:i "
                 + " and e.encounterType=:t"
                 + " order by f.id desc";
 //        j = "select f from  SiFormSet f join f.implementation e"
 //                + " where f.referenceComponent=:dfs "
-//                + " and e.solution=:c "
+//                + " and e.product=:c "
 //                + " and e.institution=:i "
 //                + " and e.encounterType=:t"
 //                + " order by f.id desc";
@@ -620,7 +620,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
     public boolean isFirstEncounterOfThatType(Product c, Institution i, EncounterType t) {
         String j = "select count(e) from Implementation e where "
                 + " e.retired=false "
-                + " and e.solution=:c "
+                + " and e.product=:c "
                 + " and e.institution=:i "
                 + " and e.encounterType=:t";
         Map m = new HashMap();
@@ -639,7 +639,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
     }
 
     public String createAndNavigateToClinicalEncounterComponentFormSetFromDesignComponentFormSetForClinicVisit(DesignComponentFormSet dfs) {
-        SiFormSet efs = findLastUncompletedEncounterOfThatType(dfs, solutionController.getSelected(), dfs.getInstitution(), EncounterType.Clinic_Visit);
+        SiFormSet efs = findLastUncompletedEncounterOfThatType(dfs, productController.getSelected(), dfs.getInstitution(), EncounterType.Clinic_Visit);
         selectedTabIndex = 0;
         if (efs == null) {
             return createNewAndNavigateToClinicalEncounterComponentFormSetFromDesignComponentFormSetForClinicVisit(dfs);
@@ -654,17 +654,17 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         String navigationLink = "/siFormSet/Formset";
         formEditable = true;
 
-        if (solutionController.getSelected() == null) {
-            JsfUtil.addErrorMessage("Please select a solution");
+        if (productController.getSelected() == null) {
+            JsfUtil.addErrorMessage("Please select a product");
             return "";
         }
 
-        Map<String, SiComponentItem> mapOfClientValues = getClientValues(solutionController.getSelected());
+        Map<String, SiComponentItem> mapOfClientValues = getClientValues(productController.getSelected());
 
-        //System.out.println("Time after getting solution value map " + (new Date().getTime()) / 1000);
+        //System.out.println("Time after getting product value map " + (new Date().getTime()) / 1000);
         Date d = new Date();
         Implementation e = new Implementation();
-        e.setClient(solutionController.getSelected());
+        e.setClient(productController.getSelected());
         e.setInstitution(dfs.getInstitution());
 
         if (encounterDate != null) {
@@ -676,7 +676,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         e.setEncounterFrom(d);
         e.setEncounterType(EncounterType.Clinic_Visit);
 
-        e.setFirstEncounter(isFirstEncounterOfThatType(solutionController.getSelected(), dfs.getInstitution(), EncounterType.Clinic_Visit));
+        e.setFirstEncounter(isFirstEncounterOfThatType(productController.getSelected(), dfs.getInstitution(), EncounterType.Clinic_Visit));
 
         e.setEncounterMonth(CommonController.getMonth(d));
         e.setEncounterQuarter(CommonController.getQuarter(d));
@@ -707,10 +707,10 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         for (DesignComponentForm df : dfList) {
 
             boolean skipThisForm = false;
-            if (df.getComponentSex() == ComponentSex.For_Females && solutionController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_male")) {
+            if (df.getComponentSex() == ComponentSex.For_Females && productController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_male")) {
                 skipThisForm = true;
             }
-            if (df.getComponentSex() == ComponentSex.For_Males && solutionController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_female")) {
+            if (df.getComponentSex() == ComponentSex.For_Males && productController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_female")) {
                 skipThisForm = true;
             }
 
@@ -740,10 +740,10 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 for (DesignComponentFormItem dis : diList) {
 
                     boolean disSkipThisItem = false;
-                    if (dis.getComponentSex() == ComponentSex.For_Females && solutionController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_male")) {
+                    if (dis.getComponentSex() == ComponentSex.For_Females && productController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_male")) {
                         disSkipThisItem = true;
                     }
-                    if (dis.getComponentSex() == ComponentSex.For_Males && solutionController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_female")) {
+                    if (dis.getComponentSex() == ComponentSex.For_Males && productController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_female")) {
                         disSkipThisItem = true;
                     }
 
@@ -755,7 +755,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 
                         ci.setItemFormset(cfs);
                         ci.setImplementation(e);
-                        ci.setSolution(e.getClient());
+                        ci.setProduct(e.getClient());
 
                         ci.setItem(dis.getItem());
                         ci.setDescreption(dis.getDescreption());
@@ -842,14 +842,14 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         }
 
         String j = "select vi from SiComponentItem vi where vi.retired=false "
-                + " and vi.solution=:c "
+                + " and vi.product=:c "
                 + " and vi.item.code=:i "
                 + " and vi.dataRepresentationType=:r "
                 + " order by vi.id desc";
         Map m = new HashMap();
         m.put("c", c);
         m.put("i", i.getCode());
-        m.put("r", DataRepresentationType.Solution);
+        m.put("r", DataRepresentationType.Product);
         return getItemFacade().findFirstByJpql(j, m);
     }
 
@@ -862,14 +862,14 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             return new ArrayList<>();
         }
         String j = "select vi from SiComponentItem vi where vi.retired=false "
-                + " and vi.solution=:c "
+                + " and vi.product=:c "
                 + " and vi.item.code=:i "
                 + " and vi.dataRepresentationType=:r "
                 + " order by vi.id desc";
         Map m = new HashMap();
         m.put("c", c);
         m.put("i", i.getCode());
-        m.put("r", DataRepresentationType.Solution);
+        m.put("r", DataRepresentationType.Product);
         //System.out.println("m = " + m);
         return getItemFacade().findByJpql(j, m);
     }
@@ -883,14 +883,14 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         SiComponentItem vi;
         List<SiComponentItem> vis;
         String j = "select vi from SiComponentItem vi where vi.retired=false "
-                + " and vi.solution=:c "
+                + " and vi.product=:c "
                 + " and vi.item.code=:i "
                 + " and vi.dataRepresentationType=:r "
                 + " order by vi.id desc";
         Map m = new HashMap();
         m.put("c", ti.getEncounter().getClient());
         m.put("i", ti.getItem().getCode());
-        m.put("r", DataRepresentationType.Solution);
+        m.put("r", DataRepresentationType.Product);
         vis = getItemFacade().findByJpql(j, m);
         if (vis == null || vis.isEmpty()) {
             vis = new ArrayList<>();
@@ -939,11 +939,11 @@ public class ClientEncounterComponentFormSetController implements Serializable {
     public Map<String, SiComponentItem> getClientValues(Product c) {
         List<SiComponentItem> vis;
         String j = "select vi from SiComponentItem vi where vi.retired=false "
-                + " and vi.solution=:c "
+                + " and vi.product=:c "
                 + " and vi.dataRepresentationType=:r ";
         Map m = new HashMap();
         m.put("c", c);
-        m.put("r", DataRepresentationType.Solution);
+        m.put("r", DataRepresentationType.Product);
         vis = getItemFacade().findByJpql(j, m);
         Map<String, SiComponentItem> map = new HashMap();
         for (SiComponentItem vi : vis) {
@@ -1375,7 +1375,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 
     public List<SiComponentItem> dataFromClientValue(SiComponentItem ti) {
         String j = "select vi from SiComponentItem vi where vi.retired=false "
-                + " and vi.solution=:c "
+                + " and vi.product=:c "
                 + " and vi.item.code=:i "
                 + " and vi.dataRepresentationType=:r "
                 + " order by vi.id desc";
@@ -1392,7 +1392,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         } else {
             c = ti.getClient();
         }
-        m.put("r", DataRepresentationType.Solution);
+        m.put("r", DataRepresentationType.Product);
         m.put("c", c);
         m.put("i", ti.getItem().getCode());
         List<SiComponentItem> tis = getItemFacade().findByJpql(j, m);
@@ -1425,7 +1425,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         m.put("r", DataRepresentationType.Implementation);
         m.put("te", ti.getEncounter());
         j = "select vi.implementation from SiComponentItem vi where vi.retired=false "
-                + " and vi.implementation.solution=:c "
+                + " and vi.implementation.product=:c "
                 + " and vi.implementation <> :te "
                 + " and vi.dataRepresentationType=:r ";
         switch (ti.getSelectionDataType()) {
@@ -1501,7 +1501,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 
         SiComponentItem vi;
         String j = "select vi from SiComponentItem vi where vi.retired=false "
-                + " and vi.implementation.solution=:c "
+                + " and vi.implementation.product=:c "
                 + " and vi.dataRepresentationType=:r "
                 + " order by vi.id desc";
         Map m = new HashMap();
@@ -1650,12 +1650,12 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         return clientEncounterComponentItemController;
     }
 
-    public ProductController getsolutionController() {
-        return solutionController;
+    public ProductController getproductController() {
+        return productController;
     }
 
-    public void setsolutionController(ProductController solutionController) {
-        this.solutionController = solutionController;
+    public void setproductController(ProductController productController) {
+        this.productController = productController;
     }
 
     public WebUserController getWebUserController() {

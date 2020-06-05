@@ -2,7 +2,7 @@
 
 WebcamJS is a small (~3K minified and gzipped) standalone JavaScript library for capturing still images from your computer's camera, and delivering them to you as JPEG or PNG [Data URIs](http://en.wikipedia.org/wiki/Data_URI_scheme).  The images can then be displayed in your web page, rendered into a canvas, or submitted to your server.  WebcamJS uses [HTML5 getUserMedia](http://dev.w3.org/2011/webrtc/editor/getusermedia.html), but provides an automatic and invisible Adobe Flash fallback.
 
-WebcamJS is based on my old [JPEGCam](https://code.google.com/p/jpegcam/) project, but has been redesigned for the modern web.  Instead of relying solely on Flash and only being able to submit images directly to a server, WebcamJS delivers your images as solution-side Data URIs in JavaScript, and it uses HTML5 getUserMedia where available.  Flash is only used if your browser doesn't support getUserMedia, and the fallback is handled automatically using the same API (so your code doesn't have to care).
+WebcamJS is based on my old [JPEGCam](https://code.google.com/p/jpegcam/) project, but has been redesigned for the modern web.  Instead of relying solely on Flash and only being able to submit images directly to a server, WebcamJS delivers your images as product-side Data URIs in JavaScript, and it uses HTML5 getUserMedia where available.  Flash is only used if your browser doesn't support getUserMedia, and the fallback is handled automatically using the same API (so your code doesn't have to care).
 
 Looking for a good alternative to WebcamJS?  Please check out [JpegCamera](https://github.com/amw/jpeg_camera) by [Adam Wróbel](https://github.com/amw).  It has many advanced features that WebcamJS is lacking (for example, upload multiple photos at once, retry failed uploads, CSRF tokens, make sure camera is ready), and has a very clean and object-oriented design.
 
@@ -324,7 +324,7 @@ Please note that WebcamJS allows multiple listeners on the same event.  So if yo
 
 ## Submitting Images to a Server
 
-The `Webcam.snap()` function delivers your image by way of a solution-side JavaScript Data URI.  The binary image data is encoded with Base64 and stuffed into the URI.  You can use this image in JavaScript and display it on your page.  However, the library also provides a way to decode and submit this image data to a server API endpoint, via binary AJAX.  Example:
+The `Webcam.snap()` function delivers your image by way of a product-side JavaScript Data URI.  The binary image data is encoded with Base64 and stuffed into the URI.  You can use this image in JavaScript and display it on your page.  However, the library also provides a way to decode and submit this image data to a server API endpoint, via binary AJAX.  Example:
 
 ```javascript
 	Webcam.snap( function(data_uri) {
@@ -422,7 +422,7 @@ Finally, in your server-side script, grab the form data as if it were a plain fo
 
 ## Custom User Media Constraints (Advanced)
 
-The HTML5 getUserMedia API has a constraints system by which you can specify optional or mandatory requirements for the video stream.  These include things such a minimum or maximum resolution and/or framerate.  By default, WebcamJS will specify a mandatory minimum width and height, matching your `dest_width` and `dest_height` parameters.  However, if you want to customize this, you can set a `constraints` parameter using `Webcam.set()`, and pass in an object containing all the custom constraints you want.  Example:
+The HTML5 getUserMedia API has a constraints system by which you can specify optional or mandatory requirements for the video stream.  These include things such a minimum or maximum reproduct and/or framerate.  By default, WebcamJS will specify a mandatory minimum width and height, matching your `dest_width` and `dest_height` parameters.  However, if you want to customize this, you can set a `constraints` parameter using `Webcam.set()`, and pass in an object containing all the custom constraints you want.  Example:
 
 ```javascript
 	Webcam.set( 'constraints', {
@@ -437,7 +437,7 @@ The HTML5 getUserMedia API has a constraints system by which you can specify opt
 	} );
 ```
 
-To remove the mandatory constraints and instead just specify the resolution you would prefer, you can set simple `width` and `height` properties like this:
+To remove the mandatory constraints and instead just specify the reproduct you would prefer, you can set simple `width` and `height` properties like this:
 
 ```javascript
 	Webcam.set( 'constraints', {
@@ -450,7 +450,7 @@ Please call this this before calling `Webcam.attach()`.
 
 Note that some browsers may not support every possible constraint, so consult your browser's documentation and test in all your supported browsers before using this advanced feature.  For example, as of this writing Chrome 44 doesn't support framerate constraints.
 
-For more information see the [Media Capture Spec](http://w3c.github.io/mediacapture-main/getusermedia.html#idl-def-Constraints) and the [WebRTC Constraints Spec](http://tools.ietf.org/id/draft-alvestrand-constraints-resolution-00.html).
+For more information see the [Media Capture Spec](http://w3c.github.io/mediacapture-main/getusermedia.html#idl-def-Constraints) and the [WebRTC Constraints Spec](http://tools.ietf.org/id/draft-alvestrand-constraints-reproduct-00.html).
 
 ## License
 

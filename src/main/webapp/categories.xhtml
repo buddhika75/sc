@@ -10,7 +10,7 @@
     <h:head>
         <meta charset="utf-8"/>
         <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-        <title>COVID Digital Solutions</title>
+        <title>COVID Digital Products</title>
         <meta name="description" content=""/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
@@ -123,18 +123,18 @@
                 <h:form>
                     <div class="row">
 
-                        <ui:repeat value="#{solutionController.findItemsByCode('solution_categories')}" var="c" >
+                        <ui:repeat value="#{productController.findItemsByCode('product_categories')}" var="c" >
 
                             <div class="col-lg-4 col-xl-3 col-md-6">
                                 <div class="single_catagory">
 
-                                    <h:commandLink  action="#{solutionController.searchByPropertyValuePublic()}" >
+                                    <h:commandLink  action="#{productController.searchByPropertyValuePublic()}" >
                                         <h4>#{c.name}</h4>
-                                        <f:setPropertyActionListener target="#{solutionController.indexItem}" value="#{c}" ></f:setPropertyActionListener>
+                                        <f:setPropertyActionListener target="#{productController.indexItem}" value="#{c}" ></f:setPropertyActionListener>
                                     </h:commandLink>
 
 
-                                    <p><span>#{applicationController.solutionForCategoryCount(c)}</span>Available Solutions</p>
+                                    <p><span>#{applicationController.productForCategoryCount(c)}</span>Available Products</p>
                                 </div>
                             </div>
 

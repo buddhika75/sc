@@ -47,7 +47,7 @@ import org.primefaces.model.StreamedContent;
 public class StreamedContentController {
 
     @EJB
-    private ProductFacade solutionFacade;
+    private ProductFacade productFacade;
     @EJB
     private UploadFacade uploadFacade;
 
@@ -93,7 +93,7 @@ public class StreamedContentController {
         }
     }
     
-    public StreamedContent getSolutionIconById() {
+    public StreamedContent getProductIconById() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getRenderResponse()) {
             return new DefaultStreamedContent();
@@ -105,10 +105,10 @@ public class StreamedContentController {
             } catch (NumberFormatException e) {
                 l = 0l;
             }
-            String j = "select s from Solution s where s.id=:id";
+            String j = "select s from Product s where s.id=:id";
             Map m = new HashMap();
             m.put("id", l);
-            Product temImg = getSolutionFacade().findFirstByJpql(j, m);
+            Product temImg = getProductFacade().findFirstByJpql(j, m);
             if (temImg != null) {
                 byte[] imgArr = null;
                 try {
@@ -127,7 +127,7 @@ public class StreamedContentController {
         }
     }
 
-    public StreamedContent getSolutionThumbnailById() {
+    public StreamedContent getProductThumbnailById() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getRenderResponse()) {
             // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
@@ -141,10 +141,10 @@ public class StreamedContentController {
             } catch (NumberFormatException e) {
                 l = 0l;
             }
-            String j = "select s from Solution s where s.id=:id";
+            String j = "select s from Product s where s.id=:id";
             Map m = new HashMap();
             m.put("id", l);
-            Product temImg = getSolutionFacade().findFirstByJpql(j, m);
+            Product temImg = getProductFacade().findFirstByJpql(j, m);
             if (temImg != null) {
                 byte[] imgArr = null;
                 try {
@@ -163,12 +163,12 @@ public class StreamedContentController {
         }
     }
 
-    public ProductFacade getSolutionFacade() {
-        return solutionFacade;
+    public ProductFacade getProductFacade() {
+        return productFacade;
     }
 
-    public void setSolutionFacade(ProductFacade solutionFacade) {
-        this.solutionFacade = solutionFacade;
+    public void setProductFacade(ProductFacade productFacade) {
+        this.productFacade = productFacade;
     }
 
     public UploadFacade getUploadFacade() {

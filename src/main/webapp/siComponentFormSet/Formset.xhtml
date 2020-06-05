@@ -27,11 +27,11 @@
                         <p:panelGrid columns="1" style="width: 100%;" >
                             <f:facet name="header" >
                                 <div style="float: left;">
-                                    <p:outputLabel value="#{clientEncounterComponentFormSetController.selected.implementation.solution.person.nameWithTitle}" ></p:outputLabel>
+                                    <p:outputLabel value="#{clientEncounterComponentFormSetController.selected.implementation.product.person.nameWithTitle}" ></p:outputLabel>
                                     <p:outputLabel value=", " ></p:outputLabel>
-                                    <p:outputLabel value="#{clientEncounterComponentFormSetController.selected.implementation.solution.person.age}" ></p:outputLabel>
+                                    <p:outputLabel value="#{clientEncounterComponentFormSetController.selected.implementation.product.person.age}" ></p:outputLabel>
                                     <p:outputLabel value=", " ></p:outputLabel>
-                                    <p:outputLabel value="#{clientEncounterComponentFormSetController.selected.implementation.solution.person.sex.name}" ></p:outputLabel>
+                                    <p:outputLabel value="#{clientEncounterComponentFormSetController.selected.implementation.product.person.sex.name}" ></p:outputLabel>
                                     <p:outputLabel value=", " ></p:outputLabel>
                                     <p:outputLabel value="#{clientEncounterComponentFormSetController.selected.name}" ></p:outputLabel>
                                     <p:outputLabel value=" at " ></p:outputLabel>
@@ -51,7 +51,7 @@
                                                       onclick="if (!confirm('Really want to do complete the visit?'))
                                                               return false"
                                                       ></p:commandButton>
-                                    <p:commandButton  value="Solution Profile" action="#{solutionController.toClientProfile()}" ajax="false" ></p:commandButton>
+                                    <p:commandButton  value="Product Profile" action="#{productController.toClientProfile()}" ajax="false" ></p:commandButton>
 
                                 </div>
                             </f:facet>

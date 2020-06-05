@@ -62,7 +62,7 @@ public class SiComponentItemController implements Serializable {
     }
 
     public void findClientEncounterComponentItemOfAFormset(SiFormSet fs) {
-        // //System.out.println("findSolutionItems = ");
+        // //System.out.println("findProductItems = ");
         // //System.out.println("fs = " + fs);
         String j = "select f from SiComponentItem f "
                 + " where f.retired=false "
@@ -73,10 +73,10 @@ public class SiComponentItemController implements Serializable {
         formsetItems = getFacade().findByJpql(j, m);
     }
     
-    public List<SiComponentItem> findSolutionItems(Product item) {
+    public List<SiComponentItem> findProductItems(Product item) {
         String j = "select f from SiComponentItem f "
                 + " where f.retired=false "
-                + " and f.solution=:p "
+                + " and f.product=:p "
                 + " order by f.orderNo";
         Map m = new HashMap();
         m.put("p", item);
@@ -96,7 +96,7 @@ public class SiComponentItemController implements Serializable {
         return t;
     }
 
-    public List<SiComponentItem> findSolutionItems(SiComponentForm fs) {
+    public List<SiComponentItem> findProductItems(SiComponentForm fs) {
         String j = "select f from SiComponentItem f "
                 + " where f.retired=false "
                 + " and f.parentComponent=:p "
@@ -554,7 +554,7 @@ public class SiComponentItemController implements Serializable {
         // //System.out.println("ni = " + ci);
         // //System.out.println("ni = " + ci.getId());
 
-        findSolutionItems((SiComponentForm) i.getParentComponent());
+        findProductItems((SiComponentForm) i.getParentComponent());
 
     }
 
@@ -656,13 +656,13 @@ public class SiComponentItemController implements Serializable {
         } else {
             return null;
         }
-        Product solution;
+        Product product;
         if (s.getEncounter() == null && s.getClient() == null) {
             return null;
         } else if (s.getClient() != null) {
-            solution = s.getClient();
+            product = s.getClient();
         } else if (s.getEncounter().getClient() != null) {
-            solution = s.getEncounter().getClient();
+            product = s.getEncounter().getClient();
         } else {
             return null;
         }
@@ -675,17 +675,17 @@ public class SiComponentItemController implements Serializable {
         }
 
         String j = "select i from SiComponentItem i where i.retired=false "
-                + " and i.solution=:solution "
+                + " and i.product=:product "
                 + " and lower(i.item.code)=:c";
         Map m = new HashMap();
-        m.put("solution", solution);
+        m.put("product", product);
         m.put("c", code.toLowerCase());
         System.out.println("m = " + m);
         System.out.println("j = " + j);
         SiComponentItem fountVal = getFacade().findFirstByJpql(j, m);
         if (fountVal != null) {
             if (code.equalsIgnoreCase("client_current_age_in_years")) {
-                Person p = solution.getPerson();
+                Person p = product.getPerson();
                 fountVal.setLastEditeAt(new Date());
                 fountVal.setLastEditBy(webUserController.getLoggedUser());
                 fountVal.setShortTextValue(p.getAgeYears() + "");
@@ -698,11 +698,11 @@ public class SiComponentItemController implements Serializable {
         } else {
             if (code.equalsIgnoreCase("client_current_age_in_years")) {
                 SiComponentItem ageItem = new SiComponentItem();
-                ageItem.setClient(solution);
+                ageItem.setClient(product);
                 ageItem.setCreatedAt(new Date());
                 ageItem.setCreatedBy(webUserController.getLoggedUser());
                 ageItem.setItem(itemController.findItemByCode("client_current_age_in_years"));
-                Person p = solution.getPerson();
+                Person p = product.getPerson();
                 ageItem.setShortTextValue(p.getAgeYears() + "");
                 ageItem.setRealNumberValue(Double.valueOf(p.getAgeYears()));
                 ageItem.setIntegerNumberValue(p.getAgeYears());

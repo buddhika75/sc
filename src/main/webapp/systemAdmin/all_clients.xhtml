@@ -21,26 +21,26 @@
 
                         <p:panelGrid columns="2" >
                             <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{solutionController.from}" pattern="dd MM yyyy hh:mm a" ></p:calendar>
+                            <p:calendar value="#{productController.from}" pattern="dd MM yyyy hh:mm a" ></p:calendar>
                             <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{solutionController.to}" pattern="dd MM yyyy hh:mm a" ></p:calendar>
+                            <p:calendar value="#{productController.to}" pattern="dd MM yyyy hh:mm a" ></p:calendar>
 
                         </p:panelGrid>
 
                         <h:panelGrid columns="4" >
                             <p:commandButton ajax="false" value="Fill Clients" 
-                                             action="#{solutionController.toRegisterdClientsWithDatesForSystemAdmin()}" ></p:commandButton>
+                                             action="#{productController.toRegisterdClientsWithDatesForSystemAdmin()}" ></p:commandButton>
 
                             <p:commandButton value="Fill Retired Clients" ajax="false"
-                                             action="#{solutionController.fillRetiredClients()}">
+                                             action="#{productController.fillRetiredClients()}">
                             </p:commandButton>
 
                             <p:commandButton value="Retire Selected Clients" ajax="false"
-                                             action="#{solutionController.retireSelectedClients()}">
+                                             action="#{productController.retireSelectedClients()}">
                             </p:commandButton>
                             
                              <p:commandButton value="Reverse Retiring of Selected Clients" ajax="false"
-                                             action="#{solutionController.unretireSelectedClients()}">
+                                             action="#{productController.unretireSelectedClients()}">
                             </p:commandButton>
 
                         </h:panelGrid>
@@ -53,13 +53,13 @@
 
 
 
-                        <p:dataTable value="#{solutionController.items}"
+                        <p:dataTable value="#{productController.items}"
                                      id="tbl"
                                      var="c" 
                                      rowKey="#{c.id}"
                                      paginator="true"
                                      rows="10"
-                                     selection="#{solutionController.selectedClients}"
+                                     selection="#{productController.selectedClients}"
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      >
 
@@ -103,8 +103,8 @@
                             </p:column>
 
                             <p:column headerText="Edit" >
-                                <p:commandButton ajax="false" action="#{solutionController.toClientProfile()}" value="Edit" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{solutionController.selected}" ></f:setPropertyActionListener>
+                                <p:commandButton ajax="false" action="#{productController.toClientProfile()}" value="Edit" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{productController.selected}" ></f:setPropertyActionListener>
                                 </p:commandButton>
                             </p:column>
 

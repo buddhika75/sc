@@ -54,7 +54,7 @@ public class ReportController implements Serializable {
     @Inject
     private EncounterController encounterController;
     @Inject
-    private ProductController solutionController;
+    private ProductController productController;
     @Inject
     private ComponentController componentController;
     @Inject
@@ -90,7 +90,7 @@ public class ReportController implements Serializable {
         String noAction = "";
         String action = "";
         switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case Solution:
+            case Product:
                 action = forClient;
                 break;
             case Doctor:
@@ -126,7 +126,7 @@ public class ReportController implements Serializable {
         String noAction = "";
         String action = "";
         switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case Solution:
+            case Product:
                 action = forClient;
                 break;
             case Doctor:
@@ -159,7 +159,7 @@ public class ReportController implements Serializable {
     public void fillClientRegistrationForSysAdmin(){
         String j;
         Map m = new HashMap();
-        j = "select c from Solution c "
+        j = "select c from Product c "
                 + " where c.retired=:ret "
                 + " and c.createdAt between :fd and :td ";
         m.put("ret", false);
@@ -172,7 +172,7 @@ public class ReportController implements Serializable {
             m.put("ins", ins);
         }
         
-        clients = solutionController.getItems(j,m);
+        clients = productController.getItems(j,m);
     }
     
     public void fillClinicEnrollmentsForSysAdmin(){
@@ -225,8 +225,8 @@ public class ReportController implements Serializable {
         return encounterController;
     }
 
-    public ProductController getsolutionController() {
-        return solutionController;
+    public ProductController getproductController() {
+        return productController;
     }
 
     public ComponentController getComponentController() {

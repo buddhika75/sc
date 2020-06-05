@@ -4408,7 +4408,7 @@ var controller_bubble = core_datasetController.extend({
 			], context, index);
 		}
 
-		// Custom radius resolution
+		// Custom radius reproduct
 		values.radius = resolve$2([
 			custom.radius,
 			data ? data.r : undefined,
@@ -12136,7 +12136,7 @@ function fitWithPointLabels(scale) {
 	//
 	// Reaction: https://dl.dropboxusercontent.com/u/34601363/toomuchscience.gif
 	//
-	// Solution:
+	// Product:
 	//
 	// We assume the radius of the polygon is half the size of the canvas at first
 	// at each index we check if the text overlaps.

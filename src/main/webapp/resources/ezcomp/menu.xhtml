@@ -25,10 +25,10 @@
 
 
                 <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="#{webUserController.toHome()}" />
-                <p:submenu label="Solutions" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
-                    <p:menuitem ajax="false" value="Search" action="#{solutionController.toSearchClient()}" />
-                    <p:menuitem ajax="false" value="List" action="#{solutionController.toListAllSolutions()}" />
-                    <p:menuitem ajax="false" value="Create New" action="#{solutionController.toAddNewClient()}"  />
+                <p:submenu label="Products" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                    <p:menuitem ajax="false" value="Search" action="#{productController.toSearchClient()}" />
+                    <p:menuitem ajax="false" value="List" action="#{productController.toListAllProducts()}" />
+                    <p:menuitem ajax="false" value="Create New" action="#{productController.toAddNewClient()}"  />
                 </p:submenu>
                 
                 <p:submenu label="Case Studies" rendered="#{webUserController.hasPrivilege('Client_Management')}" >

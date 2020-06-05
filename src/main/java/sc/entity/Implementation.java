@@ -56,7 +56,7 @@ public class Implementation implements Serializable {
     private Long id;
 
     @ManyToOne
-    private Product solution;
+    private Product product;
     @ManyToOne
     private Area area;
     
@@ -153,11 +153,11 @@ public class Implementation implements Serializable {
     }
 
     public Product getClient() {
-        return solution;
+        return product;
     }
 
-    public void setClient(Product solution) {
-        this.solution = solution;
+    public void setClient(Product product) {
+        this.product = product;
     }
 
     public Area getArea() {

@@ -14,7 +14,7 @@
     <cc:implementation>
         <p:panelGrid columns="1" >
             <f:facet name="header">
-                <p:outputLabel value="Solution List" ></p:outputLabel>
+                <p:outputLabel value="Product List" ></p:outputLabel>
                 <p:commandButton ajax="false" value="Excel" style="float: right;"  >
                     <p:dataExporter target="tblClients" type="xls" fileName="clients" >
                     </p:dataExporter>
@@ -75,8 +75,8 @@
                     <f:facet name="header">
                         <h:outputText value="Actions"/>
                     </f:facet>
-                    <p:commandButton value="View" ajax="false" action="#{solutionController.toClientProfile()}" >
-                        <f:setPropertyActionListener value="#{item}" target="#{solutionController.selected}" ></f:setPropertyActionListener>
+                    <p:commandButton value="View" ajax="false" action="#{productController.toClientProfile()}" >
+                        <f:setPropertyActionListener value="#{item}" target="#{productController.selected}" ></f:setPropertyActionListener>
                     </p:commandButton>
                 </p:column>
             </p:dataTable>

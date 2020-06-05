@@ -17,7 +17,7 @@
                         <p:outputLabel value="#{bundleClinical.EditEncounterLabel_project}" for="project" />
                         <p:selectOneMenu id="project" value="#{encounterController.selected.project}" >
                             <f:selectItem itemLabel="#{bundleClinical.SelectOneMessage}"/>
-                            <f:selectItems value="#{solutionController.itemsAvailableSelectOne}"
+                            <f:selectItems value="#{productController.itemsAvailableSelectOne}"
                                            var="projectItem"
                                            itemValue="#{projectItem}"/>
                         </p:selectOneMenu>

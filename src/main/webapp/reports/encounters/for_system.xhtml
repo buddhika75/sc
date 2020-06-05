@@ -54,18 +54,18 @@
                                 <p:column headerText="No" width="50">
                                     <p:outputLabel value="#{n+1}"></p:outputLabel>
                                 </p:column>
-                                <p:column headerText="PHN" filterBy="#{c.solution.phn}" filterMatchMode="contains" sortBy="#{c.solution.phn}"
+                                <p:column headerText="PHN" filterBy="#{c.product.phn}" filterMatchMode="contains" sortBy="#{c.product.phn}"
                                           >
-                                    <p:outputLabel value="#{c.solution.phn}" ></p:outputLabel>
+                                    <p:outputLabel value="#{c.product.phn}" ></p:outputLabel>
                                 </p:column>
-                                <p:column headerText="Name"  filterBy="#{c.solution.person.nameWithTitle}" filterMatchMode="contains" sortBy="#{c.solution.person.nameWithTitle}">
-                                    <p:outputLabel value="#{c.solution.person.nameWithTitle}" ></p:outputLabel>
+                                <p:column headerText="Name"  filterBy="#{c.product.person.nameWithTitle}" filterMatchMode="contains" sortBy="#{c.product.person.nameWithTitle}">
+                                    <p:outputLabel value="#{c.product.person.nameWithTitle}" ></p:outputLabel>
                                 </p:column>
-                                <p:column filterBy="#{c.solution.person.gnArea.name}" 
+                                <p:column filterBy="#{c.product.person.gnArea.name}" 
                                           filterMatchMode="contains" 
-                                          sortBy="#{c.solution.person.gnArea.name}"
+                                          sortBy="#{c.product.person.gnArea.name}"
                                           >
-                                    <p:outputLabel value="#{c.solution.person.gnArea.name}" ></p:outputLabel>
+                                    <p:outputLabel value="#{c.product.person.gnArea.name}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="Action" >
                                     <p:commandButton value="Retire" 

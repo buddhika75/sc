@@ -21,8 +21,8 @@
                     <h:inputTextarea rows="4" cols="30" id="comments" value="#{projectController.selected.comments}" title="#{bundle.EditProjectTitle_comments}" />
                     <h:outputLabel value="#{bundle.EditProjectLabel_currentStageType}" for="currentStageType" />
                     <h:inputText id="currentStageType" value="#{projectController.selected.currentStageType}" title="#{bundle.EditProjectTitle_currentStageType}" />
-                    <h:outputLabel value="#{bundle.EditProjectLabel_client}" for="solution" />
-                    <h:selectOneMenu id="solution" value="#{projectController.selected.solution}" title="#{bundle.EditProjectTitle_client}" >
+                    <h:outputLabel value="#{bundle.EditProjectLabel_client}" for="product" />
+                    <h:selectOneMenu id="product" value="#{projectController.selected.product}" title="#{bundle.EditProjectTitle_client}" >
                         <f:selectItems value="#{institutionController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
                     <h:outputLabel value="#{bundle.EditProjectLabel_referenceNo}" for="referenceNo" />

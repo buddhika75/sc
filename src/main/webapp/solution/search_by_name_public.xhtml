@@ -18,7 +18,7 @@
                     <div class="w3-pale-blue w3-container" >
                         <div class="w3-large w3-center w3-opacity" >
                             <h2>
-                                <h:outputLabel value="Search Coid-19 Digital Health Solutions" ></h:outputLabel>
+                                <h:outputLabel value="Search Coid-19 Digital Health Products" ></h:outputLabel>
                             </h2>
                         </div>
                     </div>
@@ -30,13 +30,13 @@
                             <h:outputLabel value="Search Term" ></h:outputLabel>
                         </div>
                         <div class="w3-bar-item" >
-                            <h:inputText value="#{solutionController.searchingName}"  autocomplete="off" style="width: 50rem;"  ></h:inputText>
+                            <h:inputText value="#{productController.searchingName}"  autocomplete="off" style="width: 50rem;"  ></h:inputText>
                         </div>
                         <div class="w3-bar-item" >
-                            <p:commandButton ajax="false" value="Search" action="#{solutionController.searchByNamePublic()}" ></p:commandButton>
+                            <p:commandButton ajax="false" value="Search" action="#{productController.searchByNamePublic()}" ></p:commandButton>
                         </div>
                         <div class="w3-bar-item" >
-                            <p:commandButton ajax="false" value="Clear" action="#{solutionController.clearSearchByName()}" ></p:commandButton>
+                            <p:commandButton ajax="false" value="Clear" action="#{productController.clearSearchByName()}" ></p:commandButton>
                         </div>
                     </div>
 
@@ -44,18 +44,18 @@
 
                         <div class="w3-container w3-padding" >
 
-                            <h:outputLabel rendered="#{solutionController.selectedSolutions.size() lt 1}" 
+                            <h:outputLabel rendered="#{productController.selectedProducts.size() lt 1}" 
                                            value="No search results .."
                                            ></h:outputLabel>
                             
-                            <h:dataTable value="#{solutionController.selectedSolutions}" var="item" 
-                                         rendered="#{solutionController.selectedSolutions.size() gt 0}"
+                            <h:dataTable value="#{productController.selectedProducts}" var="item" 
+                                         rendered="#{productController.selectedProducts.size() gt 0}"
                                          class="w3-table w3-striped w3-bordered w3-table-all w3-card-4"
                                          rows="10" >
                                 <p:column>
-                                    <p:commandLink ajax="false" action="#{solutionController.toSolutionProfilePublic()}" 
+                                    <p:commandLink ajax="false" action="#{productController.toProductProfilePublic()}" 
                                                    value="#{item.name}"  >
-                                        <f:setPropertyActionListener target="#{solutionController.selected}" value="#{item}" ></f:setPropertyActionListener>
+                                        <f:setPropertyActionListener target="#{productController.selected}" value="#{item}" ></f:setPropertyActionListener>
                                     </p:commandLink>
                                 </p:column>
                             </h:dataTable>

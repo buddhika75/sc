@@ -76,7 +76,7 @@ public class Item implements Serializable {
     private Long absoluteMaximumLong;
     private Boolean multipleEntiesPerClientStatus;
     @Transient
-    private Long solutionCountTemp;
+    private Long productCountTemp;
 
     private int orderNo;
     @ManyToOne
@@ -492,12 +492,12 @@ public class Item implements Serializable {
         this.categoryOfAvailableItems = categoryOfAvailableItems;
     }
 
-    public Long getSolutionCountTemp() {
-        return solutionCountTemp;
+    public Long getProductCountTemp() {
+        return productCountTemp;
     }
 
-    public void setSolutionCountTemp(Long solutionCountTemp) {
-        this.solutionCountTemp = solutionCountTemp;
+    public void setProductCountTemp(Long productCountTemp) {
+        this.productCountTemp = productCountTemp;
     }
     
     

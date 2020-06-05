@@ -53,7 +53,7 @@ public class ApplicationController {
     @EJB
     private InstitutionFacade institutionFacade;
     @EJB
-    private ProductFacade solutionFacade;
+    private ProductFacade productFacade;
     @EJB
     private ItemFacade itemFacade;
 
@@ -61,64 +61,64 @@ public class ApplicationController {
 // <editor-fold defaultstate="collapsed" desc="Class Variables">
     private boolean demoSetup = false;
     private String versionNo = "1.1.4";
-    Long numberOfSolutions = null;
+    Long numberOfProducts = null;
     List<Item> categories;
 
-    private List<Product> featuredSolutions = null;
-    private List<Product> popularSolutions = null;
+    private List<Product> featuredProducts = null;
+    private List<Product> popularProducts = null;
 
 // </editor-fold>
     public ApplicationController() {
     }
 
     // <editor-fold defaultstate="collapsed" desc="Functions">
-    public List<Product> getFeaturedSolutions() {
-        if (featuredSolutions == null) {
-            String j = "select s from Solution s "
+    public List<Product> getFeaturedProducts() {
+        if (featuredProducts == null) {
+            String j = "select s from Product s "
                     + " where s.retired<>:ret "
                     + " and s.featured=:fet";
             Map m = new HashMap();
             m.put("ret", true);
             m.put("fet", true);
-            featuredSolutions = getSolutionFacade().findByJpql(j, m);
-            if (featuredSolutions == null) {
-                featuredSolutions = new ArrayList<>();
+            featuredProducts = getProductFacade().findByJpql(j, m);
+            if (featuredProducts == null) {
+                featuredProducts = new ArrayList<>();
             }
         }
-        return featuredSolutions;
+        return featuredProducts;
     }
 
-    public List<Product> getPopularSolutions() {
-        if (popularSolutions == null) {
-            String j = "select s from Solution s "
+    public List<Product> getPopularProducts() {
+        if (popularProducts == null) {
+            String j = "select s from Product s "
                     + " where s.retired<>:ret "
                     + " order by s.viewCount desc";
             Map m = new HashMap();
             m.put("ret", true);
-            popularSolutions = getSolutionFacade().findByJpql(j, m, 8);
-            if (popularSolutions == null) {
-                popularSolutions = new ArrayList<>();
+            popularProducts = getProductFacade().findByJpql(j, m, 8);
+            if (popularProducts == null) {
+                popularProducts = new ArrayList<>();
             }
         }
-        return popularSolutions;
+        return popularProducts;
     }
 
     public void fillCategoryData() {
-        featuredSolutions = null;
-        popularSolutions = null;
-        getFeaturedSolutions();
-        getPopularSolutions();
+        featuredProducts = null;
+        popularProducts = null;
+        getFeaturedProducts();
+        getPopularProducts();
         String j;
         Map m = new HashMap();
 
-        j = "select count(s) from Solution s where s.retired<>:ret";
+        j = "select count(s) from Product s where s.retired<>:ret";
         m.put("ret", true);
 
-        numberOfSolutions = getSolutionFacade().countByJpql(j, m);
+        numberOfProducts = getProductFacade().countByJpql(j, m);
 
         m = new HashMap();
         j = "select i from Item i where i.retired<>:ret and i.parent.code=:code";
-        m.put("code", "solution_categories");
+        m.put("code", "product_categories");
         m.put("ret", true);
 
         categories = getItemFacade().findByJpql(j, m);
@@ -126,29 +126,29 @@ public class ApplicationController {
         for (Item i : categories) {
             m = new HashMap();
             j = "select count(distinct si) from SiComponentItem si"
-                    + " join si.solution s "
+                    + " join si.product s "
                     + " where si.retired<>:ret "
                     + " and si.itemValue=:item ";
 
             m.put("item", i);
             m.put("ret", true);
-            Long temLng = getSolutionFacade().countByJpql(j, m);
+            Long temLng = getProductFacade().countByJpql(j, m);
             System.out.println("i = " + i.getCode());
             if (temLng == null) {
                 temLng = 0l;
             }
-            i.setSolutionCountTemp(temLng);
+            i.setProductCountTemp(temLng);
         }
 
     }
 
-    public Long solutionForCategoryCount(Item cat) {
+    public Long productForCategoryCount(Item cat) {
 
         System.out.println("cat code= " + cat.getCode());
         for (Item i : categories) {
 
             if (i.getCode().equals(cat.getCode())) {
-                return i.getSolutionCountTemp();
+                return i.getProductCountTemp();
             }
         }
         return 0l;
@@ -242,11 +242,11 @@ public class ApplicationController {
         return demoSetup;
     }
 
-    public Long getNumberOfSolutions() {
-        if (numberOfSolutions == null) {
+    public Long getNumberOfProducts() {
+        if (numberOfProducts == null) {
             fillCategoryData();
         }
-        return numberOfSolutions;
+        return numberOfProducts;
     }
 
     public List<Item> getCategories() {
@@ -265,8 +265,8 @@ public class ApplicationController {
         this.versionNo = versionNo;
     }
 
-    public ProductFacade getSolutionFacade() {
-        return solutionFacade;
+    public ProductFacade getProductFacade() {
+        return productFacade;
     }
 
     public ItemFacade getItemFacade() {

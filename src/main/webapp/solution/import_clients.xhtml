@@ -21,21 +21,21 @@
 
                         <p:outputLabel value="Upload Details" ></p:outputLabel>
                         <p:spacer height="1" width="10"></p:spacer>
-                        <p:inputTextarea value="#{solutionController.uploadDetails}"
+                        <p:inputTextarea value="#{productController.uploadDetails}"
                                          rows="10" cols="200">
                         </p:inputTextarea>
 
                         
 
 
-                        <p:fileUpload value="#{solutionController.file}" mode="simple"/>
+                        <p:fileUpload value="#{productController.file}" mode="simple"/>
                         <p:spacer></p:spacer>
                         <p:commandButton ajax="false" value="Import Clients" 
-                                         action="#{solutionController.importClientsFromExcel()}"  ></p:commandButton>
+                                         action="#{productController.importClientsFromExcel()}"  ></p:commandButton>
 
 
                     </p:panelGrid>
-                    <p:outputLabel value="#{solutionController.errorCode}" ></p:outputLabel>
+                    <p:outputLabel value="#{productController.errorCode}" ></p:outputLabel>
                 </h:form>
                 
                 

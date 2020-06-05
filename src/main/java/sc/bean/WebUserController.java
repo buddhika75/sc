@@ -79,7 +79,7 @@ public class WebUserController implements Serializable {
     @Inject
     private ItemController itemController;
     @Inject
-    private ProductController solutionController;
+    private ProductController productController;
     @Inject
     private EncounterController encounterController;
 
@@ -337,7 +337,7 @@ public class WebUserController implements Serializable {
     private void createAllPrivilege() {
         allPrivilegeRoot = new PrivilegeTreeNode("Root", null);
 
-        TreeNode clientManagement = new PrivilegeTreeNode("Solution Management", allPrivilegeRoot, Privilege.Client_Management);
+        TreeNode clientManagement = new PrivilegeTreeNode("Product Management", allPrivilegeRoot, Privilege.Client_Management);
         TreeNode encounterManagement = new PrivilegeTreeNode("Implementation Management", allPrivilegeRoot, Privilege.Encounter_Management);
         TreeNode appointmentManagement = new PrivilegeTreeNode("Appointment Management", allPrivilegeRoot, Privilege.Appointment_Management);
         TreeNode labManagement = new PrivilegeTreeNode("Lab Management", allPrivilegeRoot, Privilege.Lab_Management);
@@ -345,15 +345,15 @@ public class WebUserController implements Serializable {
         TreeNode user = new PrivilegeTreeNode("User", allPrivilegeRoot, Privilege.Manage_Users);
         TreeNode institutionAdministration = new PrivilegeTreeNode("Institution Administration", allPrivilegeRoot, Privilege.Institution_Administration);
         TreeNode systemAdministration = new PrivilegeTreeNode("System Administration", allPrivilegeRoot, Privilege.System_Administration);
-        //Solution Management
+        //Product Management
 
         TreeNode add_Client = new PrivilegeTreeNode("Add_Client", clientManagement, Privilege.Add_Client);
-        TreeNode search_any_Client_by_IDs = new PrivilegeTreeNode("Search any Solution by IDs", clientManagement, Privilege.Search_any_Client_by_IDs);
-        TreeNode search_any_Client_by_Details = new PrivilegeTreeNode("Search any Solution by Details", clientManagement, Privilege.Search_any_Client_by_Details);
-        TreeNode search_any_client_by_ID_of_Authorised_Areas = new PrivilegeTreeNode("Search any solution by ID of Authorised Areas", clientManagement, Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-        TreeNode search_any_client_by_Details_of_Authorised_Areas = new PrivilegeTreeNode("Search any solution by Details of Authorised Areas", clientManagement, Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-        TreeNode search_any_client_by_ID_of_Authorised_Institutions = new PrivilegeTreeNode("Search any solution by ID of Authorised Institutions", clientManagement, Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-        TreeNode search_any_client_by_Details_of_Authorised_Institutions = new PrivilegeTreeNode("Search any solution by Details of Authorised Institutions", clientManagement, Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
+        TreeNode search_any_Client_by_IDs = new PrivilegeTreeNode("Search any Product by IDs", clientManagement, Privilege.Search_any_Client_by_IDs);
+        TreeNode search_any_Client_by_Details = new PrivilegeTreeNode("Search any Product by Details", clientManagement, Privilege.Search_any_Client_by_Details);
+        TreeNode search_any_client_by_ID_of_Authorised_Areas = new PrivilegeTreeNode("Search any product by ID of Authorised Areas", clientManagement, Privilege.Search_any_client_by_ID_of_Authorised_Areas);
+        TreeNode search_any_client_by_Details_of_Authorised_Areas = new PrivilegeTreeNode("Search any product by Details of Authorised Areas", clientManagement, Privilege.Search_any_client_by_Details_of_Authorised_Areas);
+        TreeNode search_any_client_by_ID_of_Authorised_Institutions = new PrivilegeTreeNode("Search any product by ID of Authorised Institutions", clientManagement, Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
+        TreeNode search_any_client_by_Details_of_Authorised_Institutions = new PrivilegeTreeNode("Search any product by Details of Authorised Institutions", clientManagement, Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
 
         //Institution Administration
         TreeNode manage_Institution_Users = new PrivilegeTreeNode("Manage Institution Users", institutionAdministration, Privilege.Manage_Institution_Users);
@@ -539,19 +539,19 @@ public class WebUserController implements Serializable {
     }
 
     public void prepareInsAdminDashboard() {
-        totalNumberOfRegisteredClients = solutionController.countOfRegistedClients(loggedUser.getInstitution(), null);
+        totalNumberOfRegisteredClients = productController.countOfRegistedClients(loggedUser.getInstitution(), null);
         totalNumberOfClinicEnrolments = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Enroll);
         totalNumberOfClinicVisits = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Visit);
     }
 
     public void prepareDocDashboard() {
-        totalNumberOfRegisteredClients = solutionController.countOfRegistedClients(loggedUser.getInstitution().getPoiInstitution(), null);
+        totalNumberOfRegisteredClients = productController.countOfRegistedClients(loggedUser.getInstitution().getPoiInstitution(), null);
         totalNumberOfClinicEnrolments = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Enroll);
         totalNumberOfClinicVisits = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Visit);
     }
 
     public void prepareNurseDashboard() {
-        totalNumberOfRegisteredClients = solutionController.countOfRegistedClients(loggedUser.getInstitution().getPoiInstitution(), null);
+        totalNumberOfRegisteredClients = productController.countOfRegistedClients(loggedUser.getInstitution().getPoiInstitution(), null);
         totalNumberOfClinicEnrolments = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Enroll);
         totalNumberOfClinicVisits = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Visit);
     }
@@ -618,7 +618,7 @@ public class WebUserController implements Serializable {
             JsfUtil.addErrorMessage("Server Config Error.");
             return false;
         }
-        itemController.addInitialMetadata();
+
         String j = "select c from WebUser c";
         WebUser w = getFacade().findFirstByJpql(j);
         if (w==null) {
@@ -652,7 +652,7 @@ public class WebUserController implements Serializable {
         }
         switch (role) {
 
-            case Solution:
+            case Product:
             case Midwife:
                 //Menu
                 wups.add(Privilege.Client_Management);
@@ -661,7 +661,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Lab_Management);
                 wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
-                //Solution Management
+                //Product Management
                 wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
@@ -678,7 +678,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Lab_Management);
                 wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
-                //Solution Management
+                //Product Management
                 wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
@@ -695,7 +695,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Lab_Management);
                 wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
-                //Solution Management
+                //Product Management
                 wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
@@ -734,7 +734,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Lab_Management);
                 wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
-                //Solution Management
+                //Product Management
                 wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
@@ -771,7 +771,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.User);
                 wups.add(Privilege.Institution_Administration);
                 wups.add(Privilege.System_Administration);
-                //Solution Management
+                //Product Management
                 wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
@@ -1624,8 +1624,8 @@ public class WebUserController implements Serializable {
         this.totalNumberOfClinicVisits = totalNumberOfClinicVisits;
     }
 
-    public ProductController getsolutionController() {
-        return solutionController;
+    public ProductController getproductController() {
+        return productController;
     }
 
     public EncounterController getEncounterController() {

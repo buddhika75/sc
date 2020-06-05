@@ -1,6 +1,6 @@
 /**
  * ExcellentExport.
- * A solution side Javascript export to Excel.
+ * A product side Javascript export to Excel.
  *
  * @author: Jordi Burgos (jordiburgos@gmail.com)
  *

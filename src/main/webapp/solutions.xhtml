@@ -12,7 +12,7 @@
     <h:head>
         <meta charset="utf-8"/>
         <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-        <title>COVID Digital Solutions</title>
+        <title>COVID Digital Products</title>
         <meta name="description" content=""/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
@@ -102,7 +102,7 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="bradcam_text">
-                            <h3>Solution Search</h3>
+                            <h3>Product Search</h3>
                         </div>
                     </div>
                 </div>
@@ -129,51 +129,51 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="single_field">
-                                                <h:inputText value="#{solutionController.searchingName}" a:placeholder="Search word"  >
+                                                <h:inputText value="#{productController.searchingName}" a:placeholder="Search word"  >
                                                 </h:inputText>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="single_field">
-                                                <h:selectOneMenu class="wide" value="#{solutionController.searchItem1}" >
+                                                <h:selectOneMenu class="wide" value="#{productController.searchItem1}" >
                                                     <f:selectItem itemLabel="Category" ></f:selectItem>
-                                                    <f:selectItems value="#{solutionController.findItemsByCode('solution_categories')}"
+                                                    <f:selectItems value="#{productController.findItemsByCode('product_categories')}"
                                                                    var="sc1" itemLabel="#{sc1.name}" itemValue="#{sc1}"></f:selectItems>
                                                 </h:selectOneMenu>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="single_field">
-                                                <h:selectOneMenu class="wide" value="#{solutionController.searchItem2}" >
+                                                <h:selectOneMenu class="wide" value="#{productController.searchItem2}" >
                                                     <f:selectItem itemLabel="Implementation" ></f:selectItem>
-                                                    <f:selectItems value="#{solutionController.findItemsByCode('geographical_scopes')}"
+                                                    <f:selectItems value="#{productController.findItemsByCode('geographical_scopes')}"
                                                                    var="sc2" itemLabel="#{sc2.name}" itemValue="#{sc2}"></f:selectItems>
                                                 </h:selectOneMenu>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="single_field">
-                                                <h:selectOneMenu class="wide" value="#{solutionController.searchItem3}" >
+                                                <h:selectOneMenu class="wide" value="#{productController.searchItem3}" >
                                                     <f:selectItem itemLabel="P4PPP" ></f:selectItem>
-                                                    <f:selectItems value="#{solutionController.findItemsByCode('p4ppps')}"
+                                                    <f:selectItems value="#{productController.findItemsByCode('p4ppps')}"
                                                                    var="sc3" itemLabel="#{sc3.name}" itemValue="#{sc3}"></f:selectItems>
                                                 </h:selectOneMenu>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="single_field">
-                                                <h:selectOneMenu class="wide" value="#{solutionController.searchItem4}" >
+                                                <h:selectOneMenu class="wide" value="#{productController.searchItem4}" >
                                                     <f:selectItem itemLabel="User Groups" ></f:selectItem>
-                                                    <f:selectItems value="#{solutionController.findItemsByCode('user_groups')}"
+                                                    <f:selectItems value="#{productController.findItemsByCode('user_groups')}"
                                                                    var="sc4" itemLabel="#{sc4.name}" itemValue="#{sc4}"></f:selectItems>
                                                 </h:selectOneMenu>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="single_field">
-                                                <h:selectOneMenu class="wide" value="#{solutionController.searchItem5}" >
+                                                <h:selectOneMenu class="wide" value="#{productController.searchItem5}" >
                                                     <f:selectItem itemLabel="License" ></f:selectItem>
-                                                    <f:selectItems value="#{solutionController.findItemsByCode('propitiatory_or_open_source')}"
+                                                    <f:selectItems value="#{productController.findItemsByCode('propitiatory_or_open_source')}"
                                                                    var="sc5" itemLabel="#{sc5.name}" itemValue="#{sc5}"></f:selectItems>
                                                 </h:selectOneMenu>
                                             </div>
@@ -182,7 +182,7 @@
 
                                 </div>
                                 <div class="reset_btn">
-                                    <h:commandButton value="Search" action="#{solutionController.searchByPublic()}"
+                                    <h:commandButton value="Search" action="#{productController.searchByPublic()}"
                                                      class="boxed-btn3 w-100" >
                                     </h:commandButton>
                                 </div>
@@ -190,7 +190,7 @@
                                 <br/>
 
                                 <div class="reset_btn">
-                                    <h:commandButton value="Reset" action="#{solutionController.clearSearchItems()}"
+                                    <h:commandButton value="Reset" action="#{productController.clearSearchItems()}"
                                                      class="boxed-btn3 w-100" >
                                     </h:commandButton>
                                 </div>
@@ -201,7 +201,7 @@
                                 <div class="recent_joblist white-bg ">
                                     <div class="row align-items-center">
                                         <div class="col-md-6">
-                                            <h4>Solution Listing</h4>
+                                            <h4>Product Listing</h4>
                                         </div>
                                         <div class="col-md-6">
                                             <!--                                     <div class="serch_cat d-flex justify-content-end">
@@ -225,20 +225,20 @@
 
 
 
-                                    <ui:repeat  value="#{solutionController.selectedSolutions}" var="item"  >
+                                    <ui:repeat  value="#{productController.selectedProducts}" var="item"  >
 
 
                                         <div class="col-lg-12 col-md-12">
                                             <div class="single_jobs white-bg d-flex justify-content-between">
                                                 <div class="jobs_left d-flex align-items-center">
                                                     <div class="thumb">
-                                                        <p:graphicImage cache="false"  value="#{streamedContentController.solutionIconById}" style="height: 50px;" >
+                                                        <p:graphicImage cache="false"  value="#{streamedContentController.productIconById}" style="height: 50px;" >
                                                             <f:param name="id" value="#{item.id}" />
                                                         </p:graphicImage>
                                                     </div>
                                                     <div class="jobs_conetent">
-                                                        <h:commandLink action="#{solutionController.toSolutionProfilePublic()}" >
-                                                            <f:setPropertyActionListener value="#{item}" target="#{solutionController.selected}" >
+                                                        <h:commandLink action="#{productController.toProductProfilePublic()}" >
+                                                            <f:setPropertyActionListener value="#{item}" target="#{productController.selected}" >
                                                             </f:setPropertyActionListener>
                                                             <h4>#{item.sname}</h4>
                                                         </h:commandLink>
@@ -260,10 +260,10 @@
                                                 <div class="jobs_right">
                                                     <div class="apply_now">
                                                         <!--<a class="heart_mark" href="#"> <i class="fa fa-heart"></i> </a>-->
-                                                        <h:commandLink  action="#{solutionController.toSolutionProfilePublic()}" 
+                                                        <h:commandLink  action="#{productController.toProductProfilePublic()}" 
                                                                         value="Read more" 
                                                                         class="boxed-btn3">
-                                                            <f:setPropertyActionListener target="#{solutionController.selected}" value="#{item}" ></f:setPropertyActionListener>
+                                                            <f:setPropertyActionListener target="#{productController.selected}" value="#{item}" ></f:setPropertyActionListener>
                                                         </h:commandLink>
 
                                                     </div>

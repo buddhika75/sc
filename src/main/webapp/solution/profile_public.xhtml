@@ -18,7 +18,7 @@
                     <div class="w3-pale-blue w3-container" >
                         <div class="w3-large w3-center w3-opacity" >
                             <h2>
-                                <h:outputLabel value="#{solutionController.selected.name}" ></h:outputLabel>
+                                <h:outputLabel value="#{productController.selected.name}" ></h:outputLabel>
                             </h2>  
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                     <div class="w3-container w3-padding" >
                         <h:dataTable rendered="true" 
                                      class="w3-table w3-striped w3-bordered w3-table-all w3-center w3-card-4"
-                                     value="#{solutionController.selectedItemsDisplay}" var="i" >
+                                     value="#{productController.selectedItemsDisplay}" var="i" >
                             <h:column >
                                 <p:outputLabel value="#{i.item.name}" ></p:outputLabel>
                             </h:column>
@@ -41,13 +41,13 @@
                     </div>
 
                     <div class="w3-container w3-padding" >
-                        <p:graphicImage id="photo" value="#{solutionController.getSelectedImage()}" cache="FALSE">
+                        <p:graphicImage id="photo" value="#{productController.getSelectedImage()}" cache="FALSE">
                         </p:graphicImage> 
                     </div>
 
                     <div class="w3-container" >
                         <div class="w3-right-align" >
-                            <h:commandButton value="Back to Search"  action="#{solutionController.toSearchPublic()}" >
+                            <h:commandButton value="Back to Search"  action="#{productController.toSearchPublic()}" >
                             </h:commandButton>
                         </div>
                     </div>

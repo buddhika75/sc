@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Product implements Serializable {
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "solution")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
     @OrderBy("orderNo")
     private List<SiComponentItem> siComponentItems;
 
@@ -45,7 +45,7 @@ public class Product implements Serializable {
     private String shortNameTmp;
 
     @Transient
-    String solutionData;
+    String productData;
 
     @Lob
     private String description;
@@ -135,7 +135,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "Solution{" + "phn=" + phn + '}';
+        return "Product{" + "phn=" + phn + '}';
     }
 
 // </editor-fold>
@@ -383,22 +383,22 @@ public class Product implements Serializable {
         return tn.substring(0, 35);
     }
 
-    public String getSolutionData() {
-        return solutionData;
+    public String getProductData() {
+        return productData;
     }
 
     public String findSlutionData(String code) {
-        solutionData = "";
+        productData = "";
         for (SiComponentItem sici : getSiComponentItems()) {
             if (sici.getItem().getCode().equals(code) && !sici.isRetired()) {
-                solutionData += sici.getValueAsString() + " ";
+                productData += sici.getValueAsString() + " ";
             };
         }
-        if (solutionData == null) {
-            solutionData = "";
+        if (productData == null) {
+            productData = "";
         }
-        solutionData = solutionData.trim();
-        return solutionData;
+        productData = productData.trim();
+        return productData;
     }
 
     public String getSname() {

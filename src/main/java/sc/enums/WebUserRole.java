@@ -41,12 +41,12 @@ public enum WebUserRole {
     Doctor,
     Nurse,
     Midwife,
-    Solution;
+    Product;
 
     public String getLabel() {
         switch (this) {
-            case Solution:
-                return "Solution";
+            case Product:
+                return "Product";
             case Doctor:
                 return "Doctor";
             case Institution_Administrator:

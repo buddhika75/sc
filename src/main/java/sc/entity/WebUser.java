@@ -114,7 +114,7 @@ public class WebUser implements Serializable {
     @Transient
     private boolean nurse;
     @Transient
-    private boolean solution;
+    private boolean product;
     @Transient
     private boolean midwife;
     @Transient
@@ -416,8 +416,8 @@ public class WebUser implements Serializable {
     }
 
     public boolean isClient() {
-        solution = getWebUserRole() == WebUserRole.Solution;
-        return solution;
+        product = getWebUserRole() == WebUserRole.Product;
+        return product;
     }
 
     public boolean isMidwife() {

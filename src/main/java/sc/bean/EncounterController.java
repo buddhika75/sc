@@ -101,7 +101,7 @@ public class EncounterController implements Serializable {
     public boolean clinicEnrolmentExists(Institution i, Product c) {
         String j = "select e from Implementation e "
                 + " where e.institution=:i "
-                + " and e.solution=:c"
+                + " and e.product=:c"
                 + " and e.completed=:com"
                 + " and e.encounterType=:et";
         Map m = new HashMap();

@@ -732,7 +732,7 @@ public class QueryComponentController implements Serializable {
                     tqr.setLongResult(tqr.getJpq().getLongResult());
                     tqr.setDblResult(tqr.getJpq().getDblResult());
                     break;
-                case Solution:
+                case Product:
                     tqr.setJpq(createClientQuery(selectedForQuery, tqr.getArea(), tqr.getTfrom(), tqr.gettTo(),
                             tqr.gettYear(), tqr.gettQuater()));
                     if (tqr.getJpq().getLongResult() != null) {
@@ -785,7 +785,7 @@ public class QueryComponentController implements Serializable {
                         //TODO: Add Logic Here
                         j = createAPopulationCountQuery(temqc, ccArea, ccYear);
                         break;
-                    case Solution:
+                    case Product:
                         j = createClientQuery(temqc, ccArea, ccFrom, ccTo, ccYear, ccQuarter);
                         break;
                     default:
@@ -920,7 +920,7 @@ public class QueryComponentController implements Serializable {
             //System.out.println("No Criteria");
 
             jpql.setJwhere(" where c.retired=:f ");
-            jpql.setJfrom("  from Solution c ");
+            jpql.setJfrom("  from Product c ");
             if (qc.getOutputType() == QueryOutputType.List) {
                 jpql.setJselect("select c ");
             } else {
@@ -1164,9 +1164,9 @@ public class QueryComponentController implements Serializable {
             //System.out.println("Multiple Criteria");
             String ss = "";
             if (qc.getOutputType() == QueryOutputType.List) {
-                ss = "select distinct (c) from Solution c, ";
+                ss = "select distinct (c) from Product c, ";
             } else {
-                ss = "select count(distinct c) from Solution c, ";
+                ss = "select count(distinct c) from Product c, ";
             }
 
             String w1 = " where ";
@@ -1338,7 +1338,7 @@ public class QueryComponentController implements Serializable {
         //System.out.println("createAClientListQuery");
         Jpq j = new Jpq();
         j.setQc(qc);
-        j.setJselect("select distinct i.parentComponent.parentComponent.implementation.solution  ");
+        j.setJselect("select distinct i.parentComponent.parentComponent.implementation.product  ");
         j.setJfrom(" from SiComponentItem i ");
         j.setJwhere(" where i.retired=:f ");
         j.getM().put("f", false);
@@ -1493,19 +1493,19 @@ public class QueryComponentController implements Serializable {
             m.put("to", to);
         }
         if (province != null) {
-            f += " and i.parentComponent.parentComponent.implementation.solution.person.gnArea.province =:province ";
+            f += " and i.parentComponent.parentComponent.implementation.product.person.gnArea.province =:province ";
             m.put("province", province);
         }
         if (district != null) {
-            f += " and i.parentComponent.parentComponent.implementation.solution.person.gnArea.district =:district ";
+            f += " and i.parentComponent.parentComponent.implementation.product.person.gnArea.district =:district ";
             m.put("district", district);
         }
         if (moh != null) {
-            f += " and i.parentComponent.parentComponent.implementation.solution.person.gnArea.moh =:moh ";
+            f += " and i.parentComponent.parentComponent.implementation.product.person.gnArea.moh =:moh ";
             m.put("moh", moh);
         }
         if (gn != null) {
-            f += " and i.parentComponent.parentComponent.implementation.solution.person.gnArea =:moh ";
+            f += " and i.parentComponent.parentComponent.implementation.product.person.gnArea =:moh ";
             m.put("gn", gn);
         }
         if (institution != null) {

@@ -20,7 +20,7 @@
         <h:panelGroup id="gpFormItems" rendered="#{cc.attrs.form.itemArrangementStrategy eq 'Label_Value_Unit_Sets'}" >
 
             <table style="#{cc.attrs.form.generatedCss}" class="alignTop w3-table w3-bordered w3-border">
-                <ui:repeat id="rptItems" value="#{siComponentItemController.findSolutionItems(cc.attrs.form)}" 
+                <ui:repeat id="rptItems" value="#{siComponentItemController.findProductItems(cc.attrs.form)}" 
                            var="ii" >
 
                     <h:panelGroup id="gpDataAndButtons" >

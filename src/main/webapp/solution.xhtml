@@ -8,7 +8,7 @@
     <h:head>
         <meta charset="utf-8"/>
         <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-        <title>COVID Digital Solutions</title>
+        <title>COVID Digital Products</title>
         <meta name="description" content=""/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
@@ -94,7 +94,7 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="bradcam_text">
-                            <h3>#{solutionController.selected.sname}</h3>
+                            <h3>#{productController.selected.sname}</h3>
                         </div>
                     </div>
                 </div>
@@ -110,15 +110,15 @@
                             <div class="single_jobs white-bg d-flex justify-content-between">
                                 <div class="jobs_left d-flex align-items-center">
                                     <div class="thumb">
-                                        <p:graphicImage  value="#{solutionController.selectedImageThumb}" cache="false">
+                                        <p:graphicImage  value="#{productController.selectedImageThumb}" cache="false">
                                         </p:graphicImage> 
                                     </div>
                                     <div class="jobs_conetent">
-                                        <h4>#{solutionController.selected.name}</h4>
+                                        <h4>#{productController.selected.name}</h4>
                                         <div class="links_locat d-flex align-items-center">
                                             <div class="location">
                                                 <p> 
-                                                    <h:outputLabel value="#{solutionController.selected.findSlutionData('abbreviation')}"></h:outputLabel>
+                                                    <h:outputLabel value="#{productController.selected.findSlutionData('abbreviation')}"></h:outputLabel>
                                                 </p>
                                             </div>
                                         </div>
@@ -134,13 +134,13 @@
                         <div class="descript_wrap white-bg">
                             <div class="single_wrap">
                                 <!--<h4>Screenshot</h4>-->
-                                <p:graphicImage  value="#{solutionController.selectedImage}" cache="false" class="img-fluid">
+                                <p:graphicImage  value="#{productController.selectedImage}" cache="false" class="img-fluid">
                                 </p:graphicImage> 
                             </div>
 
-                            <ui:repeat value="#{solutionController.selectedItemsDisplay}" var="i" >
+                            <ui:repeat value="#{productController.selectedItemsDisplay}" var="i" >
 
-                                <h:panelGroup  rendered="#{i.item.code ne 'name_of_the_solution' and i.item.code ne 'abbreviation'}" >
+                                <h:panelGroup  rendered="#{i.item.code ne 'name_of_the_product' and i.item.code ne 'abbreviation'}" >
 
 
 
@@ -177,7 +177,7 @@
                             <div class="descript_wrap white-bg" style="border-bottom: 1px solid #EAEAEA">
                                 <p> <h3>Thematic Areas</h3></p>
                                 <p style="text-align:center">
-                                    <img src="img/solutions/pppp.png" alt=""></img></p>
+                                    <img src="img/products/pppp.png" alt=""></img></p>
                             </div>
 
                         </div><div class="job_sumary">
@@ -186,19 +186,19 @@
                             </div>
                             <div class="job_content">
                                 <ul>
-                                    <li>Operational Languages: <span>#{solutionController.selected.findSlutionData('operational_language')}</span></li>
-                                    <li>Internationalization: <span>#{solutionController.selected.findSlutionData('de_internationalisation')}</span></li>
-                                    <li>License: <span>#{solutionController.selected.findSlutionData('license_type')}</span></li>
-                                    <li>Location: <span>#{solutionController.selected.findSlutionData('de_country')}</span></li>
+                                    <li>Operational Languages: <span>#{productController.selected.findSlutionData('operational_language')}</span></li>
+                                    <li>Internationalization: <span>#{productController.selected.findSlutionData('de_internationalisation')}</span></li>
+                                    <li>License: <span>#{productController.selected.findSlutionData('license_type')}</span></li>
+                                    <li>Location: <span>#{productController.selected.findSlutionData('de_country')}</span></li>
                                     <li>Website: 
                                         <span> 
-                                            <h:outputLink value="#{solutionController.selected.findSlutionData('application_link')}"
+                                            <h:outputLink value="#{productController.selected.findSlutionData('application_link')}"
                                                           target="_blank">
                                                 Link
                                             </h:outputLink>
                                         </span>
                                     </li>
-                                    <li>Application Category: <span>#{solutionController.selected.findSlutionData('solution_category')}</span></li>
+                                    <li>Application Category: <span>#{productController.selected.findSlutionData('product_category')}</span></li>
 
                                 </ul>
                             </div>

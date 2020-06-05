@@ -18,36 +18,36 @@
                         <p:panelGrid columns="1" >
                             <p:commandButton 
                                 ajax="false"
-                                action="#{solutionController.fixClientPersonCreatedAt()}"
-                                value="Fix Solution / Person Created Dates" >
+                                action="#{productController.fixClientPersonCreatedAt()}"
+                                value="Fix Product / Person Created Dates" >
                             </p:commandButton>
                             <p:panelGrid columns="3" >
                                 <p:outputLabel value="Institution" ></p:outputLabel>
-                                <p:autoComplete  id="parent" value="#{solutionController.institution}" 
+                                <p:autoComplete  id="parent" value="#{productController.institution}" 
                                                  completeMethod="#{institutionController.completeInstitutions}"
                                                  var="i" itemLabel="#{i.name}" itemValue="#{i}">
                                 </p:autoComplete >
                                 <p:spacer height="1" width="20" ></p:spacer>
                                 <p:outputLabel value="From ID" ></p:outputLabel>
-                                <p:inputText value="#{solutionController.idFrom}" ></p:inputText>
+                                <p:inputText value="#{productController.idFrom}" ></p:inputText>
                                 <p:spacer height="1" width="20" ></p:spacer>
 
                                 <p:outputLabel value="To ID" ></p:outputLabel>
-                                <p:inputText value="#{solutionController.idTo}" ></p:inputText>
+                                <p:inputText value="#{productController.idTo}" ></p:inputText>
                                 <p:spacer height="1" width="20" ></p:spacer>
 
 
                                 <p:commandButton 
                                     ajax="false"
-                                    action="#{solutionController.updateClientCreatedInstitution()}"
-                                    value="Update Solution Institution" >
+                                    action="#{productController.updateClientCreatedInstitution()}"
+                                    value="Update Product Institution" >
                                 </p:commandButton>
                                 
                                 
                                 <p:commandButton 
                                     ajax="false"
-                                    action="#{solutionController.updateClientDateOfBirth()}"
-                                    value="Correct Solution Date of Birth" >
+                                    action="#{productController.updateClientDateOfBirth()}"
+                                    value="Correct Product Date of Birth" >
                                 </p:commandButton>
 
 

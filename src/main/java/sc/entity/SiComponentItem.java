@@ -41,7 +41,7 @@ public class SiComponentItem extends SiComponent {
 
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Product solution;
+    private Product product;
     @ManyToOne
     private Implementation implementation;
     @ManyToOne
@@ -57,12 +57,12 @@ public class SiComponentItem extends SiComponent {
     @Transient
     private boolean displayAsLink;
 
-    public Product getSolution() {
-        return solution;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setSolution(Product solution) {
-        this.solution = solution;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Implementation getImplementation() {

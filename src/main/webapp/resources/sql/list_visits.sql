@@ -3,4 +3,4 @@ where `DTYPE` = "SiFormSet"
  order by id desc limit 10;
 select id, `RETIRED`, `COMPLETED`, `CLIENT_ID` from implementation where `ID` = 53201;
 SELECT * from institution where `ID`=14865;
-SELECT `ID`,`PHN` from solution where `ID`=151;
+SELECT `ID`,`PHN` from product where `ID`=151;

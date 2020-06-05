@@ -17,26 +17,26 @@
                     <h:form >
                         <p:panelGrid columns="1" >
                             <f:facet name="header" >
-                                <p:outputLabel value="Solution Profile" ></p:outputLabel>
+                                <p:outputLabel value="Product Profile" ></p:outputLabel>
                             </f:facet>
                             <p:panelGrid columns="4" >
                                 <p:commandButton ajax="false" value="To Edit"
-                                                 action="#{solutionController.toEditSolution()}"></p:commandButton>
+                                                 action="#{productController.toEditProduct()}"></p:commandButton>
 
 
                             </p:panelGrid>
 
                             <p:panelGrid columns="3" >
-                                <p:graphicImage id="photo" value="#{solutionController.getSelectedImage()}" cache="FALSE">
+                                <p:graphicImage id="photo" value="#{productController.getSelectedImage()}" cache="FALSE">
                                 </p:graphicImage> 
-                                <p:graphicImage id="photoThumb" value="#{solutionController.getSelectedImageThumb()}" cache="FALSE">
+                                <p:graphicImage id="photoThumb" value="#{productController.getSelectedImageThumb()}" cache="FALSE">
                                 </p:graphicImage> 
-                                <p:graphicImage id="photoIcon" value="#{solutionController.getSelectedImageIcon()}" cache="FALSE">
+                                <p:graphicImage id="photoIcon" value="#{productController.getSelectedImageIcon()}" cache="FALSE">
                                 </p:graphicImage> 
                             </p:panelGrid>
 
 
-                            <p:dataTable rendered="true" value="#{solutionController.selectedItemsDisplay}" var="i" >
+                            <p:dataTable rendered="true" value="#{productController.selectedItemsDisplay}" var="i" >
                                 <p:column headerText="Property">
                                     <h:outputLabel value="#{i.item.displayName}" ></h:outputLabel>
                                 </p:column>
@@ -69,13 +69,13 @@
 
                     <p:outputLabel value="Created By"  />
                     <h:panelGroup >
-                        <p:outputLabel value="#{solutionController.selected.createdBy.person.name}"  />
+                        <p:outputLabel value="#{productController.selected.createdBy.person.name}"  />
                     </h:panelGroup>
 
 
                     <p:outputLabel value="Created At"  />
                     <h:panelGroup >
-                        <p:outputLabel value="#{solutionController.selected.createdAt}"  >
+                        <p:outputLabel value="#{productController.selected.createdAt}"  >
                             <f:convertDateTime pattern="dd MMMM yyyy hh:mm a" ></f:convertDateTime>
                         </p:outputLabel>
                     </h:panelGroup>
@@ -83,13 +83,13 @@
 
                     <p:outputLabel value="Last Edited By"  />
                     <h:panelGroup>
-                        <p:outputLabel value="#{solutionController.selected.lastEditBy.person.name}"  />
+                        <p:outputLabel value="#{productController.selected.lastEditBy.person.name}"  />
                     </h:panelGroup>
 
 
                     <p:outputLabel value="Last Edited At"  />
                     <h:panelGroup>
-                        <p:outputLabel value="#{solutionController.selected.createdAt}"  >
+                        <p:outputLabel value="#{productController.selected.createdAt}"  >
                             <f:convertDateTime pattern="dd MMMM yyyy hh:mm a" ></f:convertDateTime>
                         </p:outputLabel>
                     </h:panelGroup>

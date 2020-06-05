@@ -30,7 +30,7 @@ package sc.enums;
 public enum QueryType {
     Population,
     Indicator,
-    Solution,
+    Product,
     First_Encounter,
     Any_Encounter,
     Formset,

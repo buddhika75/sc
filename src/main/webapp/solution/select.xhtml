@@ -12,12 +12,12 @@
 
             <ui:define name="content">
 
-                <p:panel header="Select Solution" style="height: 100%; text-align: center;" >
+                <p:panel header="Select Product" style="height: 100%; text-align: center;" >
 
 
                     <h:form>
 
-                        <p:dataTable value="#{solutionController.selectedSolutions}" var="item"
+                        <p:dataTable value="#{productController.selectedProducts}" var="item"
                                      paginator="true"
                                      rowKey="#{item.id}"
                                      rows="10"
@@ -28,7 +28,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Icon"/>
                                 </f:facet>
-                                <p:graphicImage cache="false"  value="#{streamedContentController.solutionIconById}" style="height: 50px;" >
+                                <p:graphicImage cache="false"  value="#{streamedContentController.productIconById}" style="height: 50px;" >
                                     <f:param name="id" value="#{item.id}" />
                                 </p:graphicImage>
                             </p:column>
@@ -44,8 +44,8 @@
                                 <f:facet name="header">
                                     <h:outputText value="Actions"/>
                                 </f:facet>
-                                <p:commandButton ajax="false" action="#{solutionController.toSolutionProfile()}" value="View Profile" >
-                                    <f:setPropertyActionListener target="#{solutionController.selected}" value="#{item}" ></f:setPropertyActionListener>
+                                <p:commandButton ajax="false" action="#{productController.toProductProfile()}" value="View Profile" >
+                                    <f:setPropertyActionListener target="#{productController.selected}" value="#{item}" ></f:setPropertyActionListener>
                                 </p:commandButton>
                             </p:column>
 

@@ -54,7 +54,7 @@
                         <p:outputLabel value="#{bundleClinical.EditUploadLabel_project}" for="project" />
                         <p:selectOneMenu id="project" value="#{uploadController.selected.project}" >
                             <f:selectItem itemLabel="#{bundleClinical.SelectOneMessage}"/>
-                            <f:selectItems value="#{solutionController.itemsAvailableSelectOne}"
+                            <f:selectItems value="#{productController.itemsAvailableSelectOne}"
                                            var="projectItem"
                                            itemValue="#{projectItem}"/>
                         </p:selectOneMenu>

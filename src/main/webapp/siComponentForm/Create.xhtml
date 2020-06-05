@@ -18,9 +18,9 @@
                                            var="encounterItem"
                                            itemValue="#{encounterItem}"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="#{bundleClinical.CreateClientEncounterComponentFormLabel_client}" for="solution" />
-                        <p:selectOneMenu id="solution" value="#{clientEncounterComponentFormController.selected.solution}" >
-                            <f:selectItems value="#{solutionController.itemsAvailableSelectOne}"
+                        <p:outputLabel value="#{bundleClinical.CreateClientEncounterComponentFormLabel_client}" for="product" />
+                        <p:selectOneMenu id="product" value="#{clientEncounterComponentFormController.selected.product}" >
+                            <f:selectItems value="#{productController.itemsAvailableSelectOne}"
                                            var="clientItem"
                                            itemValue="#{clientItem}"/>
                         </p:selectOneMenu>
@@ -56,7 +56,7 @@
                         </p:selectOneMenu>
                         <p:outputLabel value="#{bundleClinical.CreateClientEncounterComponentFormLabel_clientValue}" for="clientValue" />
                         <p:selectOneMenu id="clientValue" value="#{clientEncounterComponentFormController.selected.clientValue}" >
-                            <f:selectItems value="#{solutionController.itemsAvailableSelectOne}"
+                            <f:selectItems value="#{productController.itemsAvailableSelectOne}"
                                            var="clientValueItem"
                                            itemValue="#{clientValueItem}"/>
                         </p:selectOneMenu>

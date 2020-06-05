@@ -21,16 +21,16 @@
 
                         <h:panelGrid columns="2" >
                             <p:outputLabel value="Institution" ></p:outputLabel>
-                            <p:autoComplete  id="parent" value="#{solutionController.institution}" 
+                            <p:autoComplete  id="parent" value="#{productController.institution}" 
                                              completeMethod="#{institutionController.completeInstitutions}"
                                              var="i" itemLabel="#{i.name}" itemValue="#{i}">
                             </p:autoComplete >
                             <p:commandButton value="Save Selected" ajax="false"
-                                             action="#{solutionController.saveSelectedImports()}">
+                                             action="#{productController.saveSelectedImports()}">
                             </p:commandButton>
                             
                             <p:commandButton value="Save All" ajax="false"
-                                             action="#{solutionController.saveAllImports()}">
+                                             action="#{productController.saveAllImports()}">
                             </p:commandButton>
                             
                             
@@ -42,8 +42,8 @@
                             </p:commandButton>
 
                         </h:panelGrid>
-                        <p:dataTable value="#{solutionController.importedClients}"
-                                     selection="#{solutionController.selectedClients}"
+                        <p:dataTable value="#{productController.importedClients}"
+                                     selection="#{productController.selectedClients}"
                                      var="c" 
                                      rowKey="#{c.id}"
                                      paginator="true"
@@ -138,7 +138,7 @@
 
 
 
-                        <p:dataTable value="#{solutionController.importedClients}"
+                        <p:dataTable value="#{productController.importedClients}"
                                      var="c" id="tbl"
                                      rowKey="#{c.id}" style="display: none;" >
                             <p:column headerText="PHN"  >

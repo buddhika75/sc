@@ -8,7 +8,7 @@
 
     <head>
         <ui:define name="head">
-            Solution Registrations
+            Product Registrations
         </ui:define>
     </head>
     <body>
@@ -20,7 +20,7 @@
                 <h:form>
                     <p:panelGrid columns="2" styleClass="alignTop" >
                         <f:facet name="header" >
-                            <p:outputLabel value="Solution Registrations" ></p:outputLabel>
+                            <p:outputLabel value="Product Registrations" ></p:outputLabel>
                         </f:facet>
                         <p:panelGrid columns="2" >
                             <f:facet name="header" >
@@ -81,15 +81,15 @@
                                 </p:column>
                                 <p:column headerText="Action" >
                                     <p:commandButton value="View" 
-                                                     action="#{solutionController.toClientProfile()}"
+                                                     action="#{productController.toClientProfile()}"
                                                      >
-                                        <f:setPropertyActionListener target="#{solutionController.selected}"
+                                        <f:setPropertyActionListener target="#{productController.selected}"
                                                                      value="#{c}"></f:setPropertyActionListener>
                                     </p:commandButton>
                                     <p:commandButton value="Delete" 
-                                                     action="#{solutionController.retireSelectedClient()}"
+                                                     action="#{productController.retireSelectedClient()}"
                                                      >
-                                        <f:setPropertyActionListener target="#{solutionController.selected}"
+                                        <f:setPropertyActionListener target="#{productController.selected}"
                                                                      value="#{c}"></f:setPropertyActionListener>
                                     </p:commandButton>
                                 </p:column>

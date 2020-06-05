@@ -28,6 +28,6 @@ package sc.enums;
  * @author Dr M H B Ariyaratne<buddhika.ari@gmail.com>
  */
 public enum DataRepresentationType {
-    Solution,
+    Product,
     Implementation,
 }

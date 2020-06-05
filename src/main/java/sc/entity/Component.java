@@ -207,7 +207,7 @@ public class Component implements Serializable {
     private Implementation implementation;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Product solution;
+    private Product product;
 
     @Lob
     private String longTextValue;
@@ -251,11 +251,11 @@ public class Component implements Serializable {
     }
 
     public Product getClient() {
-        return solution;
+        return product;
     }
 
-    public void setClient(Product solution) {
-        this.solution = solution;
+    public void setClient(Product product) {
+        this.product = product;
     }
 
     public String getLongTextValue() {

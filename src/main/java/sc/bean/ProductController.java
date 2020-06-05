@@ -88,10 +88,10 @@ public class ProductController implements Serializable {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Variables">
     private List<Product> items = null;
-    private List<Product> selectedSolutions = null;
+    private List<Product> selectedProducts = null;
     private List<Product> importedClients = null;
 
-    private Product featuredSolution;
+    private Product featuredProduct;
 
     private Product selected;
     private Long idFrom;
@@ -100,7 +100,7 @@ public class ProductController implements Serializable {
 
     private List<Item> indexItems = null;
     private Item indexItem = null;
-    private String indexItemsCode = "solution_categories";
+    private String indexItemsCode = "product_categories";
 
     private String searchingId;
     private Item item;
@@ -152,70 +152,70 @@ public class ProductController implements Serializable {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Navigation">
     public String toSearchClient() {
-        return "/solution/search_by_name";
+        return "/product/search_by_name";
     }
 
     public String toSearchPublic() {
-        return "/solution/search_by_name_public";
+        return "/product/search_by_name_public";
     }
 
     public String toSearchClientByDetails() {
-        return "/solution/search_by_details";
+        return "/product/search_by_details";
 
     }
 
-    public String toSelectSolution() {
-        return "/solution/select";
+    public String toSelectProduct() {
+        return "/product/select";
     }
 
-    public String toSelectSolutionPublic() {
-        return "/solutions";
+    public String toSelectProductPublic() {
+        return "/products";
     }
 
-    public String toListAllSolutions() {
-        String j = "select s from Solution s "
+    public String toListAllProducts() {
+        String j = "select s from Product s "
                 + " where s.retired=:ret "
                 + " order by s.name";
         Map m = new HashMap();
         m.put("ret", false);
-        selectedSolutions = getFacade().findByJpql(j, m);
-        return "/solution/select";
+        selectedProducts = getFacade().findByJpql(j, m);
+        return "/product/select";
     }
 
-    public String toListAllSolutionsPublic() {
-        String j = "select s from Solution s "
+    public String toListAllProductsPublic() {
+        String j = "select s from Product s "
                 + " where s.retired=:ret "
                 + " order by s.name";
         Map m = new HashMap();
         m.put("ret", false);
-        selectedSolutions = getFacade().findByJpql(j, m);
-        return "/solutions";
+        selectedProducts = getFacade().findByJpql(j, m);
+        return "/products";
     }
 
-    public String toEditSolution() {
+    public String toEditProduct() {
         siComponentItem = null;
-        return "/solution/solution";
+        return "/product/product";
     }
 
-    public String toSolutionProfile() {
-        return "/solution/profile";
+    public String toProductProfile() {
+        return "/product/profile";
     }
 
-    public String toSolutionProfilePublic() {
+    public String toProductProfilePublic() {
         if (selected == null) {
             JsfUtil.addErrorMessage("Nothing Selected");
             return "";
         }
         selected.setViewCount(selected.getViewCount() + 1);
         getFacade().edit(selected);
-        return "/solution";
+        return "/product";
     }
 
     public String toAddNewClient() {
         selected = new Product();
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
-        return "/solution/solution";
+        return "/product/product";
     }
 
     // </editor-fold>
@@ -248,7 +248,7 @@ public class ProductController implements Serializable {
             return;
         }
         getSiComponentItem().setItem(item);
-        saveSolutionSilantly();
+        saveProductSilantly();
     }
 
     public List<Item> findItemsByCode(String code) {
@@ -321,15 +321,15 @@ public class ProductController implements Serializable {
     }
 
     public Boolean checkPhnExists(String phn, Product c) {
-        String jpql = "select count(c) from Solution c "
+        String jpql = "select count(c) from Product c "
                 + " where c.retired=:ret "
                 + " and c.phn=:phn ";
         Map m = new HashMap();
         m.put("ret", false);
         m.put("phn", phn);
         if (c != null && c.getId() != null) {
-            jpql += " and c <> :solution";
-            m.put("solution", c);
+            jpql += " and c <> :product";
+            m.put("product", c);
         }
         Long count = getFacade().countByJpql(jpql, m);
         if (count == null || count == 0l) {
@@ -358,7 +358,7 @@ public class ProductController implements Serializable {
     }
 
     public Boolean checkNicExists(String nic, Product c) {
-        String jpql = "select count(c) from Solution c "
+        String jpql = "select count(c) from Product c "
                 + " where c.retired=:ret "
                 + " and c.person.nic=:nic ";
         Map m = new HashMap();
@@ -378,7 +378,7 @@ public class ProductController implements Serializable {
     }
 
     public void fixClientPersonCreatedAt() {
-        String j = "select c from Solution c "
+        String j = "select c from Product c "
                 + " where c.retired=:ret ";
         Map m = new HashMap();
         m.put("ret", false);
@@ -406,7 +406,7 @@ public class ProductController implements Serializable {
             JsfUtil.addErrorMessage("Institution ?");
             return;
         }
-        String j = "select c from Solution c "
+        String j = "select c from Product c "
                 + " where c.retired=:ret "
                 + " and c.id > :idf "
                 + " and c.id < :idt ";
@@ -423,7 +423,7 @@ public class ProductController implements Serializable {
     }
 
     public void updateClientDateOfBirth() {
-        String j = "select c from Solution c "
+        String j = "select c from Product c "
                 + " where c.retired=:ret "
                 + " and c.id > :idf "
                 + " and c.id < :idt ";
@@ -453,7 +453,7 @@ public class ProductController implements Serializable {
     }
 
     public Long countOfRegistedClients(Institution ins, Area gn) {
-        String j = "select count(c) from Solution c "
+        String j = "select count(c) from Product c "
                 + " where c.retired=:ret ";
         Map m = new HashMap();
         m.put("ret", false);
@@ -469,7 +469,7 @@ public class ProductController implements Serializable {
     }
 
     public String toRegisterdClientsDemo() {
-        String j = "select c from Solution c "
+        String j = "select c from Product c "
                 + " where c.retired=:ret ";
         Map m = new HashMap();
         m.put("ret", false);
@@ -485,7 +485,7 @@ public class ProductController implements Serializable {
     }
 
     public String toRegisterdClientsWithDates() {
-        String j = "select c from Solution c "
+        String j = "select c from Product c "
                 + " where c.retired=:ret ";
         Map m = new HashMap();
         m.put("ret", false);
@@ -502,7 +502,7 @@ public class ProductController implements Serializable {
     }
 
     public String toRegisterdClientsWithDatesForSystemAdmin() {
-        String j = "select c from Solution c "
+        String j = "select c from Product c "
                 + " where c.retired=:ret ";
         Map m = new HashMap();
         m.put("ret", false);
@@ -510,7 +510,7 @@ public class ProductController implements Serializable {
         j = j + " order by c.id desc";
         m.put("fd", getFrom());
         m.put("td", getTo());
-        selectedSolutions = null;
+        selectedProducts = null;
         items = getFacade().findByJpql(j, m, TemporalType.TIMESTAMP);
         return "/systemAdmin/all_clients";
     }
@@ -520,22 +520,22 @@ public class ProductController implements Serializable {
             JsfUtil.addErrorMessage("Institution ?");
             return;
         }
-        for (Product c : selectedSolutions) {
+        for (Product c : selectedProducts) {
             c.setCreateInstitution(institution);
             if (!checkPhnExists(c.getPhn(), null)) {
                 c.setId(null);
-                saveSolution(c);
+                saveProduct(c);
             }
         }
     }
 
     public void fillClientsWithWrongPhnLength() {
-        String j = "select c from Solution c where length(c.phn) <>11 order by c.id";
+        String j = "select c from Product c where length(c.phn) <>11 order by c.id";
         items = getFacade().findByJpql(j);
     }
 
     public String fillRetiredClients() {
-        String j = "select c from Solution c "
+        String j = "select c from Product c "
                 + " where c.retired=:ret ";
         Map m = new HashMap();
         m.put("ret", true);
@@ -543,13 +543,13 @@ public class ProductController implements Serializable {
         j = j + " order by c.id desc";
         m.put("fd", getFrom());
         m.put("td", getTo());
-        selectedSolutions = null;
+        selectedProducts = null;
         items = getFacade().findByJpql(j, m, TemporalType.TIMESTAMP);
         return "/systemAdmin/all_clients";
     }
 
     public String retireSelectedClients() {
-        for (Product c : selectedSolutions) {
+        for (Product c : selectedProducts) {
             c.setRetired(true);
             c.setRetireComments("Bulk Delete");
             c.setRetiredAt(new Date());
@@ -562,12 +562,12 @@ public class ProductController implements Serializable {
 
             getFacade().edit(c);
         }
-        selectedSolutions = null;
+        selectedProducts = null;
         return toRegisterdClientsWithDatesForSystemAdmin();
     }
 
     public String unretireSelectedClients() {
-        for (Product c : selectedSolutions) {
+        for (Product c : selectedProducts) {
             c.setRetired(false);
             c.setRetireComments("Bulk Un Delete");
             c.setLastEditBy(webUserController.getLoggedUser());
@@ -580,7 +580,7 @@ public class ProductController implements Serializable {
 
             getFacade().edit(c);
         }
-        selectedSolutions = null;
+        selectedProducts = null;
         return toRegisterdClientsWithDatesForSystemAdmin();
     }
 
@@ -644,7 +644,7 @@ public class ProductController implements Serializable {
             c.setCreateInstitution(institution);
             if (!checkPhnExists(c.getPhn(), null)) {
                 c.setId(null);
-                saveSolution(c);
+                saveProduct(c);
             }
         }
     }
@@ -742,7 +742,7 @@ public class ProductController implements Serializable {
         }
     }
 
-    public StreamedContent solutionImageIcon(Product sol) {
+    public StreamedContent productImageIcon(Product sol) {
         //System.err.println("Get Sigature By Id");
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getRenderResponse()) {
@@ -777,17 +777,17 @@ public class ProductController implements Serializable {
             // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
             return new DefaultStreamedContent();
         } else {
-            if (getFeaturedSolution() != null) {
+            if (getFeaturedProduct() != null) {
                 //System.err.println("Img 1 " + temImg);
                 byte[] imgArr = null;
                 try {
-                    imgArr = getFeaturedSolution().getBaImage();
+                    imgArr = getFeaturedProduct().getBaImage();
                 } catch (Exception e) {
                     //System.err.println("Try  " + e.getMessage());
                     return new DefaultStreamedContent();
                 }
 
-                StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), getFeaturedSolution().getFileType());
+                StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), getFeaturedProduct().getFileType());
                 //System.err.println("Stream " + str);
                 return str;
             } else {
@@ -1172,13 +1172,13 @@ public class ProductController implements Serializable {
 
     }
 
-    public List<Implementation> fillEncounters(Product solution, InstitutionType insType, EncounterType encType, boolean excludeCompleted) {
+    public List<Implementation> fillEncounters(Product product, InstitutionType insType, EncounterType encType, boolean excludeCompleted) {
         // //System.out.println("fillEncounters");
         String j = "select e from Implementation e where e.retired=false ";
         Map m = new HashMap();
-        if (solution != null) {
-            j += " and e.solution=:c ";
-            m.put("c", solution);
+        if (product != null) {
+            j += " and e.product=:c ";
+            m.put("c", product);
         }
         if (insType != null) {
             j += " and e.institution.institutionType=:it ";
@@ -1198,7 +1198,7 @@ public class ProductController implements Serializable {
 
     public void addNewProperty() {
         if (selected == null) {
-            JsfUtil.addErrorMessage("No Solution is Selected");
+            JsfUtil.addErrorMessage("No Product is Selected");
             return;
         }
         if (siComponentItem == null) {
@@ -1210,14 +1210,14 @@ public class ProductController implements Serializable {
             return;
         }
         siComponentItem.setItem(item);
-        siComponentItem.setSolution(selected);
+        siComponentItem.setProduct(selected);
 
         Double on = Double.valueOf(selectedItems.size() + 1);
         siComponentItem.setOrderNo(on);
         siComponentItemController.save(siComponentItem);
 
         getSelected().getSiComponentItems().add(siComponentItem);
-        saveSolution(selected);
+        saveProduct(selected);
 
         siComponentItem = new SiComponentItem();
         item = null;
@@ -1225,13 +1225,13 @@ public class ProductController implements Serializable {
     }
 
     public String searchByNamePublic() {
-        selectedSolutions = listSolutionsByName(searchingName);
-        if (selectedSolutions == null || selectedSolutions.isEmpty()) {
+        selectedProducts = listProductsByName(searchingName);
+        if (selectedProducts == null || selectedProducts.isEmpty()) {
             JsfUtil.addErrorMessage("No Results Found. Try different search criteria.");
             return "";
         }
         selected = null;
-        return toSelectSolutionPublic();
+        return toSelectProductPublic();
     }
 
     public String searchByPropertyValuePublic() {
@@ -1239,117 +1239,117 @@ public class ProductController implements Serializable {
             JsfUtil.addErrorMessage("No search Category");
             return "";
         }
-        selectedSolutions = listSolutionsByPropertyItem(indexItem);
-        if (selectedSolutions == null || selectedSolutions.isEmpty()) {
+        selectedProducts = listProductsByPropertyItem(indexItem);
+        if (selectedProducts == null || selectedProducts.isEmpty()) {
             JsfUtil.addErrorMessage("No Results Found. Try different search criteria.");
             return "";
         }
         selected = null;
-        return toSelectSolutionPublic();
+        return toSelectProductPublic();
     }
 
     public String searchByPublicIndex() {
         System.out.println("searchByPublicIndex");
 
         List<Item> searchItems = new ArrayList<>();
-        List<Product> textSolutions;
-        List<Product> catSolutions1;
-        List<Product> catSolutions2;
+        List<Product> textProducts;
+        List<Product> catProducts1;
+        List<Product> catProducts2;
 
-        List<Product> allSolutions;
+        List<Product> allProducts;
 
         if (searchingName.trim().equals("")) {
-            textSolutions = listAllSolutions();
+            textProducts = listAllProducts();
         } else {
-            textSolutions = listSolutionsByName(searchingName);
-            textSolutions.addAll(listSolutionsByPropertyItem(searchingName));
+            textProducts = listProductsByName(searchingName);
+            textProducts.addAll(listProductsByPropertyItem(searchingName));
         }
-        if (textSolutions == null) {
-            textSolutions = new ArrayList<>();
+        if (textProducts == null) {
+            textProducts = new ArrayList<>();
         }
 
-        allSolutions = textSolutions;
+        allProducts = textProducts;
 
         if (searchItem1 != null) {
-            catSolutions1 = listSolutionsByPropertyItem(searchItem1);
-            allSolutions = commonController.commonItems(allSolutions, catSolutions1);
+            catProducts1 = listProductsByPropertyItem(searchItem1);
+            allProducts = commonController.commonItems(allProducts, catProducts1);
         }
         if (searchItem2 != null) {
-            catSolutions2 = listSolutionsByPropertyItem(searchItem2);
-            allSolutions = commonController.commonItems(allSolutions, catSolutions2);
+            catProducts2 = listProductsByPropertyItem(searchItem2);
+            allProducts = commonController.commonItems(allProducts, catProducts2);
         }
 
-        System.out.println("toSelectSolutionPublic 1");
+        System.out.println("toSelectProductPublic 1");
 
-        selectedSolutions = allSolutions;
+        selectedProducts = allProducts;
 
         selected = null;
         searchItem3 = null;
         searchItem4 = null;
         searchItem5 = null;
         searchItem6 = null;
-        return toSelectSolutionPublic();
+        return toSelectProductPublic();
     }
 
     public String searchByPublic() {
         System.out.println("searchByPublic");
 
         List<Item> searchItems = new ArrayList<>();
-        List<Product> textSolutions;
-        List<Product> catSolutions1;
-        List<Product> catSolutions2;
+        List<Product> textProducts;
+        List<Product> catProducts1;
+        List<Product> catProducts2;
 
-        List<Product> catSolutions3;
-        List<Product> catSolutions4;
-        List<Product> catSolutions5;
-        List<Product> catSolutions6;
+        List<Product> catProducts3;
+        List<Product> catProducts4;
+        List<Product> catProducts5;
+        List<Product> catProducts6;
 
-        List<Product> allSolutions;
+        List<Product> allProducts;
 
         if (searchingName.trim().equals("")) {
-            textSolutions = listAllSolutions();
+            textProducts = listAllProducts();
         } else {
-            textSolutions = listSolutionsByName(searchingName);
-            textSolutions.addAll(listSolutionsByPropertyItem(searchingName));
+            textProducts = listProductsByName(searchingName);
+            textProducts.addAll(listProductsByPropertyItem(searchingName));
         }
-        if (textSolutions == null) {
-            textSolutions = new ArrayList<>();
+        if (textProducts == null) {
+            textProducts = new ArrayList<>();
         }
 
-        allSolutions = textSolutions;
+        allProducts = textProducts;
 
         if (searchItem1 != null) {
-            catSolutions1 = listSolutionsByPropertyItem(searchItem1);
-            allSolutions = commonController.commonItems(allSolutions, catSolutions1);
+            catProducts1 = listProductsByPropertyItem(searchItem1);
+            allProducts = commonController.commonItems(allProducts, catProducts1);
         }
         if (searchItem2 != null) {
-            catSolutions2 = listSolutionsByPropertyItem(searchItem2);
-            allSolutions = commonController.commonItems(allSolutions, catSolutions2);
+            catProducts2 = listProductsByPropertyItem(searchItem2);
+            allProducts = commonController.commonItems(allProducts, catProducts2);
         }
         if (searchItem3 != null) {
-            catSolutions3 = listSolutionsByPropertyItem(searchItem3);
-            allSolutions = commonController.commonItems(allSolutions, catSolutions3);
+            catProducts3 = listProductsByPropertyItem(searchItem3);
+            allProducts = commonController.commonItems(allProducts, catProducts3);
         }
         if (searchItem4 != null) {
-            catSolutions4 = listSolutionsByPropertyItem(searchItem4);
-            allSolutions = commonController.commonItems(allSolutions, catSolutions4);
+            catProducts4 = listProductsByPropertyItem(searchItem4);
+            allProducts = commonController.commonItems(allProducts, catProducts4);
         }
         if (searchItem5 != null) {
-            catSolutions5 = listSolutionsByPropertyItem(searchItem5);
-            allSolutions = commonController.commonItems(allSolutions, catSolutions5);
+            catProducts5 = listProductsByPropertyItem(searchItem5);
+            allProducts = commonController.commonItems(allProducts, catProducts5);
         }
         if (searchItem6 != null) {
-            catSolutions6 = listSolutionsByPropertyItem(searchItem6);
-            allSolutions = commonController.commonItems(allSolutions, catSolutions6);
+            catProducts6 = listProductsByPropertyItem(searchItem6);
+            allProducts = commonController.commonItems(allProducts, catProducts6);
         }
 
-        System.out.println("toSelectSolutionPublic 1");
+        System.out.println("toSelectProductPublic 1");
 
-        selectedSolutions = allSolutions;
+        selectedProducts = allProducts;
 
         selected = null;
 
-        return toSelectSolutionPublic();
+        return toSelectProductPublic();
     }
 
     public void clearSearchItems() {
@@ -1362,20 +1362,20 @@ public class ProductController implements Serializable {
     }
 
     public String searchByName() {
-        selectedSolutions = listSolutionsByName(searchingName);
-        if (selectedSolutions == null || selectedSolutions.isEmpty()) {
+        selectedProducts = listProductsByName(searchingName);
+        if (selectedProducts == null || selectedProducts.isEmpty()) {
             JsfUtil.addErrorMessage("No Results Found. Try different search criteria.");
             return "";
         }
-        if (selectedSolutions.size() == 1) {
-            selected = selectedSolutions.get(0);
-            selectedSolutions = null;
+        if (selectedProducts.size() == 1) {
+            selected = selectedProducts.get(0);
+            selectedProducts = null;
             clearSearchByName();
-            return toSolutionProfile();
+            return toProductProfile();
         } else {
             selected = null;
             clearSearchByName();
-            return toSelectSolution();
+            return toSelectProduct();
         }
     }
 
@@ -1385,21 +1385,21 @@ public class ProductController implements Serializable {
             searchingId = "";
         }
 
-        selectedSolutions = listPatientsByIDs(searchingId.trim().toUpperCase());
+        selectedProducts = listPatientsByIDs(searchingId.trim().toUpperCase());
 
-        if (selectedSolutions == null || selectedSolutions.isEmpty()) {
+        if (selectedProducts == null || selectedProducts.isEmpty()) {
             JsfUtil.addErrorMessage("No Results Found. Try different search criteria.");
-            return "/solution/search_by_name";
+            return "/product/search_by_name";
         }
-        if (selectedSolutions.size() == 1) {
-            selected = selectedSolutions.get(0);
-            selectedSolutions = null;
+        if (selectedProducts.size() == 1) {
+            selected = selectedProducts.get(0);
+            selectedProducts = null;
             searchingId = "";
-            return toSolutionProfile();
+            return toProductProfile();
         } else {
             selected = null;
             searchingId = "";
-            return toSelectSolution();
+            return toSelectProduct();
         }
     }
 
@@ -1408,14 +1408,14 @@ public class ProductController implements Serializable {
         searchingName = "";
     }
 
-//    public List<Solution> listSolutionsByPropertyItem(Item item) {
+//    public List<Product> listProductsByPropertyItem(Item item) {
 //        String j;
 //
-//        j = "select distinct(si.solution) from SiComponentItem si "
+//        j = "select distinct(si.product) from SiComponentItem si "
 //                + " where si.retired<>:ret "
 //                + " and si.itemValue=:q "
-//                + " group by si.solution "
-//                + " order by si.solution.name";
+//                + " group by si.product "
+//                + " order by si.product.name";
 //
 //        Map m = new HashMap();
 //        m.put("q", item);
@@ -1426,44 +1426,44 @@ public class ProductController implements Serializable {
 //        System.out.println("m = " + m);
 //        return getFacade().findByJpql(j, m);
 //    }
-    public List<Product> listSolutionsByPropertyItem(List<Item> items) {
+    public List<Product> listProductsByPropertyItem(List<Item> items) {
         String j;
-        j = "select distinct(si.solution) from SiComponentItem si "
+        j = "select distinct(si.product) from SiComponentItem si "
                 + " where si.retired<>:ret "
                 + " and si.itemValue in :q "
-                + " group by si.solution "
-                + " order by si.solution.name";
+                + " group by si.product "
+                + " order by si.product.name";
         Map m = new HashMap();
         m.put("q", items);
         m.put("ret", true);
         return getFacade().findByJpql(j, m);
     }
 
-    public List<Product> listSolutionsByPropertyItem(Item scItem) {
+    public List<Product> listProductsByPropertyItem(Item scItem) {
         List<Item> tis = new ArrayList<>();
         tis.add(scItem);
         String j;
-        j = "select distinct(si.solution) from SiComponentItem si "
+        j = "select distinct(si.product) from SiComponentItem si "
                 + " where si.retired<>:ret "
                 + " and si.itemValue in :q "
-                + " group by si.solution "
-                + " order by si.solution.name";
+                + " group by si.product "
+                + " order by si.product.name";
         Map m = new HashMap();
         m.put("q", tis);
         m.put("ret", true);
         return getFacade().findByJpql(j, m);
     }
 
-    public List<Product> listSolutionsByPropertyItem(String scItem) {
+    public List<Product> listProductsByPropertyItem(String scItem) {
         if (scItem == null) {
             return new ArrayList<>();
         }
         String j;
-        j = "select distinct(si.solution) from SiComponentItem si "
+        j = "select distinct(si.product) from SiComponentItem si "
                 + " where si.retired<>:ret "
                 + " and (lower(si.itemValue.name) like :q or lower(si.shortTextValue) like :q) "
-                + " group by si.solution "
-                + " order by si.solution.name";
+                + " group by si.product "
+                + " order by si.product.name";
         Map m = new HashMap();
         m.put("q", "%" + scItem.trim().toLowerCase() + "%");
         m.put("ret", true);
@@ -1473,8 +1473,8 @@ public class ProductController implements Serializable {
         return getFacade().findByJpql(j, m);
     }
 
-    public List<Product> listSolutionsByName(String phn) {
-        String j = "select c from Solution c "
+    public List<Product> listProductsByName(String phn) {
+        String j = "select c from Product c "
                 + " where c.retired=false "
                 + " and (upper(c.name) like :q or upper(c.sname) like :q) "
                 + " order by c.name";
@@ -1485,7 +1485,7 @@ public class ProductController implements Serializable {
 
     @Deprecated
     public List<Product> listPatientsByPhone(String phn) {
-        String j = "select c from Solution c where c.retired=false and (upper(c.person.phone1)=:q or upper(c.person.phone2)=:q) order by c.phn";
+        String j = "select c from Product c where c.retired=false and (upper(c.person.phone1)=:q or upper(c.person.phone2)=:q) order by c.phn";
         Map m = new HashMap();
         m.put("q", phn.trim().toUpperCase());
         return getFacade().findByJpql(j, m);
@@ -1496,7 +1496,7 @@ public class ProductController implements Serializable {
         if (ids == null || ids.trim().equals("")) {
             return null;
         }
-        String j = "select c from Solution c "
+        String j = "select c from Product c "
                 + " where c.retired=false "
                 + " and ("
                 + " upper(c.person.phone1)=:q "
@@ -1518,23 +1518,23 @@ public class ProductController implements Serializable {
         return selected;
     }
 
-    public String saveSolution() {
+    public String saveProduct() {
 
-        saveSolution(selected);
+        saveProduct(selected);
         JsfUtil.addSuccessMessage("Saved.");
         applicationController.fillCategoryData();
         selected.setSiComponentItems(null);
         selected = getFacade().find(selected.getId());
-        return toSolutionProfile();
+        return toProductProfile();
     }
 
-    public void saveSolutionSilantly() {
-        saveSolution(selected);
+    public void saveProductSilantly() {
+        saveProduct(selected);
     }
 
-    public String saveSolution(Product c) {
+    public String saveProduct(Product c) {
         if (c == null) {
-            JsfUtil.addErrorMessage("No Solution Selected to save.");
+            JsfUtil.addErrorMessage("No Product Selected to save.");
             return "";
         }
         if (c.getId() == null) {
@@ -1546,7 +1546,7 @@ public class ProductController implements Serializable {
             c.setLastEditeAt(new Date());
             getFacade().edit(c);
         }
-        return toSolutionProfile();
+        return toProductProfile();
     }
 
     public void create() {
@@ -1713,12 +1713,12 @@ public class ProductController implements Serializable {
         this.searchingPhoneNumber = searchingPhoneNumber;
     }
 
-    public List<Product> getSelectedSolutions() {
-        return selectedSolutions;
+    public List<Product> getSelectedProducts() {
+        return selectedProducts;
     }
 
-    public void setSelectedSolutions(List<Product> selectedSolutions) {
-        this.selectedSolutions = selectedSolutions;
+    public void setSelectedProducts(List<Product> selectedProducts) {
+        this.selectedProducts = selectedProducts;
     }
 
     public YearMonthDay getYearMonthDay() {
@@ -1955,9 +1955,9 @@ public class ProductController implements Serializable {
         if (selected == null) {
             return new ArrayList<>();
         }
-        selectedItems = siComponentItemController.findSolutionItems(selected);
+        selectedItems = siComponentItemController.findProductItems(selected);
 //        if (selectedItems == null) {
-//            selectedItems = siComponentItemController.findSolutionItems(selected);
+//            selectedItems = siComponentItemController.findProductItems(selected);
 //        }
         if (selectedItems == null) {
             selectedItems = new ArrayList<>();
@@ -1977,8 +1977,8 @@ public class ProductController implements Serializable {
         return siComponentItemController;
     }
 
-    public List<Product> getPopularSolutions() {
-        return getApplicationController().getPopularSolutions();
+    public List<Product> getPopularProducts() {
+        return getApplicationController().getPopularProducts();
     }
 
     public List<Item> getIndexItems() {
@@ -2005,21 +2005,21 @@ public class ProductController implements Serializable {
         this.indexItem = indexItem;
     }
 
-    public List<Product> getFeaturedSolutions() {
-        return applicationController.getFeaturedSolutions();
+    public List<Product> getFeaturedProducts() {
+        return applicationController.getFeaturedProducts();
     }
 
-    public Product getFeaturedSolution() {
-        if (getFeaturedSolutions().isEmpty()) {
+    public Product getFeaturedProduct() {
+        if (getFeaturedProducts().isEmpty()) {
             return null;
         }
         Random rand = new Random();
-        featuredSolution = getFeaturedSolutions().get(rand.nextInt(getFeaturedSolutions().size()));
-        return featuredSolution;
+        featuredProduct = getFeaturedProducts().get(rand.nextInt(getFeaturedProducts().size()));
+        return featuredProduct;
     }
 
-    public void setFeaturedSolution(Product featuredSolution) {
-        this.featuredSolution = featuredSolution;
+    public void setFeaturedProduct(Product featuredProduct) {
+        this.featuredProduct = featuredProduct;
     }
 
     public Item getSearchItem1() {
@@ -2070,9 +2070,9 @@ public class ProductController implements Serializable {
         this.searchItem6 = searchItem6;
     }
 
-    public List<Product> listAllSolutions() {
+    public List<Product> listAllProducts() {
         String j;
-        j = "select s from Solution s "
+        j = "select s from Product s "
                 + " where s.retired<>:ret "
                 + " order by s.name";
         Map m = new HashMap();
@@ -2085,7 +2085,7 @@ public class ProductController implements Serializable {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Converters">
     @FacesConverter(forClass = Product.class)
-    public static class solutionControllerConverter implements Converter {
+    public static class productControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -2093,7 +2093,7 @@ public class ProductController implements Serializable {
                 return null;
             }
             ProductController controller = (ProductController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "solutionController");
+                    getValue(facesContext.getELContext(), null, "productController");
             return controller.getClient(getKey(value));
         }
 
