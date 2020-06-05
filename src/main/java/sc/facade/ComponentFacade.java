@@ -35,7 +35,7 @@ import sc.entity.Component;
 @Stateless
 public class ComponentFacade extends AbstractFacade<Component> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

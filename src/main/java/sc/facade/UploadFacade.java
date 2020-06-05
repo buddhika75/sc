@@ -35,7 +35,7 @@ import sc.entity.Upload;
 @Stateless
 public class UploadFacade extends AbstractFacade<Upload> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

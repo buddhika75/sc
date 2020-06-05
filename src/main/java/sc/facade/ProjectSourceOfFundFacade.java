@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class ProjectSourceOfFundFacade extends AbstractFacade<DesignComponentForm> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

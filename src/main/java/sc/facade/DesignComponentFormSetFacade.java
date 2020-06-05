@@ -36,7 +36,7 @@ import sc.entity.DesignComponentFormSet;
 @Stateless
 public class DesignComponentFormSetFacade extends AbstractFacade<DesignComponentFormSet> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

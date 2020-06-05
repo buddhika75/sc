@@ -35,7 +35,7 @@ import sc.entity.QueryComponent;
 @Stateless
 public class QueryComponentFacade extends AbstractFacade<QueryComponent> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

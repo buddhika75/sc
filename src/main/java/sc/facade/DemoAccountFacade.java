@@ -35,7 +35,7 @@ import sc.entity.DemoAccount;
 @Stateless
 public class DemoAccountFacade extends AbstractFacade<DemoAccount> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

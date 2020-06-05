@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class ProjectInstitutionFacade extends AbstractFacade<SiComponent> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

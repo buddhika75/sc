@@ -35,7 +35,7 @@ import sc.entity.Message;
 @Stateless
 public class MessageFacade extends AbstractFacade<Message> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

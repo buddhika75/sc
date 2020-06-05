@@ -35,7 +35,7 @@ import sc.entity.UserPrivilege;
 @Stateless
 public class UserPrivilegeFacade extends AbstractFacade<UserPrivilege> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

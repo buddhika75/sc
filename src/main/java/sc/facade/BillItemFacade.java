@@ -26,14 +26,14 @@ package sc.facade;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import sc.entity.DesignComponent;
+import sc.entity.BillItem;
 
 /**
  *
  * @author Dr M H B Ariyaratne<buddhika.ari@gmail.com>
  */
 @Stateless
-public class DesignComponentFacade extends AbstractFacade<DesignComponent> {
+public class BillItemFacade extends AbstractFacade<BillItem> {
 
     @PersistenceContext(unitName = "pu")
     private EntityManager em;
@@ -43,8 +43,8 @@ public class DesignComponentFacade extends AbstractFacade<DesignComponent> {
         return em;
     }
 
-    public DesignComponentFacade() {
-        super(DesignComponent.class);
+    public BillItemFacade() {
+        super(BillItem.class);
     }
     
 }

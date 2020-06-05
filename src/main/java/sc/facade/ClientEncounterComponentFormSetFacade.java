@@ -35,7 +35,7 @@ import sc.entity.SiFormSet;
 @Stateless
 public class ClientEncounterComponentFormSetFacade extends AbstractFacade<SiFormSet> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

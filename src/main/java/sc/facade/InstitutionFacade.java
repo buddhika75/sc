@@ -35,7 +35,7 @@ import sc.entity.Institution;
 @Stateless
 public class InstitutionFacade extends AbstractFacade<Institution> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

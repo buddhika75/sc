@@ -316,6 +316,34 @@ public class ItemController implements Serializable {
         return item;
     }
 
+    public Item findItemByCode(String code, boolean createNew) {
+        Item item;
+        String j;
+        Map m ;
+        if (code != null) {
+            return null;
+        }
+        j = "select i from Item i "
+                + " where i.retired<>:ret "
+                + " and lower(i.code)=:code "
+                + " order by i.id";
+        m = new HashMap();
+        m.put("code", code.trim().toLowerCase());
+         m.put("ret", true);
+        item = getFacade().findFirstByJpql(j, m);
+
+        if(item==null && createNew){
+            item = new Item();
+            item.setName(code);
+            item.setCode(code);
+            item.setDisplayName(code);
+            item.setCreatedAt(new Date());
+            getFacade().create(item);
+        }
+        
+        return item;
+    }
+
     // </editor-fold>    
     public Item getSelected() {
         return selected;
@@ -493,15 +521,15 @@ public class ItemController implements Serializable {
         String j = "select t from Item t where t.retired<>:ret ";
         Map m = new HashMap();
         m.put("ret", true);
-        m.put("n",  code.trim().toLowerCase() );
+        m.put("n", code.trim().toLowerCase());
         j += " and lower(t.parent.code) =:n ";
         j += " order by t.orderNo";
         tis = getFacade().findByJpql(j, m);
         if (tis == null) {
-           tis = new ArrayList<>();
+            tis = new ArrayList<>();
         }
 
-       return tis;
+        return tis;
     }
 
     public List<Item> findItemListByDisplayName(String parentCode) {

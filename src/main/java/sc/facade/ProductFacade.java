@@ -35,7 +35,7 @@ import sc.entity.Product;
 @Stateless
 public class ProductFacade extends AbstractFacade<Product> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override

@@ -35,7 +35,7 @@ import sc.entity.SiComponentItem;
 @Stateless
 public class ClientEncounterComponentItemFacade extends AbstractFacade<SiComponentItem> {
 
-    @PersistenceContext(unitName = "hmisPU")
+    @PersistenceContext(unitName = "pu")
     private EntityManager em;
 
     @Override
