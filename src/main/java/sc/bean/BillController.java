@@ -40,11 +40,27 @@ public class BillController implements Serializable {
     
     private List<Bill> items = null;
     private Bill selected;
-    private Bill shoppingCard;
+    private Bill shoppingCart;
+    private Bill favouriteCart;
     
     public Bill createNewShoppingCart(){
         
         Item billCategory = itemController.findItemByCode("shopping_cart",true);
+        Item billType = itemController.findItemByCode("billed",true);
+        
+        Bill sc = new Bill();
+        sc.setCreatedAt(new Date());
+        sc.setCreatedBy(webUserController.getCurrent());
+        sc.setCreatedInstitution(webUserController.getInstitution());
+        sc.setBillCategory(billCategory);
+        sc.setBillType(billType);
+        getFacade().create(sc);
+        return sc;
+    }
+    
+    public Bill createNewFavouriteCart(){
+        
+        Item billCategory = itemController.findItemByCode("favourite_cart",true);
         Item billType = itemController.findItemByCode("billed",true);
         
         Bill sc = new Bill();
@@ -176,13 +192,31 @@ public class BillController implements Serializable {
         this.itemController = itemController;
     }
 
-    public Bill getShoppingCard() {
-        return shoppingCard;
+    public Bill getShoppingCart() {
+        if(shoppingCart==null){
+            shoppingCart = createNewShoppingCart();
+        }
+        return shoppingCart;
     }
 
-    public void setShoppingCard(Bill shoppingCard) {
-        this.shoppingCard = shoppingCard;
+    public void setShoppingCart(Bill shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
+
+    public Bill getFavouriteCart() {
+        if(favouriteCart==null){
+            
+            favouriteCart = createNewFavouriteCart();
+        }
+        return favouriteCart;
+    }
+
+    public void setFavouriteCart(Bill favouriteCart) {
+        this.favouriteCart = favouriteCart;
+    }
+    
+    
+    
 
     @FacesConverter(forClass = Bill.class)
     public static class BillControllerConverter implements Converter {
