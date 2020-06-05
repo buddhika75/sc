@@ -57,8 +57,6 @@ public class StreamedContentController {
     public StreamedContentController() {
     }
 
-    
-    
     public StreamedContent getImageByUploadId() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getRenderResponse()) {
@@ -92,7 +90,7 @@ public class StreamedContentController {
             }
         }
     }
-    
+
     public StreamedContent getProductIconById() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (context.getRenderResponse()) {
@@ -120,6 +118,38 @@ public class StreamedContentController {
                     return new DefaultStreamedContent();
                 }
                 StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), temImg.getFileTypeIcon());
+                return str;
+            } else {
+                return new DefaultStreamedContent();
+            }
+        }
+    }
+
+    public StreamedContent getImageByCode() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getRenderResponse()) {
+            return new DefaultStreamedContent();
+        } else {
+
+            String id = context.getExternalContext().getRequestParameterMap().get("id");
+            if (id == null) {
+                return new DefaultStreamedContent();
+            }
+            String j = "select s from Upload s where lower(s.code)=:id";
+            Map m = new HashMap();
+            m.put("id", id.trim().toLowerCase());
+            Upload temImg = getUploadFacade().findFirstByJpql(j, m);
+            if (temImg != null) {
+                byte[] imgArr = null;
+                try {
+                    imgArr = temImg.getBaImage();
+                } catch (Exception e) {
+                    return new DefaultStreamedContent();
+                }
+                if (imgArr == null) {
+                    return new DefaultStreamedContent();
+                }
+                StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), temImg.getFileName());
                 return str;
             } else {
                 return new DefaultStreamedContent();
@@ -174,7 +204,5 @@ public class StreamedContentController {
     public UploadFacade getUploadFacade() {
         return uploadFacade;
     }
-    
-    
 
 }

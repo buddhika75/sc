@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -11,10 +12,27 @@
 
             <ui:define name="content">
                 <h:panelGroup id="photoCap">
-                    <h:form enctype="multipart/form-data">        
-                        <p:fileUpload value="#{uploadController.file}" mode="simple" skinSimple="true"/>
-                        <br />
-                        <p:commandButton value="Submit" ajax="false" action="#{uploadController.saveAndUpload()}"  />
+                    <h:form enctype="multipart/form-data">   
+                        <p:panelGrid columns="2" >
+                            <f:facet name="header" >
+                                <p:outputLabel value="File Upload" ></p:outputLabel>
+                            </f:facet>
+
+                            <p:outputLabel value="Name" >
+                            </p:outputLabel>
+                            <p:inputText value="#{uploadController.selected.name}" ></p:inputText>
+
+                            <p:outputLabel value="Code" >
+                            </p:outputLabel>
+                            <p:inputText value="#{uploadController.selected.code}" ></p:inputText>
+
+                            <p:fileUpload value="#{uploadController.file}" mode="simple" skinSimple="true"/>
+                            <p:commandButton value="Submit" ajax="false" action="#{uploadController.saveAndUpload()}"  />
+
+                        </p:panelGrid>
+
+
+
                     </h:form>
                 </h:panelGroup>
             </ui:define>

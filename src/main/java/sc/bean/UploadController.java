@@ -124,7 +124,7 @@ public class UploadController implements Serializable {
             } else {
                 getFacade().edit(getSelected());
             }
-            return "";
+            return toUploadsNew();
         } catch (IOException e) {
             System.out.println("Error " + e.getMessage());
             return "";

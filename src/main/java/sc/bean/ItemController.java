@@ -105,8 +105,16 @@ public class ItemController implements Serializable {
         List<String> ss = getFacade().findString(j, m);
         return ss;
     }
-    
-    
+
+    public List<String> listAllItems() {
+        String j = "select i from Item i "
+                + " where i.retired<>:ret "
+                + " order by i.code";
+        Map m = new HashMap();
+        m.put("ret", true);
+        List<String> ss = getFacade().findByJpql(j, m);
+        return ss;
+    }
 
     public String importItemsFromExcel() {
         try {
@@ -215,8 +223,6 @@ public class ItemController implements Serializable {
         }
 
     }
-
-    
 
     public Item createItem(Item parent, String name, String code, int orderNo) {
         Item item;
@@ -388,28 +394,27 @@ public class ItemController implements Serializable {
             }
         }
     }
-    
-    
-  public String  findItemsByCode(String q){
-      Item i;
-      String j = "select i from Item i "
-              + " where i.retired<>:ret "
-              + " and lower(i.code)=:code "
-              + " order by i.id desc";
-      Map m = new HashMap();
-      m.put("ret", true);
-      m.put("code", q.trim().toLowerCase());
-      i = getFacade().findFirstByJpql(j, m);
-      if(i==null){
-          i = new Item();
-          i.setName(q);
-          i.setCode(q.trim().toLowerCase());
-          i.setDataType(SelectionDataType.Short_Text);
-          i.setCreatedAt(new Date());
-          getFacade().create(i);
-      }
-      return i.getName();
-  }
+
+    public String findItemNameByCode(String q) {
+        Item i;
+        String j = "select i from Item i "
+                + " where i.retired<>:ret "
+                + " and lower(i.code)=:code "
+                + " order by i.id desc";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("code", q.trim().toLowerCase());
+        i = getFacade().findFirstByJpql(j, m);
+        if (i == null) {
+            i = new Item();
+            i.setName(q);
+            i.setCode(q.trim().toLowerCase());
+            i.setDataType(SelectionDataType.Short_Text);
+            i.setCreatedAt(new Date());
+            getFacade().create(i);
+        }
+        return i.getName();
+    }
 
     public Item getItem(java.lang.Long id) {
         return getFacade().find(id);
@@ -478,7 +483,27 @@ public class ItemController implements Serializable {
 
         return true;
     }
-    
+
+    public List<Item> findChildrenItemsByParentCode(String code) {
+        List<Item> tis;
+        if (code == null) {
+            tis = new ArrayList<>();
+            return tis;
+        }
+        String j = "select t from Item t where t.retired<>:ret ";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("n",  code.trim().toLowerCase() );
+        j += " and lower(t.parent.code) =:n ";
+        j += " order by t.orderNo";
+        tis = getFacade().findByJpql(j, m);
+        if (tis == null) {
+           tis = new ArrayList<>();
+        }
+
+       return tis;
+    }
+
     public List<Item> findItemListByDisplayName(String parentCode) {
         String j = "select t from Item t where t.retired=false ";
         Map m = new HashMap();
@@ -491,7 +516,6 @@ public class ItemController implements Serializable {
         j += " order by t.displayName";
         return getFacade().findByJpql(j, m);
     }
-    
 
     public List<Item> findItemList(String parentCode, ItemType t, String qry) {
         String j = "select t from Item t where t.retired=false ";

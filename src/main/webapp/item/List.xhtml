@@ -17,6 +17,10 @@
                         <p:dataExporter target="datalist" type="xls" fileName="lst" ></p:dataExporter>
                     </p:commandButton>
                     
+                    <p:commandButton ajax="false" value="Refresh" action="#{itemController.listAllItems}" >
+                       
+                    </p:commandButton>
+                    
                     <p:dataTable id="datalist" value="#{itemController.items}" var="item"
                                  selectionMode="single" selection="#{itemController.selected}"
                                  paginator="true"
@@ -28,19 +32,8 @@
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
 
-                        <p:column filterBy="#{item.id}" filterMatchMode="contains" sortBy="#{item.id}">
-                            <f:facet name="header">
-                                <h:outputText value="ID"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
-                        
-                        <p:column filterBy="#{item.itemType}" filterMatchMode="contains" sortBy="#{item.itemType}">
-                            <f:facet name="header">
-                                <h:outputText value="#{bundleClinical.ListItemTitle_itemType}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.itemType}"/>
-                        </p:column>
+                      
+                      
 
                         <p:column  filterBy="#{item.name}" filterMatchMode="contains" sortBy="#{item.name}">
                             <f:facet name="header">

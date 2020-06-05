@@ -53,6 +53,8 @@ public class Upload implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     //Main Properties
     Long id;
+    private String name;
+    private String code;
     @ManyToOne
     Institution institution;
     @ManyToOne
@@ -78,6 +80,8 @@ public class Upload implements Serializable {
     private Product project;
     @Enumerated(EnumType.STRING)
     private UploadType uploadType;
+    
+    
 
     public Institution getInstitution() {
         return institution;
@@ -218,6 +222,22 @@ public class Upload implements Serializable {
 
     public void setUploadType(UploadType uploadType) {
         this.uploadType = uploadType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
 }

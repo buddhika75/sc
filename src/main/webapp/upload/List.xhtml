@@ -10,12 +10,12 @@
 
 
         <ui:define name="title">
-            <h:outputText value="#{bundleClinical.ListUploadTitle}"></h:outputText>
+            <h:outputText value="Uploads"></h:outputText>
         </ui:define>
 
         <ui:define name="body">
             <h:form id="UploadListForm">
-                <p:panel header="#{bundleClinical.ListUploadTitle}">
+                <p:panel header="Uploads">
                     <p:dataTable id="datalist" value="#{uploadController.items}" var="item"
                                  selectionMode="single" selection="#{uploadController.selected}"
                                  paginator="true"
@@ -29,13 +29,13 @@
 
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundleClinical.ListUploadTitle_institution}"/>
+                                <h:outputText value="Name"/>
                             </f:facet>
-                            <h:outputText value="#{item.institution}"/>
+                            <h:outputText value="#{item.name}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundleClinical.ListUploadTitle_serialVersionUID}"/>
+                                <h:outputText value="Code"/>
                             </f:facet>
                             <h:outputText value="#{item.serialVersionUID}"/>
                         </p:column>

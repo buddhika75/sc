@@ -8,7 +8,7 @@
 
     <body>
 
-        <ui:composition template="./../template.xhtml">
+        <ui:composition template="/template.xhtml">
 
             <ui:define name="content">
 
@@ -20,7 +20,7 @@
                             <p:commandButton value="Back" action="/upload/index" ajax="false" style="float: right;" ></p:commandButton>
                         </f:facet>
                         
-                        <h1>Uploads = #{uploadController.items}</h1>
+                        <h1>Uploads</h1>
                         
                         <p:dataTable value="#{uploadController.items}" var="item" 
                                      paginator="true"
@@ -29,6 +29,12 @@
                                      rowsPerPageTemplate="10,20,30,40,50"
 
                                      >
+                             <p:column headerText="Name">
+                                 <p:outputLabel value="#{item.name}" ></p:outputLabel>
+                            </p:column>
+                             <p:column headerText="Code">
+                                 <p:outputLabel value="#{item.code}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="File Name">
                                 <p:outputLabel value="#{item.fileName}" ></p:outputLabel>
                             </p:column>
@@ -43,9 +49,14 @@
                                     <f:convertDateTime parent="dd MMMM yyyy" ></f:convertDateTime>
                                 </p:outputLabel>
                             </p:column>
+                            <p:column headerText="Action">
+                                <p:commandButton value="Change" action="upload" >
+                                    <f:setPropertyActionListener target="#{uploadController.selected}" value="#{item}" ></f:setPropertyActionListener>
+                                </p:commandButton>
+                            </p:column>
                             <p:column headerText="Thumbenail">
-                                <p:graphicImage cache="false"  value="#{streamedContentController.productIconById}" style="height: 50px;" >
-                                    <f:param name="id" value="#{item.id}" />
+                                <p:graphicImage cache="false"  value="#{streamedContentController.imageByCode}" style="height: 50px;" >
+                                    <f:param name="id" value="#{item.code}" />
                                 </p:graphicImage>
                             </p:column>
                         </p:dataTable>
