@@ -8,10 +8,7 @@
 package sc.bean;
 
 import sc.entity.Product;
-import sc.enums.AreaType;
-import sc.enums.InstitutionType;
 import sc.enums.ItemType;
-import sc.enums.WebUserRole;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -188,17 +185,8 @@ public class CommonController implements Serializable {
         }
     }
 
-    public WebUserRole[] getWebUserRoles() {
-        return WebUserRole.values();
-    }
-
-    public InstitutionType[] getInstitutionTypes() {
-        return InstitutionType.values();
-    }
-
-    public AreaType[] getAreaTypes() {
-        return AreaType.values();
-    }
+   
+    
 
     public ComponentSetType[] getComponentSetTypes() {
         return ComponentSetType.values();

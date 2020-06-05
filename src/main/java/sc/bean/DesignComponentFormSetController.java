@@ -176,7 +176,6 @@ public class DesignComponentFormSetController implements Serializable {
             }
         }
         insItems = null;
-        fillInsItems();
         referanceSet = null;
         institution = null;
         JsfUtil.addSuccessMessage("Formset Successfully Imported.");
@@ -196,10 +195,6 @@ public class DesignComponentFormSetController implements Serializable {
         designComponentFormController.fillFormsofTheSelectedSet();
         designComponentFormController.getAddingForm();
         return "/designComponentFormSet/manage_forms";
-    }
-
-    public List<DesignComponentFormSet> fillInsItems() {
-        return fillInsItems(webUserController.getLoggableInstitutions());
     }
 
     private List<DesignComponentFormSet> fillMasterSets() {
@@ -295,7 +290,7 @@ public class DesignComponentFormSetController implements Serializable {
         items = null;
         insItems=null;
         getItems();
-        getInsItems();
+        
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -352,16 +347,7 @@ public class DesignComponentFormSetController implements Serializable {
         return ejbFacade;
     }
 
-    public List<DesignComponentFormSet> getInsItems() {
-        if (insItems == null) {
-            insItems = fillInsItems();
-        }
-        return insItems;
-    }
-
-    public void setInsItems(List<DesignComponentFormSet> insItems) {
-        this.insItems = insItems;
-    }
+    
 
     public DesignComponentFormSet getSelected() {
         return selected;

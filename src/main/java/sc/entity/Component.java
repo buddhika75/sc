@@ -144,8 +144,7 @@ public class Component implements Serializable {
     @Enumerated(EnumType.STRING)
     private ItemArrangementStrategy itemArrangementStrategy;
 
-    @ManyToOne
-    private Area parentAreaOfAvailableAreas;
+    
     @ManyToOne
     private Item categoryOfAvailableItems;
     @ManyToOne
@@ -203,8 +202,6 @@ public class Component implements Serializable {
     private Date retiredAt;
     private String retireComments;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Implementation implementation;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
@@ -223,8 +220,8 @@ public class Component implements Serializable {
     private Date dateValue;
     @ManyToOne(fetch = FetchType.EAGER)
     private Item itemValue;
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Area areaValue;
+
+    
     @ManyToOne(fetch = FetchType.EAGER)
     private Institution institutionValue;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -241,14 +238,6 @@ public class Component implements Serializable {
     private Integer integerNumberValue2;
     private Long longNumberValue2;
     private Double realNumberValue2;
-
-    public Implementation getEncounter() {
-        return implementation;
-    }
-
-    public void setEncounter(Implementation implementation) {
-        this.implementation = implementation;
-    }
 
     public Product getClient() {
         return product;
@@ -314,13 +303,6 @@ public class Component implements Serializable {
         this.itemValue = itemValue;
     }
 
-    public Area getAreaValue() {
-        return areaValue;
-    }
-
-    public void setAreaValue(Area areaValue) {
-        this.areaValue = areaValue;
-    }
 
     public Institution getInstitutionValue() {
         return institutionValue;
@@ -637,13 +619,6 @@ public class Component implements Serializable {
         this.availableDataType = availableDataType;
     }
 
-    public Area getParentAreaOfAvailableAreas() {
-        return parentAreaOfAvailableAreas;
-    }
-
-    public void setParentAreaOfAvailableAreas(Area parentAreaOfAvailableAreas) {
-        this.parentAreaOfAvailableAreas = parentAreaOfAvailableAreas;
-    }
 
     public Item getCategoryOfAvailableItems() {
         return categoryOfAvailableItems;

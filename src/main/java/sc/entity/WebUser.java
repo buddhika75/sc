@@ -7,14 +7,11 @@
  */
 package sc.entity;
 
-import sc.enums.WebUserRole;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -68,16 +65,13 @@ public class WebUser implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     Date activatedAt;
     String activateComments;
-    @Enumerated(EnumType.STRING)
-    WebUserRole webUserRole;
     String primeTheme;
     String defLocale;
     String email;
     String telNo;
     @ManyToOne
     Institution institution;
-    @ManyToOne
-    private Area area;
+
 
     String code;
 
@@ -89,40 +83,10 @@ public class WebUser implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date lastEditeAt;
 
-    @Transient
-    private boolean systemAdministrator;
-    @Transient
-    private boolean superUser;
-    @Transient
-    private boolean user;
-    @Transient
-    private boolean institutionUser;
-    @Transient
-    private boolean institutionSuperUser;
-    @Transient
-    private boolean institutionAdministrator;
-    @Transient
-    private boolean authorityUser;
-    @Transient
-    private boolean meAdministrator;
-    @Transient
-    private boolean meSuperUser;
-    @Transient
-    private boolean meUser;
-    @Transient
-    private boolean doctor;
-    @Transient
-    private boolean nurse;
-    @Transient
-    private boolean product;
-    @Transient
-    private boolean midwife;
-    @Transient
-    private WebUserRole assumedRole;
+    
     @Transient
     private Institution assumedInstitution;
-    @Transient
-    private Area assumedArea;
+
 
     public WebUser() {
     }
@@ -293,16 +257,7 @@ public class WebUser implements Serializable {
         this.activator = activator;
     }
 
-    public WebUserRole getWebUserRole() {
-        if (assumedRole != null) {
-            return assumedRole;
-        }
-        return webUserRole;
-    }
-
-    public void setWebUserRole(WebUserRole webUserRole) {
-        this.webUserRole = webUserRole;
-    }
+  
 
     @Override
     public int hashCode() {
@@ -340,91 +295,6 @@ public class WebUser implements Serializable {
         this.code = code;
     }
 
-    public boolean isSystemAdministrator() {
-        systemAdministrator = getWebUserRole() == WebUserRole.System_Administrator;
-        return systemAdministrator;
-    }
-
-    public boolean isSuperUser() {
-        superUser = getWebUserRole() == WebUserRole.Super_User;
-        return superUser;
-    }
-
-    public boolean isUser() {
-        user = getWebUserRole() == WebUserRole.User;
-        return user;
-    }
-
-    public boolean isInstitutionUser() {
-        institutionUser = getWebUserRole() == WebUserRole.Institution_User;
-        return institutionUser;
-    }
-
-    public boolean isInstitutionAdministrator() {
-        institutionAdministrator = getWebUserRole() == WebUserRole.Institution_Administrator;
-        return institutionAdministrator;
-    }
-
-    public boolean isAuthorityUser() {
-        authorityUser = getWebUserRole() == WebUserRole.Me_User;
-        return authorityUser;
-    }
-
-    public boolean isMeAdministrator() {
-        meAdministrator = getWebUserRole() == WebUserRole.Me_Admin;
-        return meAdministrator;
-    }
-
-    public Area getArea() {
-        if (assumedArea != null) {
-            return assumedArea;
-        }
-        return area;
-    }
-
-    public void setArea(Area area) {
-        this.area = area;
-    }
-
-    public boolean isInstitutionSuperUser() {
-        if(getWebUserRole()==WebUserRole.Institution_Super_User){
-            institutionSuperUser=true;
-        }else{
-            institutionSuperUser=false;
-        }
-        return institutionSuperUser;
-    }
-
-    public boolean isMeSuperUser() {
-        meSuperUser = getWebUserRole() == WebUserRole.Me_Super_User;
-        return meSuperUser;
-    }
-
-    public boolean isMeUser() {
-        meUser = getWebUserRole() == WebUserRole.Me_User;
-        return meUser;
-    }
-
-    public boolean isDoctor() {
-        doctor = getWebUserRole() == WebUserRole.Doctor;
-        return doctor;
-    }
-
-    public boolean isNurse() {
-        nurse = getWebUserRole() == WebUserRole.Nurse;
-        return nurse;
-    }
-
-    public boolean isClient() {
-        product = getWebUserRole() == WebUserRole.Product;
-        return product;
-    }
-
-    public boolean isMidwife() {
-        midwife = getWebUserRole() == WebUserRole.Midwife;
-        return midwife;
-    }
-
     public WebUser getLastEditBy() {
         return lastEditBy;
     }
@@ -441,13 +311,7 @@ public class WebUser implements Serializable {
         this.lastEditeAt = lastEditeAt;
     }
 
-    public WebUserRole getAssumedRole() {
-        return assumedRole;
-    }
 
-    public void setAssumedRole(WebUserRole assumedRole) {
-        this.assumedRole = assumedRole;
-    }
 
     public Institution getAssumedInstitution() {
         return assumedInstitution;
@@ -455,14 +319,6 @@ public class WebUser implements Serializable {
 
     public void setAssumedInstitution(Institution assumedInstitution) {
         this.assumedInstitution = assumedInstitution;
-    }
-
-    public Area getAssumedArea() {
-        return assumedArea;
-    }
-
-    public void setAssumedArea(Area assumedArea) {
-        this.assumedArea = assumedArea;
     }
 
 }

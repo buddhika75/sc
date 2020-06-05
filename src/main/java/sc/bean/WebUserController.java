@@ -1,12 +1,9 @@
 package sc.bean;
 
-import sc.entity.Area;
 import sc.entity.WebUser;
 import sc.entity.Institution;
-import sc.enums.InstitutionType;
 import sc.entity.Item;
 import sc.entity.Upload;
-import sc.enums.WebUserRole;
 import sc.facade.InstitutionFacade;
 import sc.facade.ProjectInstitutionFacade;
 import sc.facade.ProjectSourceOfFundFacade;
@@ -73,16 +70,11 @@ public class WebUserController implements Serializable {
     @Inject
     private CommonController commonController;
     @Inject
-    private AreaController areaController;
-    @Inject
     private InstitutionController institutionController;
     @Inject
     private ItemController itemController;
     @Inject
     private ProductController productController;
-    @Inject
-    private EncounterController encounterController;
-
     /*
     Variables
      */
@@ -93,23 +85,15 @@ public class WebUserController implements Serializable {
 
     private List<Institution> loggableInstitutions;
     private List<Institution> loggablePmcis;
-    private List<Area> loggableGnAreas;
-
-    private Area selectedProvince;
-    private Area selectedDistrict;
-    private Area selectedDsArea;
-    private Area selectedGnArea;
+    
+    
     private Institution selectedLocation;
     private Item selectedSourceOfFund;
     private Double selectedFundValue;
     private Item selectedFundUnit;
     private String selectedFundComments;
 
-    private List<Area> districtsAvailableForSelection;
-
-    private List<Area> selectedDsAreas;
-    private List<Area> selectedGnAreas;
-    private Area[] selectedProvinces;
+   
 
     private WebUser current;
     private Upload currentUpload;
@@ -131,8 +115,8 @@ public class WebUserController implements Serializable {
     private Date toDate;
 
     private Integer year;
-    private Area province;
-    private Area district;
+   
+    
     private Institution location;
     private Boolean allIslandProjects;
     private String searchKeyword;
@@ -145,9 +129,10 @@ public class WebUserController implements Serializable {
     private Long totalNumberOfClinicVisits;
     private Long totalNumberOfClinicEnrolments;
 
-    private WebUserRole assumedRole;
+    
     private Institution assumedInstitution;
-    private Area assumedArea;
+   
+    
     private List<UserPrivilege> assumedPrivileges;
 
     /**
@@ -165,113 +150,7 @@ public class WebUserController implements Serializable {
         createAllPrivilege();
     }
 
-    public String assumeUser() {
-        if (current == null) {
-            JsfUtil.addErrorMessage("Please select a User");
-            return "";
-        }
-        assumedArea = current.getArea();
-        assumedInstitution = current.getInstitution();
-        assumedRole = current.getWebUserRole();
-        assumedPrivileges = userPrivilegeList(current);
-        return assumeRoles();
-
-    }
-
-    public String assumeRoles() {
-        if (assumedRole == null) {
-            JsfUtil.addErrorMessage("Please select a Role");
-            return "";
-        }
-
-        if (assumedInstitution == null) {
-            JsfUtil.addErrorMessage("Please lsect an Institution");
-            return "";
-        }
-//        if (assumedArea == null) {
-//            JsfUtil.addErrorMessage("Please select an area");
-//            return "";
-//        }
-        if (assumedPrivileges == null) {
-            assumedPrivileges = generateAssumedPrivileges(loggedUser, getInitialPrivileges(assumedRole));
-        }
-        WebUser twu = loggedUser;
-        logOut();
-        userName = twu.getName();
-        loggedUser = twu;
-        loggedUser.setAssumedArea(assumedArea);
-        loggedUser.setAssumedInstitution(assumedInstitution);
-        loggedUser.setAssumedRole(assumedRole);
-        loggedUserPrivileges = assumedPrivileges;
-        return login(true);
-    }
-
-    public void assumedInstitutionChanged() {
-        if (assumedInstitution != null) {
-            assumedArea = assumedInstitution.getDistrict();
-        }
-    }
-
-    public String endAssumingRoles() {
-        assumedRole = null;
-        assumedInstitution = null;
-        assumedArea = null;
-        assumedPrivileges = null;
-        logOut();
-        return login(true);
-    }
-
-    public List<Area> findAutherizedGnAreas() {
-        List<Area> gns = new ArrayList<>();
-        if (loggedUser == null) {
-            return gns;
-        }
-        if (getLoggablePmcis() == null) {
-            return gns;
-        }
-        for (Institution i : getLoggablePmcis()) {
-            gns.addAll(institutionController.findDrainingGnAreas(i));
-        }
-        return gns;
-    }
-
-    public List<Institution> findAutherizedInstitutions() {
-        List<Institution> ins = new ArrayList<>();
-        if (loggedUser == null) {
-            return ins;
-        }
-        if (loggedUser.getInstitution() == null) {
-            return ins;
-        }
-        ins.add(loggedUser.getInstitution());
-        ins.addAll(institutionController.findChildrenInstitutions(loggedUser.getInstitution()));
-        return ins;
-    }
-
-    public List<Institution> findAutherizedPmcis() {
-        List<Institution> ins = new ArrayList<>();
-        if (loggedUser == null) {
-            return ins;
-        }
-        if (loggedUser.getInstitution() == null) {
-            return ins;
-        }
-        if (loggedUser.getInstitution().isPmci()) {
-            ins.add(loggedUser.getInstitution());
-        }
-        ins.addAll(institutionController.findChildrenPmcis(loggedUser.getInstitution()));
-        return ins;
-    }
-
-    public String toManageInstitutionUsers() {
-        String j = "select u from WebUser u "
-                + " where u.retired=false "
-                + " and u.institution in :inss ";
-        Map m = new HashMap();
-        m.put("inss", getLoggableInstitutions());
-        items = getFacade().findByJpql(j, m);
-        return "/insAdmin/manage_users";
-    }
+   
 
     public String toAddNewUserByInsAdmin() {
         current = new WebUser();
@@ -387,23 +266,7 @@ public class WebUserController implements Serializable {
         return "/change_my_password";
     }
 
-    public void markLocationOnMap() {
-        emptyModel = new DefaultMapModel();
-        if (current == null) {
-            return;
-        }
-        LatLng coord1 = new LatLng(current.getInstitution().getCoordinate().getLatitude(), current.getInstitution().getCoordinate().getLongitude());
-        emptyModel.addOverlay(new Marker(coord1, current.getInstitution().getAddress()));
-    }
-
-    public void markLocationOnMapForBidders() {
-        emptyModel = new DefaultMapModel();
-        if (current == null) {
-            return;
-        }
-        LatLng coord1 = new LatLng(current.getInstitution().getCoordinate().getLatitude(), current.getInstitution().getCoordinate().getLongitude());
-        emptyModel.addOverlay(new Marker(coord1, current.getInstitution().getAddress()));
-    }
+    
 
     public String viewMedia() {
         if (currentUpload == null) {
@@ -441,18 +304,10 @@ public class WebUserController implements Serializable {
         return downloadingFile;
     }
 
-    public String addMarker() {
-        Marker marker = new Marker(new LatLng(current.getInstitution().getCoordinate().getLatitude(), current.getInstitution().getCoordinate().getLongitude()), current.getName());
-        emptyModel.addOverlay(marker);
-        getInstitutionFacade().edit(getCurrent().getInstitution());
-        JsfUtil.addSuccessMessage("Location Recorded");
-        return "";
-    }
+    
 
     public String prepareRegisterAsClient() {
         current = new WebUser();
-        current.setWebUserRole(WebUserRole.Institution_User);
-
         currentProjectUploads = null;
         companyUploads = null;
         clientUploads = null;
@@ -466,7 +321,7 @@ public class WebUserController implements Serializable {
             JsfUtil.addErrorMessage("Passwords are not matching. Please retry.");
             return "";
         }
-        current.setWebUserRole(WebUserRole.Institution_User);
+       
         try {
             getFacade().create(current);
         } catch (Exception e) {
@@ -491,8 +346,8 @@ public class WebUserController implements Serializable {
     public String login(boolean withoutPassword) {
         loggableInstitutions = null;
         loggablePmcis = null;
-        loggableGnAreas = null;
-        institutionController.setMyClinics(null);
+        
+       
         if (userName == null || userName.trim().equals("")) {
             JsfUtil.addErrorMessage("Please enter a Username");
             return "";
@@ -518,19 +373,7 @@ public class WebUserController implements Serializable {
     }
 
     public void prepareDashboards() {
-        if (loggedUser.isInstitutionAdministrator()) {
-            prepareInsAdminDashboard();
-
-        } else if (loggedUser.isSystemAdministrator()) {
-            //TODO: Change to SysAdmin
-            prepareInsAdminDashboard();
-        } else if (loggedUser.isDoctor()) {
-            //TODO: Change to SysAdmin
-            prepareDocDashboard();
-        } else if (loggedUser.isNurse()) {
-            //TODO: Change to SysAdmin
-            prepareNurseDashboard();
-        }
+       
     }
 
     public String toHome() {
@@ -539,21 +382,15 @@ public class WebUserController implements Serializable {
     }
 
     public void prepareInsAdminDashboard() {
-        totalNumberOfRegisteredClients = productController.countOfRegistedClients(loggedUser.getInstitution(), null);
-        totalNumberOfClinicEnrolments = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Enroll);
-        totalNumberOfClinicVisits = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Visit);
+        
     }
 
     public void prepareDocDashboard() {
-        totalNumberOfRegisteredClients = productController.countOfRegistedClients(loggedUser.getInstitution().getPoiInstitution(), null);
-        totalNumberOfClinicEnrolments = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Enroll);
-        totalNumberOfClinicVisits = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Visit);
+       
     }
 
     public void prepareNurseDashboard() {
-        totalNumberOfRegisteredClients = productController.countOfRegistedClients(loggedUser.getInstitution().getPoiInstitution(), null);
-        totalNumberOfClinicEnrolments = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Enroll);
-        totalNumberOfClinicVisits = encounterController.countOfEncounters(getInstitutionController().getMyClinics(), EncounterType.Clinic_Visit);
+       
     }
 
     public String loginForMobile() {
@@ -633,7 +470,7 @@ public class WebUserController implements Serializable {
             String tp = commonController.hash(password);
             wu.setWebUserPassword(tp);
             wu.setInstitution(ins);
-            wu.setWebUserRole(WebUserRole.System_Administrator);
+           
             getFacade().create(wu);
             loggedUser = wu;
             addAllWebUserPrivileges(wu);
@@ -645,156 +482,7 @@ public class WebUserController implements Serializable {
 
     }
 
-    List<Privilege> getInitialPrivileges(WebUserRole role) {
-        List<Privilege> wups = new ArrayList<>();
-        if (role == null) {
-            return wups;
-        }
-        switch (role) {
-
-            case Product:
-            case Midwife:
-                //Menu
-                wups.add(Privilege.Client_Management);
-                wups.add(Privilege.Encounter_Management);
-                wups.add(Privilege.Appointment_Management);
-                wups.add(Privilege.Lab_Management);
-                wups.add(Privilege.Pharmacy_Management);
-                wups.add(Privilege.User);
-                //Product Management
-                wups.add(Privilege.Add_Client);
-                wups.add(Privilege.Search_any_Client_by_IDs);
-                wups.add(Privilege.Search_any_Client_by_Details);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
-                break;
-            case Nurse:
-                //Menu
-                wups.add(Privilege.Client_Management);
-                wups.add(Privilege.Encounter_Management);
-                wups.add(Privilege.Appointment_Management);
-                wups.add(Privilege.Lab_Management);
-                wups.add(Privilege.Pharmacy_Management);
-                wups.add(Privilege.User);
-                //Product Management
-                wups.add(Privilege.Add_Client);
-                wups.add(Privilege.Search_any_Client_by_IDs);
-                wups.add(Privilege.Search_any_Client_by_Details);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
-                break;
-            case Doctor:
-                //Menu
-                wups.add(Privilege.Client_Management);
-                wups.add(Privilege.Encounter_Management);
-                wups.add(Privilege.Appointment_Management);
-                wups.add(Privilege.Lab_Management);
-                wups.add(Privilege.Pharmacy_Management);
-                wups.add(Privilege.User);
-                //Product Management
-                wups.add(Privilege.Add_Client);
-                wups.add(Privilege.Search_any_Client_by_IDs);
-                wups.add(Privilege.Search_any_Client_by_Details);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
-                break;
-            case User:
-
-            case Institution_Administrator:
-                //Menu
-                wups.add(Privilege.User);
-                wups.add(Privilege.Institution_Administration);
-                //Institution Administration
-                wups.add(Privilege.Manage_Institution_Users);
-                wups.add(Privilege.Manage_Institution_Metadata);
-                wups.add(Privilege.Manage_Authorised_Areas);
-                wups.add(Privilege.Manage_Authorised_Institutions);
-                break;
-
-            case Institution_Super_User:
-                //Menu
-                wups.add(Privilege.User);
-                wups.add(Privilege.Institution_Administration);
-                //Institution Administration
-                wups.add(Privilege.Manage_Institution_Metadata);
-                wups.add(Privilege.Manage_Authorised_Areas);
-                wups.add(Privilege.Manage_Authorised_Institutions);
-                break;
-            case Institution_User:
-                //Menu
-                wups.add(Privilege.Client_Management);
-                wups.add(Privilege.Encounter_Management);
-                wups.add(Privilege.Appointment_Management);
-                wups.add(Privilege.Lab_Management);
-                wups.add(Privilege.Pharmacy_Management);
-                wups.add(Privilege.User);
-                //Product Management
-                wups.add(Privilege.Add_Client);
-                wups.add(Privilege.Search_any_Client_by_IDs);
-                wups.add(Privilege.Search_any_Client_by_Details);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
-                break;
-            case Me_Admin:
-                wups.add(Privilege.User);
-                break;
-            case Me_Super_User:
-                wups.add(Privilege.User);
-                break;
-            case Me_User:
-                wups.add(Privilege.User);
-                break;
-            case Super_User:
-                wups.add(Privilege.User);
-                wups.add(Privilege.System_Administration);
-                //System Administration
-                wups.add(Privilege.Manage_Metadata);
-                wups.add(Privilege.Manage_Area);
-                wups.add(Privilege.Manage_Institutions);
-                wups.add(Privilege.Manage_Forms);
-                break;
-            case System_Administrator:
-                //Menu
-                wups.add(Privilege.Client_Management);
-                wups.add(Privilege.Encounter_Management);
-                wups.add(Privilege.Appointment_Management);
-                wups.add(Privilege.Lab_Management);
-                wups.add(Privilege.Pharmacy_Management);
-                wups.add(Privilege.User);
-                wups.add(Privilege.Institution_Administration);
-                wups.add(Privilege.System_Administration);
-                //Product Management
-                wups.add(Privilege.Add_Client);
-                wups.add(Privilege.Search_any_Client_by_IDs);
-                wups.add(Privilege.Search_any_Client_by_Details);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
-                //Institution Administration
-                wups.add(Privilege.Manage_Institution_Users);
-                wups.add(Privilege.Manage_Institution_Metadata);
-                wups.add(Privilege.Manage_Authorised_Areas);
-                wups.add(Privilege.Manage_Authorised_Institutions);
-                //System Administration
-                wups.add(Privilege.Manage_Users);
-                wups.add(Privilege.Manage_Metadata);
-                wups.add(Privilege.Manage_Area);
-                wups.add(Privilege.Manage_Institutions);
-                wups.add(Privilege.Manage_Forms);
-                break;
-        }
-
-        return wups;
-    }
+    
 
     public void addAllWebUserPrivileges(WebUser u) {
         List<Privilege> ps = Arrays.asList(Privilege.values());
@@ -921,7 +609,8 @@ public class WebUserController implements Serializable {
             current.setCreatedAt(new Date());
             current.setCreater(loggedUser);
             getFacade().create(current);
-            addWebUserPrivileges(current, getInitialPrivileges(current.getWebUserRole()));
+            
+            
             JsfUtil.addSuccessMessage(("A new User Created Successfully."));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ("Error Occured. Please change username and try again."));
@@ -955,7 +644,6 @@ public class WebUserController implements Serializable {
             current.setCreatedAt(new Date());
             current.setCreater(loggedUser);
             getFacade().create(current);
-            addWebUserPrivileges(current, getInitialPrivileges(current.getWebUserRole()));
             JsfUtil.addSuccessMessage(("A new User Created Successfully."));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ("Error Occured. Please change username and try again."));
@@ -1010,7 +698,6 @@ public class WebUserController implements Serializable {
             current.setCreatedAt(new Date());
             current.setCreater(loggedUser);
             getFacade().create(current);
-            addWebUserPrivileges(current, getInitialPrivileges(current.getWebUserRole()));
             JsfUtil.addSuccessMessage(("A new User Created Successfully."));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ("Error Occured. Please change username and try again."));
@@ -1153,11 +840,7 @@ public class WebUserController implements Serializable {
         }
     }
 
-    public WebUserRole[] getWebUserRolesForInsAdmin() {
-        WebUserRole[] rs = {WebUserRole.Institution_Administrator, WebUserRole.Institution_Super_User, WebUserRole.Institution_User,
-            WebUserRole.Doctor, WebUserRole.Nurse, WebUserRole.Midwife};
-        return rs;
-    }
+   
 
     public String destroy() {
         performDestroy();
@@ -1322,29 +1005,7 @@ public class WebUserController implements Serializable {
         this.institution = institution;
     }
 
-    public Area[] getSelectedProvinces() {
-        return selectedProvinces;
-    }
-
-    public void setSelectedProvinces(Area[] selectedProvinces) {
-        this.selectedProvinces = selectedProvinces;
-    }
-
-    public void setSelectedDsAreas(List<Area> selectedDsAreas) {
-        this.selectedDsAreas = selectedDsAreas;
-    }
-
-    public List<Area> getSelectedGnAreas() {
-        return selectedGnAreas;
-    }
-
-    public void setSelectedGnAreas(List<Area> selectedGnAreas) {
-        if (selectedGnAreas == null) {
-            selectedGnAreas = new ArrayList<>();
-        }
-        this.selectedGnAreas = selectedGnAreas;
-    }
-
+    
     public Integer getYear() {
         return year;
     }
@@ -1353,21 +1014,7 @@ public class WebUserController implements Serializable {
         this.year = year;
     }
 
-    public Area getProvince() {
-        return province;
-    }
-
-    public void setProvince(Area province) {
-        this.province = province;
-    }
-
-    public Area getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(Area district) {
-        this.district = district;
-    }
+   
 
     public Institution getLocation() {
         return location;
@@ -1415,9 +1062,7 @@ public class WebUserController implements Serializable {
         this.locale = locale;
     }
 
-    public AreaController getAreaController() {
-        return areaController;
-    }
+    
 
     public InstitutionController getInstitutionController() {
         return institutionController;
@@ -1435,37 +1080,7 @@ public class WebUserController implements Serializable {
         this.passwordReenter = passwordReenter;
     }
 
-    public Area getSelectedProvince() {
-        return selectedProvince;
-    }
-
-    public void setSelectedProvince(Area selectedProvince) {
-        this.selectedProvince = selectedProvince;
-    }
-
-    public Area getSelectedDistrict() {
-        return selectedDistrict;
-    }
-
-    public void setSelectedDistrict(Area selectedDistrict) {
-        this.selectedDistrict = selectedDistrict;
-    }
-
-    public Area getSelectedDsArea() {
-        return selectedDsArea;
-    }
-
-    public void setSelectedDsArea(Area selectedDsArea) {
-        this.selectedDsArea = selectedDsArea;
-    }
-
-    public Area getSelectedGnArea() {
-        return selectedGnArea;
-    }
-
-    public void setSelectedGnArea(Area selectedGnArea) {
-        this.selectedGnArea = selectedGnArea;
-    }
+   
 
     public Institution getSelectedLocation() {
         return selectedLocation;
@@ -1559,13 +1174,6 @@ public class WebUserController implements Serializable {
         this.companyUploads = companyUploads;
     }
 
-    public List<Area> getDistrictsAvailableForSelection() {
-        return districtsAvailableForSelection;
-    }
-
-    public void setDistrictsAvailableForSelection(List<Area> districtsAvailableForSelection) {
-        this.districtsAvailableForSelection = districtsAvailableForSelection;
-    }
 
     public List<UserPrivilege> getLoggedUserPrivileges() {
         return loggedUserPrivileges;
@@ -1575,16 +1183,6 @@ public class WebUserController implements Serializable {
         this.loggedUserPrivileges = loggedUserPrivileges;
     }
 
-    public List<Institution> getLoggableInstitutions() {
-        if (loggableInstitutions == null) {
-            loggableInstitutions = findAutherizedInstitutions();
-        }
-        return loggableInstitutions;
-    }
-
-    public void setLoggableInstitutions(List<Institution> loggableInstitutions) {
-        this.loggableInstitutions = loggableInstitutions;
-    }
 
     public UploadedFile getFile() {
         return file;
@@ -1594,27 +1192,7 @@ public class WebUserController implements Serializable {
         this.file = file;
     }
 
-    public List<Institution> getLoggablePmcis() {
-        if (loggablePmcis == null) {
-            loggablePmcis = findAutherizedPmcis();
-        }
-        return loggablePmcis;
-    }
 
-    public void setLoggablePmcis(List<Institution> loggablePmcis) {
-        this.loggablePmcis = loggablePmcis;
-    }
-
-    public List<Area> getLoggableGnAreas() {
-        if (loggableGnAreas == null) {
-            loggableGnAreas = findAutherizedGnAreas();
-        }
-        return loggableGnAreas;
-    }
-
-    public void setLoggableGnAreas(List<Area> loggableGnAreas) {
-        this.loggableGnAreas = loggableGnAreas;
-    }
 
     public Long getTotalNumberOfClinicVisits() {
         return totalNumberOfClinicVisits;
@@ -1628,9 +1206,7 @@ public class WebUserController implements Serializable {
         return productController;
     }
 
-    public EncounterController getEncounterController() {
-        return encounterController;
-    }
+   
 
     public Long getTotalNumberOfClinicEnrolments() {
         return totalNumberOfClinicEnrolments;
@@ -1640,13 +1216,7 @@ public class WebUserController implements Serializable {
         this.totalNumberOfClinicEnrolments = totalNumberOfClinicEnrolments;
     }
 
-    public WebUserRole getAssumedRole() {
-        return assumedRole;
-    }
-
-    public void setAssumedRole(WebUserRole assumedRole) {
-        this.assumedRole = assumedRole;
-    }
+   
 
     public Institution getAssumedInstitution() {
         return assumedInstitution;
@@ -1656,13 +1226,7 @@ public class WebUserController implements Serializable {
         this.assumedInstitution = assumedInstitution;
     }
 
-    public Area getAssumedArea() {
-        return assumedArea;
-    }
-
-    public void setAssumedArea(Area assumedArea) {
-        this.assumedArea = assumedArea;
-    }
+   
 
     public List<UserPrivilege> getAssumedPrivileges() {
         return assumedPrivileges;

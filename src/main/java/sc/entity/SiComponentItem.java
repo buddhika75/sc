@@ -43,8 +43,6 @@ public class SiComponentItem extends SiComponent {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Product product;
     @ManyToOne
-    private Implementation implementation;
-    @ManyToOne
     private SiFormSet itemFormset;
     @Enumerated(EnumType.STRING)
     private DataRepresentationType dataRepresentationType;
@@ -65,13 +63,7 @@ public class SiComponentItem extends SiComponent {
         this.product = product;
     }
 
-    public Implementation getImplementation() {
-        return implementation;
-    }
-
-    public void setImplementation(Implementation implementation) {
-        this.implementation = implementation;
-    }
+   
 
     public SiFormSet getItemFormset() {
         return itemFormset;

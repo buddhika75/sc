@@ -33,18 +33,17 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
-import sc.entity.Area;
-import sc.entity.Implementation;
+
 import sc.entity.Institution;
 import sc.entity.Item;
 import sc.entity.Person;
 import sc.entity.SiComponentItem;
-import sc.enums.AreaType;
+
 import sc.enums.EncounterType;
-import sc.enums.InstitutionType;
+
 import sc.enums.RenderType;
 import sc.facade.ComponentFacade;
-import sc.facade.ImplementationFacade;
+
 import sc.pojcs.YearMonthDay;
 import java.io.ByteArrayInputStream;
 import java.util.Random;
@@ -63,8 +62,7 @@ public class ProductController implements Serializable {
     // <editor-fold defaultstate="collapsed" desc="EJBs">
     @EJB
     private sc.facade.ProductFacade ejbFacade;
-    @EJB
-    private ImplementationFacade encounterFacade;
+    
     @EJB
     private ComponentFacade componentFacade;
     // </editor-fold>
@@ -73,16 +71,14 @@ public class ProductController implements Serializable {
     ApplicationController applicationController;
     @Inject
     private WebUserController webUserController;
-    @Inject
-    private EncounterController encounterController;
+   
     @Inject
     private ItemController itemController;
     @Inject
     private InstitutionController institutionController;
     @Inject
     private CommonController commonController;
-    @Inject
-    private AreaController areaController;
+   
     @Inject
     private SiComponentItemController siComponentItemController;
     // </editor-fold>
@@ -220,25 +216,7 @@ public class ProductController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
-    public List<Area> getGnAreasForTheSelectedClient(String qry) {
-        List<Area> areas = new ArrayList<>();
-        if (selected == null) {
-            return areas;
-        }
-        if (selected.getPerson().getDsArea() == null) {
-            return areaController.getAreas(AreaType.GN, null, null, qry);
-        } else {
-            return areaController.getAreas(AreaType.GN, selected.getPerson().getDsArea(), null, qry);
-        }
-    }
-
-    @Deprecated
-    public void clearExistsValues() {
-        phnExists = false;
-        nicExists = false;
-        passportExists = false;
-        dlExists = false;
-    }
+   
 
     public void itemChanged() {
         if (getItem() == null) {
@@ -452,21 +430,7 @@ public class ProductController implements Serializable {
 
     }
 
-    public Long countOfRegistedClients(Institution ins, Area gn) {
-        String j = "select count(c) from Product c "
-                + " where c.retired=:ret ";
-        Map m = new HashMap();
-        m.put("ret", false);
-        if (ins != null) {
-            j += " and c.createInstitution=:ins ";
-            m.put("ins", ins);
-        }
-        if (gn != null) {
-            j += " and c.person.gnArea=:gn ";
-            m.put("gn", gn);
-        }
-        return getFacade().countByJpql(j, m);
-    }
+
 
     public String toRegisterdClientsDemo() {
         String j = "select c from Product c "
@@ -1114,16 +1078,7 @@ public class ProductController implements Serializable {
                                 System.out.println("GN");
                                 System.out.println("cellString = " + cellString);
 
-                                Area tgn = areaController.getAreaByName(cellString, AreaType.GN, false, null);
-                                System.out.println("tgn = " + tgn);
-                                if (tgn != null) {
-                                    c.getPerson().setGnArea(tgn);
-                                    c.getPerson().setDsArea(tgn.getDsd());
-                                    c.getPerson().setMohArea(tgn.getMoh());
-                                    c.getPerson().setPhmArea(tgn.getPhm());
-                                    c.getPerson().setDistrict(tgn.getDistrict());
-                                    c.getPerson().setProvince(tgn.getProvince());
-                                }
+                                
                                 break;
                         }
 
@@ -1172,30 +1127,7 @@ public class ProductController implements Serializable {
 
     }
 
-    public List<Implementation> fillEncounters(Product product, InstitutionType insType, EncounterType encType, boolean excludeCompleted) {
-        // //System.out.println("fillEncounters");
-        String j = "select e from Implementation e where e.retired=false ";
-        Map m = new HashMap();
-        if (product != null) {
-            j += " and e.product=:c ";
-            m.put("c", product);
-        }
-        if (insType != null) {
-            j += " and e.institution.institutionType=:it ";
-            m.put("it", insType);
-        }
-        if (insType != null) {
-            j += " and e.encounterType=:et ";
-            m.put("et", encType);
-        }
-        if (excludeCompleted) {
-            j += " and e.completed=:com ";
-            m.put("com", false);
-        }
-        // //System.out.println("m = " + m);
-        return encounterFacade.findByJpql(j, m);
-    }
-
+    
     public void addNewProperty() {
         if (selected == null) {
             JsfUtil.addErrorMessage("No Product is Selected");
@@ -1380,7 +1312,6 @@ public class ProductController implements Serializable {
     }
 
     public String searchByAnyId() {
-        clearExistsValues();
         if (searchingId == null) {
             searchingId = "";
         }
@@ -1757,13 +1688,7 @@ public class ProductController implements Serializable {
         this.profileTabActiveIndex = profileTabActiveIndex;
     }
 
-    public ImplementationFacade getEncounterFacade() {
-        return encounterFacade;
-    }
 
-    public EncounterController getEncounterController() {
-        return encounterController;
-    }
 
     public boolean isGoingToCaptureWebCamPhoto() {
         return goingToCaptureWebCamPhoto;
@@ -1833,9 +1758,7 @@ public class ProductController implements Serializable {
         return commonController;
     }
 
-    public AreaController getAreaController() {
-        return areaController;
-    }
+
 
     public Institution getInstitution() {
         return institution;

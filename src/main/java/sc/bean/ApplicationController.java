@@ -31,8 +31,6 @@ import javax.enterprise.context.ApplicationScoped;
 import sc.entity.Institution;
 import sc.entity.Item;
 import sc.entity.Product;
-import sc.enums.InstitutionType;
-import sc.enums.WebUserRole;
 import sc.facade.InstitutionFacade;
 import sc.facade.ItemFacade;
 import sc.facade.ProductFacade;
@@ -154,32 +152,6 @@ public class ApplicationController {
         return 0l;
     }
 
-    public String createNewPersonalHealthNumber(Institution pins) {
-        System.out.println("createNewPersonalHealthNumber");
-        if (pins == null) {
-            return null;
-        }
-        Institution ins = getInstitutionFacade().find(pins.getId());
-        if (ins == null) {
-            return null;
-        }
-        Long lastHinIssued = ins.getLastHin();
-        System.out.println("lastHinIssued = " + lastHinIssued);
-        if (lastHinIssued == null) {
-            lastHinIssued = 0l;
-        }
-        Long thisHin = lastHinIssued + 1;
-        System.out.println("thisHin = " + thisHin);
-        String poi = ins.getPoiNumber();
-        String num = String.format("%06d", thisHin);
-        String checkDigit = calculateCheckDigit(poi + num);
-        String phn = poi + num + checkDigit;
-        ins.setLastHin(thisHin);
-        getInstitutionFacade().edit(ins);
-
-        return phn;
-    }
-
     public static boolean validateHin(String validatingHin) {
         if (validatingHin == null) {
             return false;
@@ -223,13 +195,8 @@ public class ApplicationController {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Enums">
-    public InstitutionType[] getInstitutionTypes() {
-        return InstitutionType.values();
-    }
 
-    public WebUserRole[] getWebUserRoles() {
-        return WebUserRole.values();
-    }
+    
 
     // <editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Getters & Setters">

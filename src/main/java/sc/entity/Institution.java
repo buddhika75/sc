@@ -23,18 +23,13 @@
  */
 package sc.entity;
 
-import sc.enums.InstitutionType;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -51,8 +46,6 @@ public class Institution implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private InstitutionType institutionType;
 
     private String name;
     private String code;
@@ -64,45 +57,10 @@ public class Institution implements Serializable {
     private String phone;
     private String mobile;
     private String web;
-    private String poiNumber;
-    @Deprecated
-    @ManyToOne
-    private Institution poiInstitution;
-    @Deprecated
-    private Long lastHin;
 
     @ManyToOne
     private Institution parent;
-    @ManyToOne
-    @Deprecated
-    private Area gnArea;
-    @ManyToOne
-    @Deprecated
-    private Area phmArea;
-    @ManyToOne
-    @Deprecated
-    private Area phiArea;
-    @ManyToOne
-    @Deprecated
-    private Area dsDivision;
-    @ManyToOne
-    @Deprecated
-    private Area mohArea;
-    @ManyToOne
-    @Deprecated
-    private Area district;
-    @ManyToOne
-    @Deprecated
-    private Area rdhsArea;
-    @ManyToOne
-    @Deprecated
-    private Area province;
-    @ManyToOne
-    @Deprecated
-    private Area pdhsArea;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private Coordinate coordinate;
+    
 
     @ManyToOne
     private WebUser creater;
@@ -129,6 +87,8 @@ public class Institution implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    
 
     @Override
     public int hashCode() {
@@ -155,14 +115,6 @@ public class Institution implements Serializable {
         return name;
     }
 
-    public InstitutionType getInstitutionType() {
-        return institutionType;
-    }
-
-    public void setInstitutionType(InstitutionType institutionType) {
-        this.institutionType = institutionType;
-    }
-
     public String getName() {
         return name;
     }
@@ -171,12 +123,28 @@ public class Institution implements Serializable {
         this.name = name;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Item getType() {
+        return type;
+    }
+
+    public void setType(Item type) {
+        this.type = type;
     }
 
     public String getFax() {
@@ -219,23 +187,12 @@ public class Institution implements Serializable {
         this.web = web;
     }
 
-    public Coordinate getCoordinate() {
-        if (coordinate == null) {
-            coordinate = new Coordinate();
-        }
-        return coordinate;
+    public Institution getParent() {
+        return parent;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
+    public void setParent(Institution parent) {
+        this.parent = parent;
     }
 
     public WebUser getCreater() {
@@ -302,114 +259,6 @@ public class Institution implements Serializable {
         this.retireComments = retireComments;
     }
 
-    public String getLastPartOfName() {
-        if (name == null) {
-            return "";
-        }
-        return name.substring(name.lastIndexOf(" ") + 1);
-    }
-
-    public Long getLastHin() {
-        return lastHin;
-    }
-
-    public void setLastHin(Long lastHin) {
-        this.lastHin = lastHin;
-    }
-
-    public String getPoiNumber() {
-        return poiNumber;
-    }
-
-    public void setPoiNumber(String poiNumber) {
-        this.poiNumber = poiNumber;
-    }
-
-    public Institution getParent() {
-        return parent;
-    }
-
-    public void setParent(Institution parent) {
-        this.parent = parent;
-    }
-
-    public Area getGnArea() {
-        return gnArea;
-    }
-
-    public void setGnArea(Area gnArea) {
-        this.gnArea = gnArea;
-    }
-
-    public Area getPhmArea() {
-        return phmArea;
-    }
-
-    public void setPhmArea(Area phmArea) {
-        this.phmArea = phmArea;
-    }
-
-    public Area getPhiArea() {
-        return phiArea;
-    }
-
-    public void setPhiArea(Area phiArea) {
-        this.phiArea = phiArea;
-    }
-
-    public Area getDsDivision() {
-        return dsDivision;
-    }
-
-    public void setDsDivision(Area dsDivision) {
-        this.dsDivision = dsDivision;
-    }
-
-    public Area getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(Area district) {
-        this.district = district;
-    }
-
-    public Area getRdhsArea() {
-        return rdhsArea;
-    }
-
-    public void setRdhsArea(Area rdhsArea) {
-        this.rdhsArea = rdhsArea;
-    }
-
-    public Area getProvince() {
-        return province;
-    }
-
-    public void setProvince(Area province) {
-        this.province = province;
-    }
-
-    public Area getPdhsArea() {
-        return pdhsArea;
-    }
-
-    public void setPdhsArea(Area pdhsArea) {
-        this.pdhsArea = pdhsArea;
-    }
-
-    public Institution getPoiInstitution() {
-        if (this.getId() != null) {
-            if (poiInstitution == null) {
-                poiInstitution = this;
-            }
-        }
-        return poiInstitution;
-    }
-
-    public void setPoiInstitution(Institution poiInstitution) {
-        this.poiInstitution = poiInstitution;
-    }
-
     public boolean isPmci() {
         return pmci;
     }
@@ -418,22 +267,7 @@ public class Institution implements Serializable {
         this.pmci = pmci;
     }
 
-    public Area getMohArea() {
-        return mohArea;
-    }
-
-    public void setMohArea(Area mohArea) {
-        this.mohArea = mohArea;
-    }
-
-    public Item getType() {
-        return type;
-    }
-
-    public void setType(Item type) {
-        this.type = type;
-    }
-
+   
     
     
 }

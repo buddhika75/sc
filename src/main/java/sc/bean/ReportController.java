@@ -33,9 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-import sc.entity.Area;
 import sc.entity.Product;
-import sc.entity.Implementation;
 import sc.entity.Institution;
 import sc.enums.EncounterType;
 // </editor-fold>   
@@ -51,8 +49,7 @@ public class ReportController implements Serializable {
 // </editor-fold>     
 // <editor-fold defaultstate="collapsed" desc="Controllers">
 
-    @Inject
-    private EncounterController encounterController;
+   
     @Inject
     private ProductController productController;
     @Inject
@@ -63,12 +60,10 @@ public class ReportController implements Serializable {
     private InstitutionController institutionController;
 // </editor-fold>  
 // <editor-fold defaultstate="collapsed" desc="Class Variables">
-    private List<Implementation> encounters;
     private List<Product> clients;
     private Date fromDate;
     private Date toDate;
     private Institution institution;
-    private Area area;
     
 // </editor-fold> 
 
@@ -80,222 +75,7 @@ public class ReportController implements Serializable {
     }
 
 // </editor-fold> 
-// <editor-fold defaultstate="collapsed" desc="Navigation">
-    public String toViewClientRegistrations() {
-        encounters = new ArrayList<>();
-        String forSys = "/reports/client_registrations/for_system";
-        String forIns = "/reports/client_registrations/for_ins";
-        String forMe = "/reports/client_registrations/for_me";
-        String forClient = "/reports/client_registrations/for_clients";
-        String noAction = "";
-        String action = "";
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case Product:
-                action = forClient;
-                break;
-            case Doctor:
-            case Institution_Administrator:
-            case Institution_Super_User:
-            case Institution_User:
-            case Nurse:
-            case Midwife:
-                action = forIns;
-                break;
-            case Me_Admin:
-            case Me_Super_User:
-                action = forMe;
-                break;
-            case Me_User:
-            case User:
-                action = noAction;
-                break;
-            case Super_User:
-            case System_Administrator:
-                action = forSys;
-                break;
-        }
-        return action;
-    }
     
-    public String toViewClinicEnrollments() {
-        encounters = new ArrayList<>();
-        String forSys = "/reports/clinic_enrollments/for_system";
-        String forIns = "/reports/clinic_enrollments/for_ins";
-        String forMe = "/reports/clinic_enrollments/for_me";
-        String forClient = "/reports/clinic_enrollments/for_clients";
-        String noAction = "";
-        String action = "";
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case Product:
-                action = forClient;
-                break;
-            case Doctor:
-            case Institution_Administrator:
-            case Institution_Super_User:
-            case Institution_User:
-            case Nurse:
-            case Midwife:
-                action = forIns;
-                break;
-            case Me_Admin:
-            case Me_Super_User:
-                action = forMe;
-                break;
-            case Me_User:
-            case User:
-                action = noAction;
-                break;
-            case Super_User:
-            case System_Administrator:
-                action = forSys;
-                break;
-        }
-        return action;
-    }
-
-// </editor-fold>   
-// <editor-fold defaultstate="collapsed" desc="Functions">
-    
-    public void fillClientRegistrationForSysAdmin(){
-        String j;
-        Map m = new HashMap();
-        j = "select c from Product c "
-                + " where c.retired=:ret "
-                + " and c.createdAt between :fd and :td ";
-        m.put("ret", false);
-        m.put("fd", fromDate);
-        m.put("td", toDate);
-        if(institution!=null){
-            j += " and c.createInstitution in :ins ";
-            List<Institution> ins = institutionController.findChildrenInstitutions(institution);
-            ins.add(institution);
-            m.put("ins", ins);
-        }
-        
-        clients = productController.getItems(j,m);
-    }
-    
-    public void fillClinicEnrollmentsForSysAdmin(){
-        String j;
-        Map m = new HashMap();
-        j = "select c from Implementation c "
-                + " where c.retired=:ret "
-                + " c.encounterType=:type "
-                + " and c.encounterDate between :fd and :td ";
-        m.put("ret", false);
-        m.put("fd", fromDate);
-        m.put("td", toDate);
-        m.put("type", EncounterType.Clinic_Enroll);
-        if(institution!=null){
-            j += " and c.institution in :ins ";
-            List<Institution> ins = institutionController.findChildrenInstitutions(institution);
-            ins.add(institution);
-            m.put("ins", ins);
-        }
-        encounters = encounterController.getItems(j,m);
-    }
-    
-    public void fillEncountersForSysAdmin(){
-        String j;
-        Map m = new HashMap();
-        j = "select c from Implementation c "
-                + " where c.retired=:ret "
-                + " c.encounterType=:type "
-                + " and c.encounterDate between :fd and :td ";
-        m.put("ret", false);
-        m.put("fd", fromDate);
-        m.put("td", toDate);
-        m.put("type", EncounterType.Clinic_Enroll);
-        if(institution!=null){
-            j += " and c.institution in :ins ";
-            List<Institution> ins = institutionController.findChildrenInstitutions(institution);
-            ins.add(institution);
-            m.put("ins", ins);
-        }
-        encounters = encounterController.getItems(j,m);
-    }
-    
-    
-// </editor-fold>   
-// <editor-fold defaultstate="collapsed" desc="Getters and Setters">
-
-    
-
-    public EncounterController getEncounterController() {
-        return encounterController;
-    }
-
-    public ProductController getproductController() {
-        return productController;
-    }
-
-    public ComponentController getComponentController() {
-        return componentController;
-    }
-
-    public WebUserController getWebUserController() {
-        return webUserController;
-    }
-
-    public List<Implementation> getEncounters() {
-        return encounters;
-    }
-
-    public void setEncounters(List<Implementation> encounters) {
-        this.encounters = encounters;
-    }
-
-    public List<Product> getClients() {
-        return clients;
-    }
-
-    public void setClients(List<Product> clients) {
-        this.clients = clients;
-    }
-    
-    public Date getFromDate() {
-        if(fromDate==null){
-            fromDate = CommonController.startOfTheYear();
-        }
-        return fromDate;
-    }
-
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public Date getToDate() {
-        if(toDate==null){
-            toDate = new Date();
-        }
-        return toDate;
-    }
-
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
-    }
-
-    public Institution getInstitution() {
-        return institution;
-    }
-
-    public void setInstitution(Institution institution) {
-        this.institution = institution;
-    }
-
-    public Area getArea() {
-        return area;
-    }
-
-    public void setArea(Area area) {
-        this.area = area;
-    }
-    
-// </editor-fold> 
-
-    public InstitutionController getInstitutionController() {
-        return institutionController;
-    }
 
     
 

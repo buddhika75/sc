@@ -23,10 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
-import sc.entity.Area;
-import sc.enums.AreaType;
-import sc.enums.InstitutionType;
-import sc.facade.AreaFacade;
+
 
 @Named("institutionController")
 @SessionScoped
@@ -35,8 +32,7 @@ public class InstitutionController implements Serializable {
     @EJB
     private sc.facade.InstitutionFacade ejbFacade;
 
-    @EJB
-    private AreaFacade areaFacade;
+    
 
     @Inject
     private WebUserController webUserController;
@@ -44,32 +40,17 @@ public class InstitutionController implements Serializable {
     private List<Institution> items = null;
     private Institution selected;
     private Institution deleting;
-    @Deprecated
-    private List<Institution> myClinics;
-    private List<Area> gnAreasOfSelected;
-    private Area area;
-    private Area removingArea;
+
+    
+
+    
 
     
     public Institution getInstitutionById(Long id){
         return getFacade().find(id);
     }
     
-    public void addGnToPmc() {
-        if (selected == null) {
-            JsfUtil.addErrorMessage("No PMC is selected");
-            return;
-        }
-        if (area == null) {
-            JsfUtil.addErrorMessage("No GN is selected");
-            return;
-        }
-        area.setPmci(selected);
-        getAreaFacade().edit(area);
-        area = null;
-        fillGnAreasOfSelected();
-        JsfUtil.addSuccessMessage("Successfully added.");
-    }
+    
 
     public String toAddInstitution() {
         selected = new Institution();
@@ -107,49 +88,9 @@ public class InstitutionController implements Serializable {
         return "/institution/search";
     }
 
-    public void removeGnFromPmc() {
-        if (removingArea == null) {
-            JsfUtil.addErrorMessage("Nothing to remove");
-            return;
-        }
-        removingArea.setPmci(null);
-        fillGnAreasOfSelected();
-        removingArea = null;
-    }
-
-    public void fillGnAreasOfSelected() {
-        if (selected == null) {
-            gnAreasOfSelected = new ArrayList<>();
-            return;
-        }
-        String j = "select a from Area a where a.retired=false "
-                + " and a.type=:t "
-                + " and a.pmci=:p "
-                + " order by a.name";
-        Map m = new HashMap();
-        m.put("t", AreaType.GN);
-        m.put("p", selected);
-        gnAreasOfSelected = areaFacade.findByJpql(j, m);
-    }
-
-    public List<Area> findDrainingGnAreas(Institution ins) {
-        List<Area> gns;
-        if (ins == null) {
-            gns = new ArrayList<>();
-            return gns;
-        }
-        String j = "select a from Area a where a.retired=false "
-                + " and a.type=:t "
-                + " and a.pmci=:p "
-                + " order by a.name";
-        Map m = new HashMap();
-        m.put("t", AreaType.GN);
-        m.put("p", ins);
-        gns = areaFacade.findByJpql(j, m);
-        return gns;
-    }
     
-    
+     
+     
     
     
 
@@ -217,9 +158,8 @@ public class InstitutionController implements Serializable {
         return tins;
     }
 
-    public List<Institution> completeInstitutions(String nameQry) {
-        return fillInstitutions(null, nameQry, null);
-    }
+   
+    
 
     
     public Institution findInstitutionByName(String name) {
@@ -244,24 +184,7 @@ public class InstitutionController implements Serializable {
         return getFacade().findByJpql(j, m);
     }
 
-    public List<Institution> fillInstitutions(InstitutionType type, String nameQry, Institution parent) {
-        String j = "Select i from Institution i where i.retired=false ";
-        Map m = new HashMap();
-        if (nameQry != null) {
-            j += " and lower(i.name) like :n ";
-            m.put("n", "%" + nameQry.trim().toLowerCase() + "%");
-        }
-        if (type != null) {
-            j += " and i.institutionType =:t ";
-            m.put("t", type);
-        }
-        if (parent != null) {
-            j += " and i.parent =:p ";
-            m.put("p", parent);
-        }
-        j += " order by i.name";
-        return getFacade().findByJpql(j, m);
-    }
+  
 
     public Institution prepareCreate() {
         selected = new Institution();
@@ -360,57 +283,19 @@ public class InstitutionController implements Serializable {
         return getFacade().findAll();
     }
 
-    public void refreshMyInstitutions() {
-        myClinics = null;
-    }
-
-    public List<Institution> getMyClinics() {
-        return myClinics;
-    }
+   
 
     public sc.facade.InstitutionFacade getEjbFacade() {
         return ejbFacade;
     }
 
-    public AreaFacade getAreaFacade() {
-        return areaFacade;
-    }
+   
 
     public WebUserController getWebUserController() {
         return webUserController;
     }
 
-    public List<Area> getGnAreasOfSelected() {
-        if (gnAreasOfSelected == null) {
-            gnAreasOfSelected = new ArrayList<>();
-        }
-        return gnAreasOfSelected;
-    }
-
-    public void setGnAreasOfSelected(List<Area> gnAreasOfSelected) {
-        this.gnAreasOfSelected = gnAreasOfSelected;
-    }
-
-    public Area getArea() {
-        return area;
-    }
-
-    public void setArea(Area area) {
-        this.area = area;
-    }
-
-    public Area getRemovingArea() {
-        return removingArea;
-    }
-
-    public void setRemovingArea(Area removingArea) {
-        this.removingArea = removingArea;
-
-    }
-
-    public void setMyClinics(List<Institution> myClinics) {
-        this.myClinics = myClinics;
-    }
+    
 
     public Institution getDeleting() {
         return deleting;
