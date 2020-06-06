@@ -65,9 +65,13 @@
                         <div class="header__logo">
                             <h:form>
                                 <h:commandLink action="/index" >
-                                    <p:graphicImage cache="false"  value="#{streamedContentController.imageByCode}"  >
+<!--                                    <p:graphicImage cache="false"  value="#{streamedContentController.imageByCode}"  >
                                         <f:param name="id" value="header__logo" />
+                                    </p:graphicImage>-->
+                                    
+                                    <p:graphicImage cache="false"  value="#{streamedContentController.imageByCodeInlineWithoutGet('header__logo')}"  >
                                     </p:graphicImage>
+                                    
                                 </h:commandLink>
                             </h:form>
                         </div>
