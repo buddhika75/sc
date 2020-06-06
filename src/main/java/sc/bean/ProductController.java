@@ -207,10 +207,8 @@ public class ProductController implements Serializable {
         return "/product";
     }
 
-    public String toAddNewClient() {
+    public String toAddNewProduct() {
         selected = new Product();
-        selectedClinic = null;
-        yearMonthDay = new YearMonthDay();
         return "/product/product";
     }
 

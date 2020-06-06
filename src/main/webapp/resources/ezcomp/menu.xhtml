@@ -25,30 +25,30 @@
 
 
                 <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="#{webUserController.toHome()}" />
-                <p:submenu label="Products" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                <p:submenu label="Products"  >
                     <p:menuitem ajax="false" value="Search" action="#{productController.toSearchClient()}" />
                     <p:menuitem ajax="false" value="List" action="#{productController.toListAllProducts()}" />
-                    <p:menuitem ajax="false" value="Create New" action="#{productController.toAddNewClient()}"  />
+                    <p:menuitem ajax="false" value="Create New" action="#{productController.toAddNewProduct()}"  />
                 </p:submenu>
-                
-                <p:submenu label="Case Studies" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+
+                <p:submenu label="Case Studies"  >
                     <p:menuitem ajax="false" value="List" action="#{messageController.toViewCaseStudiesForUsers()}" />
                     <p:menuitem ajax="false" value="Create New" action="#{messageController.toCreateNewCaseStudy()}"  />
                 </p:submenu>
 
-                <p:submenu label="Settings"  rendered="#{webUserController.hasPrivilege('User')}" >
+                <p:submenu label="Settings"  >
                     <p:menuitem value="Change My Password" action="#{webUserController.toChangeMyPassword()}"  />
                     <p:menuitem value="Change My Details" action="#{webUserController.toChangeMyDetails()}"  />
                 </p:submenu>
 
 
 
-                <p:submenu label="System Administration"  rendered="#{webUserController.hasPrivilege('System_Administration')}"  >
+                <p:submenu label="System Administration"    >
                     <p:menuitem value="Manage Users" action="/webUser/index"  />
                     <p:menuitem value="Manage Metadata" action="/systemAdmin/index"  />
                     <p:menuitem value="Manage Institutions" action="/institution/index"   />
                     <p:menuitem value="Manage Images" action="/upload/index"   />
-                    
+
                     <p:menuitem value="Manage Areas" action="/area/index" ajax="false"  />
 
                 </p:submenu>
