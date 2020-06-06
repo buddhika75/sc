@@ -12,14 +12,14 @@
     <!-- INTERFACE -->
     <cc:interface>
         <cc:attribute name="image" type="java.lang.Boolean" />
-        <cc:attribute name="dwMenu" type="java.lang.Boolean" />
+        
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
 
         <!-- Hero Section Begin -->
-        <section class="hero">
+        <section class="hero #{cc.attrs.image?'':'hero-normal'}">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3">
