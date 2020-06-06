@@ -28,8 +28,8 @@
                                 <f:facet name="header">
                                     <h:outputText value="Icon"/>
                                 </f:facet>
-                                <p:graphicImage cache="false"  value="#{streamedContentController.productIconById}" style="height: 50px;" >
-                                    <f:param name="id" value="#{item.id}" />
+                                <p:graphicImage cache="false"  value="#{streamedContentController.imageBySterId}" style="height: 50px;" >
+                                    <f:param name="id" value="#{item.getUploadIdForImageType('product_icon')}" />
                                 </p:graphicImage>
                             </p:column>
 

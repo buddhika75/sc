@@ -86,7 +86,7 @@
                                 </p:outputLabel>
                                 <p:selectOneMenu  value="#{uploadController.selected.imageType}" >
                                     <f:selectItem itemLabel="Select" ></f:selectItem>
-                                    <f:selectItems value="#{productController.findItemsByCodeOrderByDisplay('image_types')}" var="i" itemLabel="#{i.displayName}"
+                                    <f:selectItems value="#{itemController.findChildrenItemsByParentCode('image_types')}" var="i" itemLabel="#{i.displayName}"
                                                    itemValue="#{i}" ></f:selectItems>
                                 </p:selectOneMenu>
 

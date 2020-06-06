@@ -91,39 +91,6 @@ public class StreamedContentController {
         }
     }
 
-    public StreamedContent getProductIconById() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getRenderResponse()) {
-            return new DefaultStreamedContent();
-        } else {
-            String id = context.getExternalContext().getRequestParameterMap().get("id");
-            Long l;
-            try {
-                l = Long.valueOf(id);
-            } catch (NumberFormatException e) {
-                l = 0l;
-            }
-            String j = "select s from Product s where s.id=:id";
-            Map m = new HashMap();
-            m.put("id", l);
-            Product temImg = getProductFacade().findFirstByJpql(j, m);
-            if (temImg != null) {
-                byte[] imgArr = null;
-                try {
-                    imgArr = temImg.getBaImageIcon();
-                } catch (Exception e) {
-                    return new DefaultStreamedContent();
-                }
-                if (imgArr == null) {
-                    return new DefaultStreamedContent();
-                }
-                StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), temImg.getFileTypeIcon());
-                return str;
-            } else {
-                return new DefaultStreamedContent();
-            }
-        }
-    }
 
     public StreamedContent imageByCodeInlineWithoutGet(String code) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -321,41 +288,7 @@ public class StreamedContentController {
         }
     }
 
-    public StreamedContent getProductThumbnailById() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getRenderResponse()) {
-            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        } else {
-
-            String id = context.getExternalContext().getRequestParameterMap().get("id");
-            Long l;
-            try {
-                l = Long.valueOf(id);
-            } catch (NumberFormatException e) {
-                l = 0l;
-            }
-            String j = "select s from Product s where s.id=:id";
-            Map m = new HashMap();
-            m.put("id", l);
-            Product temImg = getProductFacade().findFirstByJpql(j, m);
-            if (temImg != null) {
-                byte[] imgArr = null;
-                try {
-                    imgArr = temImg.getBaImageThumb();
-                } catch (Exception e) {
-                    return new DefaultStreamedContent();
-                }
-                if (imgArr == null) {
-                    return new DefaultStreamedContent();
-                }
-                StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), temImg.getFileTypeThumb());
-                return str;
-            } else {
-                return new DefaultStreamedContent();
-            }
-        }
-    }
+  
 
     public ProductFacade getProductFacade() {
         return productFacade;

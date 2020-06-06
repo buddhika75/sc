@@ -12,113 +12,76 @@
         <ui:composition template="/template.xhtml">
 
             <ui:define name="content">
-
-
                 <p:panel style="text-align: center;height: 100%;" rendered="#{webUserController.loggedUser eq null}" >
                     <p>Please login to edit</p>
                 </p:panel>
 
-                <p:panel style="text-align: center;height: 100%;" rendered="#{webUserController.loggedUser ne null}" >
+                <p:panel styleClass="alignTop" style="text-align: center;height: 100%; width: 98%; margin: auto;" rendered="#{webUserController.loggedUser ne null}" >
                     <f:facet name="header" >
                         <p:outputLabel value="Add Product Details" rendered="#{productController.selected.id eq null}"></p:outputLabel>
                         <p:outputLabel value="Edit Product Details" rendered="#{productController.selected.id ne null}"></p:outputLabel>
                     </f:facet>
+                    <h:form>
+                        <p:panelGrid columns="2" style="text-align: left;margin: auto; width: 98%;">
+                            <f:facet name="header" >
+                                <p:commandButton ajax="false" action="#{productController.saveProduct()}" value="Save" ></p:commandButton>
+                                <p:commandButton ajax="false" action="#{productController.retireSelected()}" value="Remove" immediate="true" ></p:commandButton>
+                            </f:facet>
 
-                    <p:panelGrid columns="2" styleClass="alignTop" >
-                        <h:form>
-
-                            <p:panelGrid columns="3" style="text-align: left;margin: auto; width: 100%;">
-                                <f:facet name="header" >
-                                    <p:commandButton ajax="false" action="#{productController.saveProduct()}" value="Save" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="#{productController.retireSelected()}" value="Remove" immediate="true" ></p:commandButton>
-
-                                </f:facet>
-
-                                <p:outputLabel value="Name:" for="name" />
-                                <p:inputText autocomplete="off" id="name" required="true" value="#{productController.selected.name}" title="Name" >
-                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
-                                </p:inputText>
-                                <p:spacer ></p:spacer>
+                            <p:outputLabel value="Name:" for="name" />
+                            <p:inputText autocomplete="off" id="name" required="true" value="#{productController.selected.name}" title="Name" >
+                                <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                            </p:inputText>
 
 
+                            <p:outputLabel value="Short Name:" for="sname" />
+                            <p:inputText autocomplete="off" id="sname" required="true" value="#{productController.selected.sname}" title="Name" >
+                                <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                            </p:inputText>
 
 
-                                <p:outputLabel value="Short Name:" for="sname" />
-                                <p:inputText autocomplete="off" id="sname" required="true" value="#{productController.selected.sname}" title="Name" >
-                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
-                                </p:inputText>
-                                <p:spacer ></p:spacer>
+                            <p:outputLabel value="Department" for="dep" />
+                            <p:selectOneMenu id="dep"  value="#{productController.selected.department}" >
+                                <f:selectItem itemLabel="Select" ></f:selectItem>
+                                <f:selectItems value="#{itemController.findChildrenItemsByParentCode('departments')}" var="i" itemLabel="#{i.name}"
+                                               itemValue="#{i}" ></f:selectItems>
+                                <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                            </p:selectOneMenu>
 
-                                <p:outputLabel value="Department" for="dep" />
-                                <p:selectOneMenu id="dep"  value="#{productController.selected.department}" >
-                                    <f:selectItem itemLabel="Select" ></f:selectItem>
-                                    <f:selectItems value="#{productController.findItemsByCodeOrderByDisplay('departments')}" var="i" itemLabel="#{i.displayName}"
-                                                   itemValue="#{i}" ></f:selectItems>
-                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
-                                </p:selectOneMenu>
-                                <p:spacer ></p:spacer>
+                            <p:outputLabel value="Retail Price" for="rp" />
+                            <p:inputText id="rp" value="#{productController.selected.retailPrice}" >
+                                <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                            </p:inputText>
 
 
-                               
+                            <p:outputLabel value="Discounted Price" for="dp" />
+                            <p:inputText id="dp" value="#{productController.selected.discountPrice}" >
+                                <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                            </p:inputText>
 
-                                <p:outputLabel value="Retail Price" for="rp" />
-                                <p:inputText id="rp" value="#{productController.selected.retailPrice}" >
-                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
-                                </p:inputText>
-                                <p:spacer ></p:spacer>
 
-                                <p:outputLabel value="Discounted Price" for="dp" />
-                                <p:inputText id="dp" value="#{productController.selected.discountPrice}" >
-                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
-                                </p:inputText>
-                                <p:spacer ></p:spacer>
+                            <p:outputLabel value="Descreption:" for="des" />
+                            <p:editor  id="des"  height="400"  style="width: 98%;margin: auto;"
+                                       value="#{productController.selected.description}"  >
+                            </p:editor>
 
-                                <p:outputLabel value="Descreption:" for="des" />
-                                <p:editor  id="des" required="true" height="400" width="600"
-                                           value="#{productController.selected.description}"  >
-                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
-                                </p:editor>
-                                <p:spacer ></p:spacer>
-                                
-                                 <p:outputLabel value="Information" for="info" />
-                                <p:editor  id="info" required="true" height="400" width="600"
-                                           value="#{productController.selected.description}"  >
-                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
-                                </p:editor>
-                                <p:spacer ></p:spacer>
 
-                            </p:panelGrid>
+                            <p:outputLabel value="Information" for="info" />
+                            <p:editor  id="info"  height="400"  style="width: 98%;margin: auto;"
+                                       value="#{productController.selected.information}"  >
+                            </p:editor>
+
+
+                        </p:panelGrid>
 
 
 
 
-                        </h:form>
+                    </h:form>
 
-                        <h:panelGrid columns="1">
-                            <p:panel header="Detail 540 x 560" >
-                                <h:form enctype="multipart/form-data">        
-                                    <p:fileUpload value="#{productController.file}" mode="simple" skinSimple="true"/>
-                                    <br />
-                                    <p:commandButton value="Submit" ajax="false" action="#{productController.saveImage()}"  />
-                                </h:form>
-                            </p:panel>
-                            <p:panel header="Thumb 270x270" >
-                                <h:form enctype="multipart/form-data">        
-                                    <p:fileUpload value="#{productController.file}" mode="simple" skinSimple="true"/>
-                                    <br />
-                                    <p:commandButton value="Submit" ajax="false" action="#{productController.saveThumb()}"  />
-                                </h:form>
-                            </p:panel>
-                            <p:panel header="Icon 120x120" >
-                                <h:form enctype="multipart/form-data">        
-                                    <p:fileUpload value="#{productController.file}" mode="simple" skinSimple="true"/>
-                                    <br />
-                                    <p:commandButton value="Submit" ajax="false" action="#{productController.saveIcon()}"  />
-                                </h:form>
-                            </p:panel>
-                        </h:panelGrid>
 
-                    </p:panelGrid>
+
+
 
 
 

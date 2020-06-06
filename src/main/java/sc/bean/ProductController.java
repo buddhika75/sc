@@ -62,103 +62,39 @@ public class ProductController implements Serializable {
     // <editor-fold defaultstate="collapsed" desc="EJBs">
     @EJB
     private sc.facade.ProductFacade ejbFacade;
-    
-    @EJB
-    private ComponentFacade componentFacade;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Controllers">
     @Inject
     ApplicationController applicationController;
     @Inject
     private WebUserController webUserController;
-   
     @Inject
     private ItemController itemController;
     @Inject
     private InstitutionController institutionController;
     @Inject
     private CommonController commonController;
-   
-    @Inject
-    private SiComponentItemController siComponentItemController;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Variables">
     private List<Product> items = null;
     private List<Product> selectedProducts = null;
-    private List<Product> importedClients = null;
-
     private Product featuredProduct;
-
     private Product selected;
     private Long idFrom;
     private Long idTo;
     private Institution institution;
-
-    private List<Item> indexItems = null;
-    private Item indexItem = null;
-    private String indexItemsCode = "product_categories";
-
     private String searchingId;
     private Item item;
-    private SiComponentItem siComponentItem;
-    private List<SiComponentItem> selectedItems;
-    private List<SiComponentItem> selectedItemsDisplay;
-
-    private Item searchItem1;
-    private Item searchItem2;
-    private Item searchItem3;
-    private Item searchItem4;
-    private Item searchItem5;
-    private Item searchItem6;
-
-    @Deprecated
-    private String searchingPhn;
-    @Deprecated
-    private String searchingPassportNo;
-    @Deprecated
-    private String searchingDrivingLicenceNo;
-    @Deprecated
-    private String searchingNicNo;
     private String searchingName;
-    @Deprecated
-    private String searchingPhoneNumber;
-    @Deprecated
-    private String uploadDetails;
-    @Deprecated
-    private String errorCode;
-    private YearMonthDay yearMonthDay;
-    private Institution selectedClinic;
-    private int profileTabActiveIndex;
-    private boolean goingToCaptureWebCamPhoto;
-    private UploadedFile file;
-    private Date clinicDate;
     private Date from;
     private Date to;
-
-    private Boolean nicExists;
-    private Boolean phnExists;
-    private Boolean passportExists;
-    private Boolean dlExists;
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     public ProductController() {
     }
-
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Navigation">
-    public String toSearchClient() {
-        return "/product/search_by_name";
-    }
-
-    public String toSearchPublic() {
-        return "/product/search_by_name_public";
-    }
-
-    public String toSearchClientByDetails() {
-        return "/product/search_by_details";
-
-    }
 
     public String toSelectProduct() {
         return "/product/select";
@@ -177,6 +113,12 @@ public class ProductController implements Serializable {
         selectedProducts = getFacade().findByJpql(j, m);
         return "/product/select";
     }
+    
+    public String toSearchProducts() {
+        selectedProducts = null;
+        selected = null;
+        return "/product/search_by_name";
+    }
 
     public String toListAllProductsPublic() {
         String j = "select s from Product s "
@@ -189,7 +131,6 @@ public class ProductController implements Serializable {
     }
 
     public String toEditProduct() {
-        siComponentItem = null;
         return "/product/product";
     }
 
@@ -214,79 +155,12 @@ public class ProductController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
-   
-
-    public void itemChanged() {
-        if (getItem() == null) {
-            return;
-        }
-        if (getSiComponentItem() == null) {
-            return;
-        }
-        getSiComponentItem().setItem(item);
-        saveProductSilantly();
-    }
-
-    public List<Item> findItemsByCode(String code) {
-        if (indexItems != null && indexItemsCode.equalsIgnoreCase(code)) {
-            return indexItems;
-        }
-        indexItems = getItemController().findItemList(code, null);
-        indexItemsCode = code;
-        return indexItems;
-    }
-
-    public List<Item> findItemsByCodeOrderByDisplay(String code) {
-        if (indexItems != null && indexItemsCode.equalsIgnoreCase(code)) {
-            return indexItems;
-        }
-        indexItems = getItemController().findItemListByDisplayName(code);
-        indexItemsCode = code;
-        return indexItems;
-    }
-
     
-
-    private void generateSiComponentItems() {
-
-        selectedItemsDisplay = new ArrayList<>();
-
-        if (selectedItems == null) {
-            getSelectedItems();
-        }
-
-        if (selectedItems == null) {
-            return;
-        }
-        SiComponentItem lastSci = null;
-        for (SiComponentItem tsi : selectedItems) {
-            if (lastSci == null) {
-                lastSci = tsi;
-                lastSci.setValueAsStringDisplay(tsi.getValueAsString());
-
-            } else {
-                if (lastSci.getItem().equals(tsi.getItem())) {
-                    if (lastSci.getItem().getRenderType() == RenderType.Link) {
-                        selectedItemsDisplay.add(lastSci);
-                        lastSci = tsi;
-                        lastSci.setValueAsStringDisplay(tsi.getValueAsString());
-                    } else {
-                        lastSci.setValueAsStringDisplay(lastSci.getValueAsStringDisplay() + ", " + tsi.getValueAsString());
-                    }
-                } else {
-                    selectedItemsDisplay.add(lastSci);
-                    lastSci = tsi;
-                    lastSci.setValueAsStringDisplay(tsi.getValueAsString());
-                }
-            }
-        }
-        selectedItemsDisplay.add(lastSci);
-
-    }
-
-    public List<Product>  completeProduct(String qry) {
+    
+    
+    public List<Product> completeProduct(String qry) {
         List<Product> cs = new ArrayList<>();
-        if(qry==null){
+        if (qry == null) {
             return cs;
         }
         String j = "select c from Product c "
@@ -300,202 +174,6 @@ public class ProductController implements Serializable {
         return cs;
     }
 
-    public void updateClientCreatedInstitution() {
-        if (institution == null) {
-            JsfUtil.addErrorMessage("Institution ?");
-            return;
-        }
-        String j = "select c from Product c "
-                + " where c.retired=:ret "
-                + " and c.id > :idf "
-                + " and c.id < :idt ";
-        Map m = new HashMap();
-        m.put("ret", false);
-        m.put("idf", idFrom);
-        m.put("idt", idTo);
-        List<Product> cs = getFacade().findByJpql(j, m);
-        for (Product c : cs) {
-            c.setCreateInstitution(institution);
-            getFacade().edit(c);
-        }
-
-    }
-
-    public void updateClientDateOfBirth() {
-        String j = "select c from Product c "
-                + " where c.retired=:ret "
-                + " and c.id > :idf "
-                + " and c.id < :idt ";
-        Map m = new HashMap();
-        m.put("ret", false);
-        m.put("idf", idFrom);
-        m.put("idt", idTo);
-        List<Product> cs = getFacade().findByJpql(j, m);
-        for (Product c : cs) {
-            Calendar cd = Calendar.getInstance();
-
-            if (c.getPerson().getDateOfBirth() != null) {
-
-                cd.setTime(c.getPerson().getDateOfBirth());
-
-                int dobYear = cd.get(Calendar.YEAR);
-
-                if (dobYear < 1800) {
-                    cd.add(Calendar.YEAR, 2000);
-                    c.getPerson().setDateOfBirth(cd.getTime());
-                    getFacade().edit(c);
-                }
-
-            }
-        }
-
-    }
-
-
-
-    public String toRegisterdClientsDemo() {
-        String j = "select c from Product c "
-                + " where c.retired=:ret ";
-        Map m = new HashMap();
-        m.put("ret", false);
-        if (webUserController.getLoggedUser().getInstitution() != null) {
-            j += " and c.createInstitution=:ins ";
-            m.put("ins", webUserController.getLoggedUser().getInstitution());
-        } else {
-            items = new ArrayList<>();
-        }
-
-        items = getFacade().findByJpql(j, m);
-        return "/insAdmin/registered_clients";
-    }
-
-    public String toRegisterdClientsWithDates() {
-        String j = "select c from Product c "
-                + " where c.retired=:ret ";
-        Map m = new HashMap();
-        m.put("ret", false);
-        if (webUserController.getLoggedUser().getInstitution() != null) {
-            j += " and c.createInstitution=:ins ";
-            m.put("ins", webUserController.getLoggedUser().getInstitution());
-        }
-        j = j + " and c.createdAt between :fd and :td ";
-        j = j + " order by c.id desc";
-        m.put("fd", getFrom());
-        m.put("td", getTo());
-        items = getFacade().findByJpql(j, m, TemporalType.TIMESTAMP);
-        return "/insAdmin/registered_clients";
-    }
-
-    public String toRegisterdClientsWithDatesForSystemAdmin() {
-        String j = "select c from Product c "
-                + " where c.retired=:ret ";
-        Map m = new HashMap();
-        m.put("ret", false);
-        j = j + " and c.createdAt between :fd and :td ";
-        j = j + " order by c.id desc";
-        m.put("fd", getFrom());
-        m.put("td", getTo());
-        selectedProducts = null;
-        items = getFacade().findByJpql(j, m, TemporalType.TIMESTAMP);
-        return "/systemAdmin/all_clients";
-    }
-
-    
-
-    public void fillClientsWithWrongPhnLength() {
-        String j = "select c from Product c where length(c.phn) <>11 order by c.id";
-        items = getFacade().findByJpql(j);
-    }
-
-    public String fillRetiredClients() {
-        String j = "select c from Product c "
-                + " where c.retired=:ret ";
-        Map m = new HashMap();
-        m.put("ret", true);
-        j = j + " and c.createdAt between :fd and :td ";
-        j = j + " order by c.id desc";
-        m.put("fd", getFrom());
-        m.put("td", getTo());
-        selectedProducts = null;
-        items = getFacade().findByJpql(j, m, TemporalType.TIMESTAMP);
-        return "/systemAdmin/all_clients";
-    }
-
-    public String retireSelectedClients() {
-        for (Product c : selectedProducts) {
-            c.setRetired(true);
-            c.setRetireComments("Bulk Delete");
-            c.setRetiredAt(new Date());
-            c.setRetiredBy(webUserController.getLoggedUser());
-
-            c.getPerson().setRetired(true);
-            c.getPerson().setRetireComments("Bulk Delete");
-            c.getPerson().setRetiredAt(new Date());
-            c.getPerson().setRetiredBy(webUserController.getLoggedUser());
-
-            getFacade().edit(c);
-        }
-        selectedProducts = null;
-        return toRegisterdClientsWithDatesForSystemAdmin();
-    }
-
-    public String unretireSelectedClients() {
-        for (Product c : selectedProducts) {
-            c.setRetired(false);
-            c.setRetireComments("Bulk Un Delete");
-            c.setLastEditBy(webUserController.getLoggedUser());
-            c.setLastEditeAt(new Date());
-
-            c.getPerson().setRetired(false);
-            c.getPerson().setRetireComments("Bulk Un Delete");
-            c.getPerson().setEditedAt(new Date());
-            c.getPerson().setEditer(webUserController.getLoggedUser());
-
-            getFacade().edit(c);
-        }
-        selectedProducts = null;
-        return toRegisterdClientsWithDatesForSystemAdmin();
-    }
-
-    public void retireSelectedSiItem() {
-        if (siComponentItem == null) {
-            JsfUtil.addErrorMessage("Nothing to remove");
-            return;
-        }
-
-        siComponentItem.setRetired(true);
-        siComponentItem.setRetiredBy(webUserController.getLoggedUser());
-        siComponentItem.setRetiredAt(new Date());
-        getComponentFacade().edit(siComponentItem);
-
-        JsfUtil.addSuccessMessage("Removed");
-
-        getSelectedItems();
-
-    }
-
-    public void moveSiItemUp() {
-        if (siComponentItem == null) {
-            JsfUtil.addErrorMessage("Nothing to remove");
-            return;
-        }
-        siComponentItem.setOrderNo(siComponentItem.getOrderNo() - 1.5);
-        getComponentFacade().edit(siComponentItem);
-        getSelectedItems();
-
-    }
-
-    public void moveSiItemDown() {
-        if (siComponentItem == null) {
-            JsfUtil.addErrorMessage("Nothing to remove");
-            return;
-        }
-        siComponentItem.setOrderNo(siComponentItem.getOrderNo() + 1.5);
-        getComponentFacade().edit(siComponentItem);
-        getSelectedItems();
-
-    }
-
     public String retireSelected() {
         Product c = selected;
         if (c != null) {
@@ -505,539 +183,7 @@ public class ProductController implements Serializable {
             getFacade().edit(c);
         }
         JsfUtil.addSuccessMessage("Removed");
-        return toSearchClient();
-    }
-
-    
-    public StreamedContent getSelectedImage() {
-        //System.err.println("Get Sigature By Id");
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getRenderResponse()) {
-            //System.err.println("Contex Response");
-            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        } else {
-            if (getSelected() != null) {
-                //System.err.println("Img 1 " + temImg);
-                byte[] imgArr = null;
-                try {
-                    imgArr = getSelected().getBaImage();
-                } catch (Exception e) {
-                    //System.err.println("Try  " + e.getMessage());
-                    return new DefaultStreamedContent();
-                }
-
-                StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), getSelected().getFileType());
-                //System.err.println("Stream " + str);
-                return str;
-            } else {
-                return new DefaultStreamedContent();
-            }
-        }
-    }
-
-    public StreamedContent getSelectedImageThumb() {
-        //System.err.println("Get Sigature By Id");
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getRenderResponse()) {
-            //System.err.println("Contex Response");
-            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        } else {
-            if (getSelected() != null) {
-                //System.err.println("Img 1 " + temImg);
-                byte[] imgArr = null;
-                try {
-                    imgArr = getSelected().getBaImageThumb();
-                } catch (Exception e) {
-                    //System.err.println("Try  " + e.getMessage());
-                    return new DefaultStreamedContent();
-                }
-
-                StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), getSelected().getFileTypeThumb());
-                //System.err.println("Stream " + str);
-                return str;
-            } else {
-                return new DefaultStreamedContent();
-            }
-        }
-    }
-
-    public StreamedContent getSelectedImageIcon() {
-        //System.err.println("Get Sigature By Id");
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getRenderResponse()) {
-            //System.err.println("Contex Response");
-            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        } else {
-            if (getSelected() != null) {
-                //System.err.println("Img 1 " + temImg);
-                byte[] imgArr = null;
-                try {
-                    imgArr = getSelected().getBaImageIcon();
-                } catch (Exception e) {
-                    //System.err.println("Try  " + e.getMessage());
-                    return new DefaultStreamedContent();
-                }
-
-                StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), getSelected().getFileTypeIcon());
-                //System.err.println("Stream " + str);
-                return str;
-            } else {
-                return new DefaultStreamedContent();
-            }
-        }
-    }
-
-    public StreamedContent productImageIcon(Product sol) {
-        //System.err.println("Get Sigature By Id");
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getRenderResponse()) {
-            //System.err.println("Contex Response");
-            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        } else {
-            if (sol != null) {
-                //System.err.println("Img 1 " + temImg);
-                byte[] imgArr = null;
-                try {
-                    imgArr = sol.getBaImageIcon();
-                } catch (Exception e) {
-                    //System.err.println("Try  " + e.getMessage());
-                    return new DefaultStreamedContent();
-                }
-
-                StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), sol.getFileTypeIcon());
-                //System.err.println("Stream " + str);
-                return str;
-            } else {
-                return new DefaultStreamedContent();
-            }
-        }
-    }
-
-    public StreamedContent getFeaturedImage() {
-        //System.err.println("Get Sigature By Id");
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getRenderResponse()) {
-            //System.err.println("Contex Response");
-            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
-            return new DefaultStreamedContent();
-        } else {
-            if (getFeaturedProduct() != null) {
-                //System.err.println("Img 1 " + temImg);
-                byte[] imgArr = null;
-                try {
-                    imgArr = getFeaturedProduct().getBaImage();
-                } catch (Exception e) {
-                    //System.err.println("Try  " + e.getMessage());
-                    return new DefaultStreamedContent();
-                }
-
-                StreamedContent str = new DefaultStreamedContent(new ByteArrayInputStream(imgArr), getFeaturedProduct().getFileType());
-                //System.err.println("Stream " + str);
-                return str;
-            } else {
-                return new DefaultStreamedContent();
-            }
-        }
-    }
-
-    public String saveImage() {
-        InputStream in;
-        if (file == null || "".equals(file.getFileName())) {
-            return "";
-        }
-        if (file == null) {
-            JsfUtil.addErrorMessage("Please select an image");
-            return "";
-        }
-        if (getSelected() == null || getSelected().getId() == null) {
-            JsfUtil.addErrorMessage("Please select staff member");
-            return "";
-        }
-
-        try {
-            in = getFile().getInputstream();
-            File f = new File(getSelected().getId().toString()+ Math.rint(100) + "");
-            FileOutputStream out = new FileOutputStream(f);
-
-            //            OutputStream out = new FileOutputStream(new File(fileName));
-            int read = 0;
-            byte[] bytes = new byte[1024];
-            while ((read = in.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            in.close();
-            out.flush();
-            out.close();
-
-            getSelected().setRetireComments(f.getAbsolutePath());
-            getSelected().setFileName(file.getFileName());
-            getSelected().setFileType(file.getContentType());
-            in = file.getInputstream();
-            getSelected().setBaImage(IOUtils.toByteArray(in));
-            getFacade().edit(getSelected());
-            return "";
-        } catch (IOException e) {
-            System.out.println("Error " + e.getMessage());
-            return "";
-        }
-
-    }
-
-    public String saveIcon() {
-        InputStream in;
-        if (file == null || "".equals(file.getFileName())) {
-            return "";
-        }
-        if (file == null) {
-            JsfUtil.addErrorMessage("Please select an image");
-            return "";
-        }
-        if (getSelected() == null || getSelected().getId() == null) {
-            JsfUtil.addErrorMessage("Please select staff member");
-            return "";
-        }
-
-        try {
-            in = getFile().getInputstream();
-            File f = new File(getSelected().getId().toString()+ Math.rint(100) + "");
-            FileOutputStream out = new FileOutputStream(f);
-
-            //            OutputStream out = new FileOutputStream(new File(fileName));
-            int read = 0;
-            byte[] bytes = new byte[1024];
-            while ((read = in.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            in.close();
-            out.flush();
-            out.close();
-
-            getSelected().setRetireComments(f.getAbsolutePath());
-            getSelected().setFileNameIcon(file.getFileName());
-            getSelected().setFileTypeIcon(file.getContentType());
-            in = file.getInputstream();
-            getSelected().setBaImageIcon(IOUtils.toByteArray(in));
-            getFacade().edit(getSelected());
-            return "";
-        } catch (IOException e) {
-            ////System.out.println("Error " + e.getMessage());
-            return "";
-        }
-
-    }
-
-    public String saveThumb() {
-        InputStream in;
-        if (file == null || "".equals(file.getFileName())) {
-            return "";
-        }
-        if (file == null) {
-            JsfUtil.addErrorMessage("Please select an image");
-            return "";
-        }
-        if (getSelected() == null || getSelected().getId() == null) {
-            JsfUtil.addErrorMessage("Please select staff member");
-            return "";
-        }
-
-        try {
-            in = getFile().getInputstream();
-            File f = new File(getSelected().getId().toString()+ Math.rint(100) + "");
-            FileOutputStream out = new FileOutputStream(f);
-
-            //            OutputStream out = new FileOutputStream(new File(fileName));
-            int read = 0;
-            byte[] bytes = new byte[1024];
-            while ((read = in.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            in.close();
-            out.flush();
-            out.close();
-
-            getSelected().setRetireComments(f.getAbsolutePath());
-            getSelected().setFileNameThumb(file.getFileName());
-            getSelected().setFileTypeThumb(file.getContentType());
-            in = file.getInputstream();
-            getSelected().setBaImageThumb(IOUtils.toByteArray(in));
-            getFacade().edit(getSelected());
-            return "";
-        } catch (IOException e) {
-            ////System.out.println("Error " + e.getMessage());
-            return "";
-        }
-
-    }
-
-    public String importClientsFromExcel() {
-
-        importedClients = new ArrayList<>();
-
-        if (uploadDetails == null || uploadDetails.trim().equals("")) {
-            JsfUtil.addErrorMessage("Add Column Names");
-            return "";
-        }
-
-        String[] cols = uploadDetails.split("\\r?\\n");
-        if (cols == null || cols.length < 5) {
-            JsfUtil.addErrorMessage("No SUfficient Columns");
-            return "";
-        }
-
-        try {
-            File inputWorkbook;
-            Workbook w;
-            Cell cell;
-            InputStream in;
-            try {
-                in = file.getInputstream();
-                File f;
-                f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
-                FileOutputStream out = new FileOutputStream(f);
-                int read = 0;
-                byte[] bytes = new byte[1024];
-                while ((read = in.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-                in.close();
-                out.flush();
-                out.close();
-
-                inputWorkbook = new File(f.getAbsolutePath());
-
-                JsfUtil.addSuccessMessage("Excel File Opened");
-                w = Workbook.getWorkbook(inputWorkbook);
-                Sheet sheet = w.getSheet(0);
-
-                errorCode = "";
-
-                int startRow = 1;
-
-                Long temId = 0L;
-
-                for (int i = startRow; i < sheet.getRows(); i++) {
-
-                    Map m = new HashMap();
-
-                    Product c = new Product();
-                    Person p = new Person();
-                    c.setPerson(p);
-
-                    int colNo = 0;
-
-                    for (String colName : cols) {
-                        cell = sheet.getCell(colNo, i);
-                        String cellString = cell.getContents();
-                        switch (colName) {
-                            case "client_name":
-                                c.getPerson().setName(cellString);
-                                break;
-                            case "client_phn_number":
-                                c.setPhn(cellString);
-                                break;
-                            case "client_sex":
-                                Item sex;
-                                if (cellString.toLowerCase().contains("f")) {
-                                    sex = itemController.findItemByCode("sex_female");
-                                } else {
-                                    sex = itemController.findItemByCode("sex_male");
-                                }
-                                c.getPerson().setSex(sex);
-                                break;
-                            case "client_citizenship":
-                                Item cs;
-                                if (cellString == null) {
-                                    cs = null;
-                                } else if (cellString.toLowerCase().contains("sri")) {
-                                    cs = itemController.findItemByCode("citizenship_local");
-                                } else {
-                                    cs = itemController.findItemByCode("citizenship_foreign");
-                                }
-                                c.getPerson().setCitizenship(cs);
-                                break;
-
-                            case "client_ethnic_group":
-                                Item eg = null;
-                                if (cellString == null || cellString.trim().equals("")) {
-                                    eg = null;
-                                } else if (cellString.equalsIgnoreCase("Sinhala")) {
-                                    eg = itemController.findItemByCode("sinhalese");
-                                } else if (cellString.equalsIgnoreCase("moors")) {
-                                    eg = itemController.findItemByCode("citizenship_local");
-                                } else if (cellString.equalsIgnoreCase("SriLankanTamil")) {
-                                    eg = itemController.findItemByCode("tamil");
-                                } else {
-                                    eg = itemController.findItemByCode("ethnic_group_other");;
-                                }
-                                c.getPerson().setEthinicGroup(eg);
-                                break;
-                            case "client_religion":
-                                Item re = null;
-                                if (cellString == null || cellString.trim().equals("")) {
-                                    re = null;
-                                } else if (cellString.equalsIgnoreCase("Buddhist")) {
-                                    re = itemController.findItemByCode("buddhist");
-                                } else if (cellString.equalsIgnoreCase("Christian")) {
-                                    re = itemController.findItemByCode("christian");
-                                } else if (cellString.equalsIgnoreCase("Hindu")) {
-                                    re = itemController.findItemByCode("hindu");
-                                } else {
-                                    re = itemController.findItemByCode("religion_other");;
-                                }
-                                c.getPerson().setReligion(re);
-                                break;
-                            case "client_marital_status":
-                                Item ms = null;
-                                if (cellString == null || cellString.trim().equals("")) {
-                                    ms = null;
-                                } else if (cellString.equalsIgnoreCase("Married")) {
-                                    ms = itemController.findItemByCode("married");
-                                } else if (cellString.equalsIgnoreCase("Separated")) {
-                                    ms = itemController.findItemByCode("seperated");
-                                } else if (cellString.equalsIgnoreCase("Single")) {
-                                    ms = itemController.findItemByCode("unmarried");
-                                } else {
-                                    ms = itemController.findItemByCode("marital_status_other");;
-                                }
-                                c.getPerson().setMariatalStatus(ms);
-                                break;
-                            case "client_title":
-                                Item title = null;
-                                String ts = cellString;
-                                switch (ts) {
-                                    case "Baby":
-                                        title = itemController.findItemByCode("baby");
-                                        break;
-                                    case "Babyof":
-                                        title = itemController.findItemByCode("baby_of");
-                                        break;
-                                    case "Mr":
-                                        title = itemController.findItemByCode("mr");
-                                        break;
-                                    case "Mrs":
-                                        title = itemController.findItemByCode("mrs");
-                                        break;
-                                    case "Ms":
-                                        title = itemController.findItemByCode("ms");
-                                        break;
-                                    case "Prof":
-                                        title = itemController.findItemByCode("prof");
-                                        break;
-                                    case "Rev":
-                                    case "Thero":
-                                        title = itemController.findItemByCode("rev");
-                                        break;
-                                }
-                                c.getPerson().setTitle(title);
-                                break;
-                            case "client_nic_number":
-                                c.getPerson().setNic(cellString);
-                                break;
-                            case "client_data_of_birth":
-                                Date tdob = commonController.dateFromString(cellString, "yyyy/MM/dd");
-                                c.getPerson().setDateOfBirth(tdob);
-                                break;
-                            case "client_permanent_address":
-                                c.getPerson().setAddress(cellString);
-                                break;
-                            case "client_current_address":
-                                c.getPerson().setAddress(cellString);
-                                break;
-                            case "client_mobile_number":
-                                c.getPerson().setPhone1(cellString);
-                                break;
-                            case "client_home_number":
-                                c.getPerson().setPhone2(cellString);
-                                break;
-                            case "client_registered_at":
-                                Date reg = commonController.dateFromString(cellString, "MM/dd/yyyy hh:mm:ss");
-                                c.getPerson().setCreatedAt(reg);
-                                c.setCreatedAt(reg);
-                                break;
-                            case "client_gn_area":
-                                System.out.println("GN");
-                                System.out.println("cellString = " + cellString);
-
-                                
-                                break;
-                        }
-
-                        colNo++;
-                    }
-
-                    c.setId(temId);
-                    temId++;
-
-                    importedClients.add(c);
-
-                }
-
-                sc.facade.util.JsfUtil.addSuccessMessage("Succesful. All the data in Excel File Impoted to the database");
-                errorCode = "";
-                return "save_imported_clients";
-            } catch (IOException ex) {
-                errorCode = ex.getMessage();
-                sc.facade.util.JsfUtil.addErrorMessage(ex.getMessage());
-                return "";
-            } catch (BiffException ex) {
-                sc.facade.util.JsfUtil.addErrorMessage(ex.getMessage());
-                errorCode = ex.getMessage();
-                return "";
-            }
-        } catch (IndexOutOfBoundsException e) {
-            errorCode = e.getMessage();
-            return "";
-        }
-    }
-
-    public void prepareToCapturePhotoWithWebCam() {
-        goingToCaptureWebCamPhoto = true;
-    }
-
-    public void finishCapturingPhotoWithWebCam() {
-        goingToCaptureWebCamPhoto = false;
-    }
-
-    public void onTabChange(TabChangeEvent event) {
-
-        // //System.out.println("profileTabActiveIndex = " + profileTabActiveIndex);
-        TabView tabView = (TabView) event.getComponent();
-
-        profileTabActiveIndex = tabView.getChildren().indexOf(event.getTab());
-
-    }
-
-    
-    public void addNewProperty() {
-        if (selected == null) {
-            JsfUtil.addErrorMessage("No Product is Selected");
-            return;
-        }
-        if (siComponentItem == null) {
-            JsfUtil.addErrorMessage("No Property Item is Selected");
-            return;
-        }
-        if (item == null) {
-            JsfUtil.addErrorMessage("No Display Item is Selected");
-            return;
-        }
-        siComponentItem.setItem(item);
-        siComponentItem.setProduct(selected);
-
-        Double on = Double.valueOf(selectedItems.size() + 1);
-        siComponentItem.setOrderNo(on);
-        siComponentItemController.save(siComponentItem);
-
-        getSelected().getSiComponentItems().add(siComponentItem);
-        saveProduct(selected);
-
-        siComponentItem = new SiComponentItem();
-        item = null;
-        getSelectedItems();
+        return toListAllProducts();
     }
 
     public String searchByNamePublic() {
@@ -1049,138 +195,15 @@ public class ProductController implements Serializable {
             selected = null;
             return "/searched_products_empty";
         }
-        if(selectedProducts.size()==1){
-            selected= selectedProducts.get(0);
+        if (selectedProducts.size() == 1) {
+            selected = selectedProducts.get(0);
             return "/product";
         }
         selected = null;
         return "/searched_products";
     }
 
-    public String searchByPropertyValuePublic() {
-        if (indexItem == null) {
-            JsfUtil.addErrorMessage("No search Category");
-            return "";
-        }
-        selectedProducts = listProductsByPropertyItem(indexItem);
-        if (selectedProducts == null || selectedProducts.isEmpty()) {
-            JsfUtil.addErrorMessage("No Results Found. Try different search criteria.");
-            return "";
-        }
-        selected = null;
-        return toSelectProductPublic();
-    }
-
-    public String searchByPublicIndex() {
-        System.out.println("searchByPublicIndex");
-
-        List<Item> searchItems = new ArrayList<>();
-        List<Product> textProducts;
-        List<Product> catProducts1;
-        List<Product> catProducts2;
-
-        List<Product> allProducts;
-
-        if (searchingName.trim().equals("")) {
-            textProducts = listAllProducts();
-        } else {
-            textProducts = listProductsByName(searchingName);
-            textProducts.addAll(listProductsByPropertyItem(searchingName));
-        }
-        if (textProducts == null) {
-            textProducts = new ArrayList<>();
-        }
-
-        allProducts = textProducts;
-
-        if (searchItem1 != null) {
-            catProducts1 = listProductsByPropertyItem(searchItem1);
-            allProducts = commonController.commonItems(allProducts, catProducts1);
-        }
-        if (searchItem2 != null) {
-            catProducts2 = listProductsByPropertyItem(searchItem2);
-            allProducts = commonController.commonItems(allProducts, catProducts2);
-        }
-
-        System.out.println("toSelectProductPublic 1");
-
-        selectedProducts = allProducts;
-
-        selected = null;
-        searchItem3 = null;
-        searchItem4 = null;
-        searchItem5 = null;
-        searchItem6 = null;
-        return toSelectProductPublic();
-    }
-
-    public String searchByPublic() {
-        System.out.println("searchByPublic");
-
-        List<Item> searchItems = new ArrayList<>();
-        List<Product> textProducts;
-        List<Product> catProducts1;
-        List<Product> catProducts2;
-
-        List<Product> catProducts3;
-        List<Product> catProducts4;
-        List<Product> catProducts5;
-        List<Product> catProducts6;
-
-        List<Product> allProducts;
-
-        if (searchingName.trim().equals("")) {
-            textProducts = listAllProducts();
-        } else {
-            textProducts = listProductsByName(searchingName);
-            textProducts.addAll(listProductsByPropertyItem(searchingName));
-        }
-        if (textProducts == null) {
-            textProducts = new ArrayList<>();
-        }
-
-        allProducts = textProducts;
-
-        if (searchItem1 != null) {
-            catProducts1 = listProductsByPropertyItem(searchItem1);
-            allProducts = commonController.commonItems(allProducts, catProducts1);
-        }
-        if (searchItem2 != null) {
-            catProducts2 = listProductsByPropertyItem(searchItem2);
-            allProducts = commonController.commonItems(allProducts, catProducts2);
-        }
-        if (searchItem3 != null) {
-            catProducts3 = listProductsByPropertyItem(searchItem3);
-            allProducts = commonController.commonItems(allProducts, catProducts3);
-        }
-        if (searchItem4 != null) {
-            catProducts4 = listProductsByPropertyItem(searchItem4);
-            allProducts = commonController.commonItems(allProducts, catProducts4);
-        }
-        if (searchItem5 != null) {
-            catProducts5 = listProductsByPropertyItem(searchItem5);
-            allProducts = commonController.commonItems(allProducts, catProducts5);
-        }
-        if (searchItem6 != null) {
-            catProducts6 = listProductsByPropertyItem(searchItem6);
-            allProducts = commonController.commonItems(allProducts, catProducts6);
-        }
-
-        System.out.println("toSelectProductPublic 1");
-
-        selectedProducts = allProducts;
-
-        selected = null;
-
-        return toSelectProductPublic();
-    }
-
     public void clearSearchItems() {
-        searchItem1 = null;
-        searchItem2 = null;
-        searchItem3 = null;
-        searchItem4 = null;
-        searchItem5 = null;
         searchingName = "";
     }
 
@@ -1202,137 +225,9 @@ public class ProductController implements Serializable {
         }
     }
 
-    public String searchByAnyId() {
-        if (searchingId == null) {
-            searchingId = "";
-        }
-
-        selectedProducts = listPatientsByIDs(searchingId.trim().toUpperCase());
-
-        if (selectedProducts == null || selectedProducts.isEmpty()) {
-            JsfUtil.addErrorMessage("No Results Found. Try different search criteria.");
-            return "/product/search_by_name";
-        }
-        if (selectedProducts.size() == 1) {
-            selected = selectedProducts.get(0);
-            selectedProducts = null;
-            searchingId = "";
-            return toProductProfile();
-        } else {
-            selected = null;
-            searchingId = "";
-            return toSelectProduct();
-        }
-    }
-
     public void clearSearchByName() {
         searchingId = "";
         searchingName = "";
-    }
-
-//    public List<Product> listProductsByPropertyItem(Item item) {
-//        String j;
-//
-//        j = "select distinct(si.product) from SiComponentItem si "
-//                + " where si.retired<>:ret "
-//                + " and si.itemValue=:q "
-//                + " group by si.product "
-//                + " order by si.product.name";
-//
-//        Map m = new HashMap();
-//        m.put("q", item);
-//        m.put("ret", true);
-//        System.out.println("item.getName() = " + item.getName());
-//        System.out.println("item.getId() = " + item.getId());
-//        System.out.println("j = " + j);
-//        System.out.println("m = " + m);
-//        return getFacade().findByJpql(j, m);
-//    }
-    public List<Product> listProductsByPropertyItem(List<Item> items) {
-        String j;
-        j = "select distinct(si.product) from SiComponentItem si "
-                + " where si.retired<>:ret "
-                + " and si.itemValue in :q "
-                + " group by si.product "
-                + " order by si.product.name";
-        Map m = new HashMap();
-        m.put("q", items);
-        m.put("ret", true);
-        return getFacade().findByJpql(j, m);
-    }
-
-    public List<Product> listProductsByPropertyItem(Item scItem) {
-        List<Item> tis = new ArrayList<>();
-        tis.add(scItem);
-        String j;
-        j = "select distinct(si.product) from SiComponentItem si "
-                + " where si.retired<>:ret "
-                + " and si.itemValue in :q "
-                + " group by si.product "
-                + " order by si.product.name";
-        Map m = new HashMap();
-        m.put("q", tis);
-        m.put("ret", true);
-        return getFacade().findByJpql(j, m);
-    }
-
-    public List<Product> listProductsByPropertyItem(String scItem) {
-        if (scItem == null) {
-            return new ArrayList<>();
-        }
-        String j;
-        j = "select distinct(si.product) from SiComponentItem si "
-                + " where si.retired<>:ret "
-                + " and (lower(si.itemValue.name) like :q or lower(si.shortTextValue) like :q) "
-                + " group by si.product "
-                + " order by si.product.name";
-        Map m = new HashMap();
-        m.put("q", "%" + scItem.trim().toLowerCase() + "%");
-        m.put("ret", true);
-
-       
-
-        return getFacade().findByJpql(j, m);
-    }
-
-    public List<Product> listProductsByName(String phn) {
-        String j = "select c from Product c "
-                + " where c.retired=false "
-                + " and (upper(c.name) like :q or upper(c.sname) like :q) "
-                + " order by c.name";
-        Map m = new HashMap();
-        m.put("q", "%" + phn.trim().toUpperCase() + "%");
-        return getFacade().findByJpql(j, m);
-    }
-
-    @Deprecated
-    public List<Product> listPatientsByPhone(String phn) {
-        String j = "select c from Product c where c.retired=false and (upper(c.person.phone1)=:q or upper(c.person.phone2)=:q) order by c.phn";
-        Map m = new HashMap();
-        m.put("q", phn.trim().toUpperCase());
-        return getFacade().findByJpql(j, m);
-    }
-
-    @Deprecated
-    public List<Product> listPatientsByIDs(String ids) {
-        if (ids == null || ids.trim().equals("")) {
-            return null;
-        }
-        String j = "select c from Product c "
-                + " where c.retired=false "
-                + " and ("
-                + " upper(c.person.phone1)=:q "
-                + " or "
-                + " upper(c.person.phone2)=:q "
-                + " or "
-                + " upper(c.person.nic)=:q "
-                + " or "
-                + " upper(c.phn)=:q "
-                + " ) "
-                + " order by c.phn";
-        Map m = new HashMap();
-        m.put("q", ids.trim().toUpperCase());
-        return getFacade().findByJpql(j, m);
     }
 
     public Product prepareCreate() {
@@ -1427,38 +322,6 @@ public class ProductController implements Serializable {
         this.searchingId = searchingId;
     }
 
-    public String getSearchingPhn() {
-        return searchingPhn;
-    }
-
-    public void setSearchingPhn(String searchingPhn) {
-        this.searchingPhn = searchingPhn;
-    }
-
-    public String getSearchingPassportNo() {
-        return searchingPassportNo;
-    }
-
-    public void setSearchingPassportNo(String searchingPassportNo) {
-        this.searchingPassportNo = searchingPassportNo;
-    }
-
-    public String getSearchingDrivingLicenceNo() {
-        return searchingDrivingLicenceNo;
-    }
-
-    public void setSearchingDrivingLicenceNo(String searchingDrivingLicenceNo) {
-        this.searchingDrivingLicenceNo = searchingDrivingLicenceNo;
-    }
-
-    public String getSearchingNicNo() {
-        return searchingNicNo;
-    }
-
-    public void setSearchingNicNo(String searchingNicNo) {
-        this.searchingNicNo = searchingNicNo;
-    }
-
     public String getSearchingName() {
         return searchingName;
     }
@@ -1480,20 +343,7 @@ public class ProductController implements Serializable {
     }
 
     public void setSelected(Product selected) {
-
-        if (selected != null && selected.getId() != null) {
-            this.selected = getFacade().find(selected.getId());
-            if (this.getSelected() != null && this.getSelected().getSiComponentItems() != null) {
-                for (SiComponentItem i : this.getSelected().getSiComponentItems()) {
-                    System.out.println("i = " + i.getItem().getCode());
-                    System.out.println("i = " + i.isRetired());
-                    System.out.println("i = " + i.getValueAsString());
-                }
-            }
-        } else {
         this.selected = selected;
-    }
-        selectedItems = null;
     }
 
     private ProductFacade getFacade() {
@@ -1501,9 +351,6 @@ public class ProductController implements Serializable {
     }
 
     public List<Product> getItems() {
-//        if (items == null) {
-//            items = getFacade().findAll();
-//        }
         return items;
     }
 
@@ -1511,9 +358,6 @@ public class ProductController implements Serializable {
         return getFacade().findByJpql(jpql, m);
     }
 
-    public Product getClient(java.lang.Long id) {
-        return getFacade().find(id);
-    }
 
     public List<Product> getItemsAvailableSelectMany() {
         return getFacade().findAll();
@@ -1527,14 +371,6 @@ public class ProductController implements Serializable {
         return webUserController;
     }
 
-    public String getSearchingPhoneNumber() {
-        return searchingPhoneNumber;
-    }
-
-    public void setSearchingPhoneNumber(String searchingPhoneNumber) {
-        this.searchingPhoneNumber = searchingPhoneNumber;
-    }
-
     public List<Product> getSelectedProducts() {
         return selectedProducts;
     }
@@ -1543,103 +379,7 @@ public class ProductController implements Serializable {
         this.selectedProducts = selectedProducts;
     }
 
-    public YearMonthDay getYearMonthDay() {
-        if (yearMonthDay == null) {
-            yearMonthDay = new YearMonthDay();
-        }
-        return yearMonthDay;
-    }
-
-    public void setYearMonthDay(YearMonthDay yearMonthDay) {
-        this.yearMonthDay = yearMonthDay;
-    }
-
-    public Institution getSelectedClinic() {
-        return selectedClinic;
-    }
-
-    public void setSelectedClinic(Institution selectedClinic) {
-        this.selectedClinic = selectedClinic;
-    }
-
-    public List<SiComponentItem> getSelectedItemsDisplay() {
-        generateSiComponentItems();
-        return selectedItemsDisplay;
-    }
-
-    public void setSelectedItemsDisplay(List<SiComponentItem> selectedItemsDisplay) {
-        this.selectedItemsDisplay = selectedItemsDisplay;
-    }
-
-    public int getProfileTabActiveIndex() {
-        return profileTabActiveIndex;
-    }
-
-    public void setProfileTabActiveIndex(int profileTabActiveIndex) {
-        this.profileTabActiveIndex = profileTabActiveIndex;
-    }
-
-
-
-    public boolean isGoingToCaptureWebCamPhoto() {
-        return goingToCaptureWebCamPhoto;
-    }
-
-    public void setGoingToCaptureWebCamPhoto(boolean goingToCaptureWebCamPhoto) {
-        this.goingToCaptureWebCamPhoto = goingToCaptureWebCamPhoto;
-    }
-
-    public String getUploadDetails() {
-        if (uploadDetails == null || uploadDetails.trim().equals("")) {
-            uploadDetails
-                    = "client_phn_number" + "\n"
-                    + "client_nic_number" + "\n"
-                    + "client_title" + "\n"
-                    + "client_name" + "\n"
-                    + "client_sex" + "\n"
-                    + "client_data_of_birth" + "\n"
-                    + "client_citizenship" + "\n"
-                    + "client_ethnic_group" + "\n"
-                    + "client_religion" + "\n"
-                    + "client_marital_status" + "\n"
-                    + "client_permanent_address" + "\n"
-                    + "client_gn_area" + "\n"
-                    + "client_mobile_number" + "\n"
-                    + "client_home_number" + "\n"
-                    + "client_email" + "\n"
-                    + "client_registered_at" + "\n";
-        }
-
-        return uploadDetails;
-    }
-
-    public void setUploadDetails(String uploadDetails) {
-        this.uploadDetails = uploadDetails;
-    }
-
-    public UploadedFile getFile() {
-        return file;
-    }
-
-    public void setFile(UploadedFile file) {
-        this.file = file;
-    }
-
-    public List<Product> getImportedClients() {
-        return importedClients;
-    }
-
-    public void setImportedClients(List<Product> importedClients) {
-        this.importedClients = importedClients;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
+   
 
     public ItemController getItemController() {
         return itemController;
@@ -1648,8 +388,6 @@ public class ProductController implements Serializable {
     public CommonController getCommonController() {
         return commonController;
     }
-
-
 
     public Institution getInstitution() {
         return institution;
@@ -1675,46 +413,7 @@ public class ProductController implements Serializable {
         this.idTo = idTo;
     }
 
-    public Date getClinicDate() {
-        return clinicDate;
-    }
-
-    public void setClinicDate(Date clinicDate) {
-        this.clinicDate = clinicDate;
-    }
-
-    public Boolean getNicExists() {
-        return nicExists;
-    }
-
-    public void setNicExists(Boolean nicExists) {
-        this.nicExists = nicExists;
-    }
-
-    public Boolean getPhnExists() {
-        return phnExists;
-    }
-
-    public void setPhnExists(Boolean phnExists) {
-        this.phnExists = phnExists;
-    }
-
-    public Boolean getPassportExists() {
-        return passportExists;
-    }
-
-    public void setPassportExists(Boolean passportExists) {
-        this.passportExists = passportExists;
-    }
-
-    public Boolean getDlExists() {
-        return dlExists;
-    }
-
-    public void setDlExists(Boolean dlExists) {
-        this.dlExists = dlExists;
-    }
-
+    
     public InstitutionController getInstitutionController() {
         return institutionController;
     }
@@ -1753,72 +452,7 @@ public class ProductController implements Serializable {
         this.item = item;
     }
 
-    public SiComponentItem getSiComponentItem() {
-        if (siComponentItem == null) {
-            siComponentItem = new SiComponentItem();
-        }
-        siComponentItem.setItem(item);
-        return siComponentItem;
-    }
-
-    public void setSiComponentItem(SiComponentItem siComponentItem) {
-        this.siComponentItem = siComponentItem;
-    }
-
-    public List<SiComponentItem> getSelectedItems() {
-        if (selected == null) {
-            return new ArrayList<>();
-        }
-        selectedItems = siComponentItemController.findProductItems(selected);
-//        if (selectedItems == null) {
-//            selectedItems = siComponentItemController.findProductItems(selected);
-//        }
-        if (selectedItems == null) {
-            selectedItems = new ArrayList<>();
-        }
-        return selectedItems;
-    }
-
-    public void setSelectedItems(List<SiComponentItem> selectedItems) {
-        this.selectedItems = selectedItems;
-    }
-
-    public ComponentFacade getComponentFacade() {
-        return componentFacade;
-    }
-
-    public SiComponentItemController getSiComponentItemController() {
-        return siComponentItemController;
-    }
-
-    public List<Product> getPopularProducts() {
-        return getApplicationController().getPopularProducts();
-    }
-
-    public List<Item> getIndexItems() {
-        return indexItems;
-    }
-
-    public void setIndexItems(List<Item> indexItems) {
-        this.indexItems = indexItems;
-    }
-
-    public String getIndexItemsCode() {
-        return indexItemsCode;
-    }
-
-    public void setIndexItemsCode(String indexItemsCode) {
-        this.indexItemsCode = indexItemsCode;
-    }
-
-    public Item getIndexItem() {
-        return indexItem;
-    }
-
-    public void setIndexItem(Item indexItem) {
-        this.indexItem = indexItem;
-    }
-
+    
     public List<Product> getFeaturedProducts() {
         return applicationController.getFeaturedProducts();
     }
@@ -1836,53 +470,7 @@ public class ProductController implements Serializable {
         this.featuredProduct = featuredProduct;
     }
 
-    public Item getSearchItem1() {
-        return searchItem1;
-    }
-
-    public void setSearchItem1(Item searchItem1) {
-        this.searchItem1 = searchItem1;
-    }
-
-    public Item getSearchItem2() {
-        return searchItem2;
-    }
-
-    public void setSearchItem2(Item searchItem2) {
-        this.searchItem2 = searchItem2;
-    }
-
-    public Item getSearchItem3() {
-        return searchItem3;
-    }
-
-    public void setSearchItem3(Item searchItem3) {
-        this.searchItem3 = searchItem3;
-    }
-
-    public Item getSearchItem4() {
-        return searchItem4;
-    }
-
-    public void setSearchItem4(Item searchItem4) {
-        this.searchItem4 = searchItem4;
-    }
-
-    public Item getSearchItem5() {
-        return searchItem5;
-    }
-
-    public void setSearchItem5(Item searchItem5) {
-        this.searchItem5 = searchItem5;
-    }
-
-    public Item getSearchItem6() {
-        return searchItem6;
-    }
-
-    public void setSearchItem6(Item searchItem6) {
-        this.searchItem6 = searchItem6;
-    }
+    
 
     public List<Product> listAllProducts() {
         String j;
@@ -1892,6 +480,26 @@ public class ProductController implements Serializable {
         Map m = new HashMap();
         m.put("ret", true);
         return getFacade().findByJpql(j, m);
+    }
+
+    public Product getProduct(Object id){
+        return getFacade().find(id);
+    }
+    
+    private List<Product> listProductsByName(String searchingName) {
+        List<Product> lst;
+        String j = "Select p from Product p "
+                + " where p.retired<>:ret "
+                + " and lower(p.name) like :q "
+                + " order by p.name";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("q", "%" + searchingName.toLowerCase() + "%");
+        lst = getFacade().findByJpql(j, m);
+        if(lst==null){
+            lst = new ArrayList<>();
+        }
+        return lst;
     }
 
     // </editor-fold>
@@ -1908,7 +516,7 @@ public class ProductController implements Serializable {
             }
             ProductController controller = (ProductController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "productController");
-            return controller.getClient(getKey(value));
+            return controller.getProduct(getKey(value));
         }
 
         java.lang.Long getKey(String value) {

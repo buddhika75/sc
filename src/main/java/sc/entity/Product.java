@@ -57,35 +57,18 @@ public class Product implements Serializable {
     @Lob
     private String description;
     
+    @Lob
+    private String information;
+    
     private Double retailPrice;
     
     private Double discountPrice;
 
     private long viewCount;
 
-    @Deprecated
-    @OneToOne(cascade = CascadeType.ALL)
-    private Person person;
+    
 
-    private String phn;
-
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    private byte[] baImage = new byte[1];
-    private String fileName;
-    private String fileType;
-
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    private byte[] baImageIcon = new byte[1];
-    private String fileNameIcon;
-    private String fileTypeIcon;
-
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    private byte[] baImageThumb = new byte[1];
-    private String fileNameThumb;
-    private String fileTypeThumb;
+    
 
     private boolean featured;
 
@@ -146,7 +129,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "Product{" + "phn=" + phn + '}';
+        return "Product{" + "id=" + id + '}';
     }
 
 // </editor-fold>
@@ -163,16 +146,7 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Person getPerson() {
-        if (person == null) {
-            person = new Person();
-        }
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
+    
 
     public WebUser getCreatedBy() {
         return createdBy;
@@ -254,13 +228,7 @@ public class Product implements Serializable {
         this.retiredReversedAt = retiredReversedAt;
     }
 
-    public String getPhn() {
-        return phn;
-    }
-
-    public void setPhn(String phn) {
-        this.phn = phn;
-    }
+   
 
 // </editor-fold>
     public List<SiComponentItem> getSiComponentItems() {
@@ -306,29 +274,7 @@ public class Product implements Serializable {
         this.viewCount = viewCount;
     }
 
-    public byte[] getBaImage() {
-        return baImage;
-    }
-
-    public void setBaImage(byte[] baImage) {
-        this.baImage = baImage;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
-    }
+   
 
     public boolean isFeatured() {
         return featured;
@@ -338,53 +284,7 @@ public class Product implements Serializable {
         this.featured = featured;
     }
 
-    public byte[] getBaImageIcon() {
-        return baImageIcon;
-    }
-
-    public void setBaImageIcon(byte[] baImageIcon) {
-        this.baImageIcon = baImageIcon;
-    }
-
-    public String getFileNameIcon() {
-        return fileNameIcon;
-    }
-
-    public void setFileNameIcon(String fileNameIcon) {
-        this.fileNameIcon = fileNameIcon;
-    }
-
-    public String getFileTypeIcon() {
-        return fileTypeIcon;
-    }
-
-    public void setFileTypeIcon(String fileTypeIcon) {
-        this.fileTypeIcon = fileTypeIcon;
-    }
-
-    public byte[] getBaImageThumb() {
-        return baImageThumb;
-    }
-
-    public void setBaImageThumb(byte[] baImageThumb) {
-        this.baImageThumb = baImageThumb;
-    }
-
-    public String getFileNameThumb() {
-        return fileNameThumb;
-    }
-
-    public void setFileNameThumb(String fileNameThumb) {
-        this.fileNameThumb = fileNameThumb;
-    }
-
-    public String getFileTypeThumb() {
-        return fileTypeThumb;
-    }
-
-    public void setFileTypeThumb(String fileTypeThumb) {
-        this.fileTypeThumb = fileTypeThumb;
-    }
+   
 
     public String getShortNameTmp() {
         if (name == null) {
@@ -498,6 +398,14 @@ public class Product implements Serializable {
 
     public void setDepartment(Item department) {
         this.department = department;
+    }
+
+    public String getInformation() {
+        return information;
+    }
+
+    public void setInformation(String information) {
+        this.information = information;
     }
 
 }

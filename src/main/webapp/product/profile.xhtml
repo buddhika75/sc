@@ -15,48 +15,90 @@
                 <h:panelGroup rendered="#{webUserController.loggedUser ne null}" >
 
                     <h:form >
-                        <p:panelGrid columns="1" >
+                        <p:panelGrid columns="1" style="width: 99%; margin: auto;" >
                             <f:facet name="header" >
-                                <p:outputLabel value="Product Profile" ></p:outputLabel>
+                                <p:outputLabel value="Product Profile - #{productController.selected.name}" ></p:outputLabel>
                             </f:facet>
                             <p:panelGrid columns="4" >
-                                <p:commandButton ajax="false" value="To Edit"
-                                                 action="#{productController.toEditProduct()}"></p:commandButton>
-
-
+                                <p:commandButton ajax="false" value="To Edit Details"
+                                                 action="#{productController.toEditProduct()}">
+                                </p:commandButton>
+                                <p:commandButton ajax="false" 
+                                                 action="#{uploadController.toUploadsNewProductImage()}"
+                                                 value="To Manage Images" >
+                                    <f:setPropertyActionListener 
+                                        target="#{uploadController.product}" value="#{productController.selected}" ></f:setPropertyActionListener>
+                                </p:commandButton>
+                                <p:commandButton ajax="false" value="To List Products"
+                                                 action="#{productController.toListAllProducts()}">
+                                </p:commandButton>
                             </p:panelGrid>
 
-                            <p:panelGrid columns="3" >
-                                <p:graphicImage id="photo" value="#{productController.getSelectedImage()}" cache="FALSE">
-                                </p:graphicImage> 
-                                <p:graphicImage id="photoThumb" value="#{productController.getSelectedImageThumb()}" cache="FALSE">
-                                </p:graphicImage> 
-                                <p:graphicImage id="photoIcon" value="#{productController.getSelectedImageIcon()}" cache="FALSE">
-                                </p:graphicImage> 
-                            </p:panelGrid>
+                            <h:panelGrid columns="2" >
+
+                                <p:outputLabel value="Name:"  />
+                                <p:outputLabel value="#{productController.selected.name}" title="Name" >
+                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                                </p:outputLabel>
 
 
-                            <p:dataTable rendered="true" value="#{productController.selectedItemsDisplay}" var="i" >
-                                <p:column headerText="Property">
-                                    <h:outputLabel value="#{i.item.displayName}" ></h:outputLabel>
-                                </p:column>
-                                <p:column headerText="Value">
-                                    <h:outputLabel rendered="#{i.displayAsLabel}" value="#{i.valueAsStringDisplay}" >
-                                    </h:outputLabel>
-                                    <h:outputLink value="#{i.valueAsStringDisplay}"  rendered="#{i.displayAsLink}"
-                                                  target="_blank">
-                                        #{i.valueAsStringDisplay}
-                                    </h:outputLink>
-                                </p:column>
-                                <p:column headerText="Design" rendered="false">
-                                    <h:outputLabel  value="Label - #{i.displayAsLabel}" >
-                                    </h:outputLabel>
-                                    <br/>
-                                    <h:outputLabel   value="Link - #{i.displayAsLink}" >
-                                    </h:outputLabel>
+                                <p:outputLabel value="Short Name:"  />
+                                <p:outputLabel value="#{productController.selected.sname}" title="Name" >
+                                </p:outputLabel>
 
-                                </p:column>
-                            </p:dataTable>
+                                <p:outputLabel value="Department"  />
+                                <p:outputLabel id="dep"  value="#{productController.selected.department}" >
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Retail Price" />
+                                <p:outputLabel id="rp" value="#{productController.selected.retailPrice}" >
+                                </p:outputLabel>
+
+
+                                <p:outputLabel value="Discounted Price"  />
+                                <p:outputLabel id="dp" value="#{productController.selected.discountPrice}" >
+                                </p:outputLabel>
+
+
+                                <p:outputLabel value="Descreption:"  />
+                                <p:outputLabel  id="des" 
+                                                value="#{productController.selected.description}"  >
+                                </p:outputLabel>
+
+
+                                <p:outputLabel value="Information"  />
+                                <p:outputLabel  id="info" 
+                                                value="#{productController.selected.information}"  >
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Created By"  />
+                                <h:panelGroup >
+                                    <p:outputLabel value="#{productController.selected.createdBy.person.name}"  />
+                                </h:panelGroup>
+
+
+                                <p:outputLabel value="Created At"  />
+                                <h:panelGroup >
+                                    <p:outputLabel value="#{productController.selected.createdAt}"  >
+                                        <f:convertDateTime pattern="dd MMMM yyyy hh:mm a" ></f:convertDateTime>
+                                    </p:outputLabel>
+                                </h:panelGroup>
+
+
+                                <p:outputLabel value="Last Edited By"  />
+                                <h:panelGroup>
+                                    <p:outputLabel value="#{productController.selected.lastEditBy.person.name}"  />
+                                </h:panelGroup>
+
+
+                                <p:outputLabel value="Last Edited At"  />
+                                <h:panelGroup>
+                                    <p:outputLabel value="#{productController.selected.createdAt}"  >
+                                        <f:convertDateTime pattern="dd MMMM yyyy hh:mm a" ></f:convertDateTime>
+                                    </p:outputLabel>
+                                </h:panelGroup>
+
+                            </h:panelGrid>
 
 
                         </p:panelGrid>
@@ -64,40 +106,6 @@
                     </h:form>
 
                 </h:panelGroup>
-
-                <h:panelGrid columns="2" >
-
-                    <p:outputLabel value="Created By"  />
-                    <h:panelGroup >
-                        <p:outputLabel value="#{productController.selected.createdBy.person.name}"  />
-                    </h:panelGroup>
-
-
-                    <p:outputLabel value="Created At"  />
-                    <h:panelGroup >
-                        <p:outputLabel value="#{productController.selected.createdAt}"  >
-                            <f:convertDateTime pattern="dd MMMM yyyy hh:mm a" ></f:convertDateTime>
-                        </p:outputLabel>
-                    </h:panelGroup>
-
-
-                    <p:outputLabel value="Last Edited By"  />
-                    <h:panelGroup>
-                        <p:outputLabel value="#{productController.selected.lastEditBy.person.name}"  />
-                    </h:panelGroup>
-
-
-                    <p:outputLabel value="Last Edited At"  />
-                    <h:panelGroup>
-                        <p:outputLabel value="#{productController.selected.createdAt}"  >
-                            <f:convertDateTime pattern="dd MMMM yyyy hh:mm a" ></f:convertDateTime>
-                        </p:outputLabel>
-                    </h:panelGroup>
-
-
-
-                </h:panelGrid>
-
 
                 <br/>
                 <br/>
