@@ -1155,13 +1155,20 @@ public class ProductController implements Serializable {
     }
 
     public String searchByNamePublic() {
+        System.out.println("searchByNamePublic");
+        System.out.println("searchingName = " + searchingName);
         selectedProducts = listProductsByName(searchingName);
+        System.out.println("selectedProducts = " + selectedProducts.size());
         if (selectedProducts == null || selectedProducts.isEmpty()) {
-            JsfUtil.addErrorMessage("No Results Found. Try different search criteria.");
-            return "";
+            selected = null;
+            return "/searched_products_empty";
+        }
+        if(selectedProducts.size()==1){
+            selected= selectedProducts.get(0);
+            return "/product";
         }
         selected = null;
-        return toSelectProductPublic();
+        return "/searched_products";
     }
 
     public String searchByPropertyValuePublic() {
