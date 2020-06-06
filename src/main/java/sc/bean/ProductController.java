@@ -88,6 +88,7 @@ public class ProductController implements Serializable {
     private String searchingName;
     private Date from;
     private Date to;
+    private Item department;
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -98,6 +99,17 @@ public class ProductController implements Serializable {
 
     public String toSelectProduct() {
         return "/product/select";
+    }
+
+    public String toDepartmentProducts() {
+        if (department == null) {
+            return "";
+        }
+        items = listProductsOfDepartment(department);
+        if (items == null || items.isEmpty()) {
+            return "searched_products_empty";
+        }
+        return "searched_products";
     }
 
     public String toSelectProductPublic() {
@@ -113,7 +125,7 @@ public class ProductController implements Serializable {
         selectedProducts = getFacade().findByJpql(j, m);
         return "/product/select";
     }
-    
+
     public String toSearchProducts() {
         selectedProducts = null;
         selected = null;
@@ -155,9 +167,6 @@ public class ProductController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
-    
-    
-    
     public List<Product> completeProduct(String qry) {
         List<Product> cs = new ArrayList<>();
         if (qry == null) {
@@ -358,7 +367,6 @@ public class ProductController implements Serializable {
         return getFacade().findByJpql(jpql, m);
     }
 
-
     public List<Product> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
@@ -378,8 +386,6 @@ public class ProductController implements Serializable {
     public void setSelectedProducts(List<Product> selectedProducts) {
         this.selectedProducts = selectedProducts;
     }
-
-   
 
     public ItemController getItemController() {
         return itemController;
@@ -413,7 +419,6 @@ public class ProductController implements Serializable {
         this.idTo = idTo;
     }
 
-    
     public InstitutionController getInstitutionController() {
         return institutionController;
     }
@@ -452,7 +457,6 @@ public class ProductController implements Serializable {
         this.item = item;
     }
 
-    
     public List<Product> getFeaturedProducts() {
         return applicationController.getFeaturedProducts();
     }
@@ -470,8 +474,6 @@ public class ProductController implements Serializable {
         this.featuredProduct = featuredProduct;
     }
 
-    
-
     public List<Product> listAllProducts() {
         String j;
         j = "select s from Product s "
@@ -482,10 +484,10 @@ public class ProductController implements Serializable {
         return getFacade().findByJpql(j, m);
     }
 
-    public Product getProduct(Object id){
+    public Product getProduct(Object id) {
         return getFacade().find(id);
     }
-    
+
     private List<Product> listProductsByName(String searchingName) {
         List<Product> lst;
         String j = "Select p from Product p "
@@ -496,10 +498,35 @@ public class ProductController implements Serializable {
         m.put("ret", true);
         m.put("q", "%" + searchingName.toLowerCase() + "%");
         lst = getFacade().findByJpql(j, m);
-        if(lst==null){
+        if (lst == null) {
             lst = new ArrayList<>();
         }
         return lst;
+    }
+    
+    
+    private List<Product> listProductsOfDepartment(Item dept) {
+        List<Product> lst;
+        String j = "Select p from Product p "
+                + " where p.retired<>:ret "
+                + " and p.department :q "
+                + " order by p.name";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("q", dept);
+        lst = getFacade().findByJpql(j, m);
+        if (lst == null) {
+            lst = new ArrayList<>();
+        }
+        return lst;
+    }
+
+    public Item getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Item department) {
+        this.department = department;
     }
 
     // </editor-fold>
