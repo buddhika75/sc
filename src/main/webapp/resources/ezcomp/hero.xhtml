@@ -6,7 +6,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui">
 
     <!-- INTERFACE -->
     <cc:interface>
@@ -61,14 +62,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="hero__item set-bg" data-setbg="#{streamedContentController.imageByCodeInlineWithoutGet('header__logo')}">
-                            <style type="text/css">
-                                background-image:#{streamedContentController.imageByCodeInlineWithoutGet('header__logo')};
-                            </style>
+                        <div class="hero__item" style="position:relative;" >
+                            <p:graphicImage style="position: absolute; z-index: -1; left: 0px;top:0px;padding: 0px;margin: 0px;"
+                                            cache="false"  value="#{streamedContentController.imageByCodeInlineWithoutGet('hero_banner')}"  >
+                            </p:graphicImage>
                             <div class="hero__text">
-                                <span>FRUIT FRESH</span>
-                                <h2>Vegetable <br />100% Organic</h2>
-                                <p>Free Pickup and Delivery Available</p>
+                                <span>#{itemController.findItemNameByCode('index_topic')}</span>
+                                <h2>#{itemController.findItemNameByCode('index_text_1')} <br />#{itemController.findItemNameByCode('index_text_2')}</h2>
+                                <p>#{itemController.findItemNameByCode('index_text_3')}</p>
                                 <a href="#" class="primary-btn">SHOP NOW</a>
                             </div>
                         </div>
