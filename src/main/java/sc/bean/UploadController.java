@@ -102,6 +102,8 @@ public class UploadController implements Serializable {
 
     public String saveAndUploadProductImage() {
         saveAndUpload();
+        Long tpid =getSelected().getId();
+        setSelected(getFacade().find(tpid));
         return "/product/select";
     }
 
@@ -119,6 +121,7 @@ public class UploadController implements Serializable {
         } else {
             getFacade().edit(getSelected());
         }
+        getSelected().getStrId();
         if (selected.getImageType() == null) {
             Item imageType = itemController.findItemByCode("site_image");
             selected.setImageType(imageType);

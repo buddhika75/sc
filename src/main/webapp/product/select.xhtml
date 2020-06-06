@@ -42,6 +42,13 @@
 
                             <p:column>
                                 <f:facet name="header">
+                                    <h:outputText value="Dept"/>
+                                </f:facet>
+                                <h:outputText value="#{item.department.name}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
                                     <h:outputText value="Actions"/>
                                 </f:facet>
                                 <p:commandButton ajax="false" action="#{productController.toProductProfile()}" value="View Profile" >

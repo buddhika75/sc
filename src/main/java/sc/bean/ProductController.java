@@ -509,7 +509,7 @@ public class ProductController implements Serializable {
         List<Product> lst;
         String j = "Select p from Product p "
                 + " where p.retired<>:ret "
-                + " and p.department :q "
+                + " and p.department = :q "
                 + " order by p.name";
         Map m = new HashMap();
         m.put("ret", true);

@@ -373,7 +373,7 @@ public class Product implements Serializable {
             return "";
         }
         String tid = "";
-        for (Upload u : uploads) {
+        for (Upload u : getUploads()) {
             String itc = u.getImageType().getCode();
 
             if (itc.equals(imageTypeCode)) {
