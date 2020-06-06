@@ -21,12 +21,15 @@
         <ez:hero/>
 
         <!-- Breadcrumb Section Begin -->
-        <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+        <section class="breadcrumb-section"  style="position:relative;" >
+            <p:graphicImage style="position: absolute; z-index: -1; left: 0px;top:0px;padding: 0px;margin: 0px;"
+                            cache="false"  value="#{streamedContentController.imageByCodeInlineWithoutGet('breadcrumb')}"  >
+            </p:graphicImage>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <div class="breadcrumb__text">
-                            <h2>Vegetable’s Package</h2>
+                            <h2>#{productController.selected.name}</h2>
                             <div class="breadcrumb__option">
                                 <a href="./index.html">Home</a>
                                 <a href="./index.html">Vegetables</a>
@@ -46,6 +49,9 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="product__details__pic">
                             <div class="product__details__pic__item">
+                                <p:graphicImage class="product__details__pic__item--large"
+                                                cache="false"  value="#{productController.selectedImage}"  >
+                                </p:graphicImage>
                                 <img class="product__details__pic__item--large"
                                      src="img/product/details/product-details-1.jpg" alt=""/>
                             </div>

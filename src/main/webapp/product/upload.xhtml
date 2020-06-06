@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -11,13 +12,102 @@
 
             <ui:define name="content">
                 <h:panelGroup id="photoCap">
-                        <h:form enctype="multipart/form-data">
-                            <p:commandButton value="Capture" onclick="PF('pc').capture()"  rendered="#{productController.goingToCaptureWebCamPhoto}" />
-                            <p:commandButton ajax="false" value="Back" 
-                                             actionListener="#{productController.finishCapturingPhotoWithWebCam()}" 
-                                             action="profile"/>
-                        </h:form>
-                    </h:panelGroup>
+                    <h:form enctype="multipart/form-data">   
+
+                        <p:panelGrid columns="2" styleClass="alignTop" >
+                            <f:facet name="header" >
+                                <p:outputLabel value="#{uploadController.product.name} Images" ></p:outputLabel>
+                            </f:facet>
+
+                            <p:dataTable value="#{uploadController.productImages}" var="item" 
+                                         paginator="true"
+                                         rowKey="#{item.id}"
+                                         rows="10"
+                                         rowsPerPageTemplate="10,20,30,40,50"
+
+                                         >
+                                <p:column headerText="File Name">
+                                    <p:outputLabel value="#{item.fileName}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="File Type">
+                                    <p:outputLabel value="#{item.fileType}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Image Type">
+                                    <p:outputLabel value="#{item.imageType.name}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Action">
+                                    <p:commandButton value="Change" action="upload" ajax="false" >
+                                        <f:setPropertyActionListener target="#{uploadController.selected}" value="#{item}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column headerText="Thumbenail">
+                                    <p:graphicImage cache="false"  value="#{streamedContentController.imageBySterId}" style="height: 50px;" >
+                                        <f:param name="id" value="#{item.strId}" />
+                                    </p:graphicImage>
+                                </p:column>
+                            </p:dataTable>
+
+
+                            <p:panelGrid columns="2" >
+                                <f:facet name="header" >
+                                    <p:outputLabel value="Upload New Image" ></p:outputLabel>
+                                    <p:commandButton ajax="false" value="To Add New" action="#{uploadController.toUploadsNewProductImage()}" >
+                                    </p:commandButton>
+                                </f:facet>
+
+                                <p:outputLabel value="ID" >
+                                </p:outputLabel>
+                                <p:outputLabel value="#{uploadController.selected.strId}" >
+                                </p:outputLabel>
+                                
+                                <p:outputLabel value="File Name" >
+                                </p:outputLabel>
+                                <p:outputLabel value="#{uploadController.selected.fileName}" >
+                                </p:outputLabel>
+                                
+                                <p:outputLabel value="File Type" >
+                                </p:outputLabel>
+                                <p:outputLabel value="#{uploadController.selected.fileType}" >
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Product" >
+                                </p:outputLabel>
+                                <p:autoComplete value="#{uploadController.selected.product}"
+                                                completeMethod="#{productController.completeProduct}"
+                                                forceSelection="true"
+                                                required="true"
+                                                var="p"
+                                                itemLabel="#{p.name}"
+                                                itemValue="#{p}">
+                                </p:autoComplete>
+
+
+                                <p:outputLabel value="Image Type" >
+                                </p:outputLabel>
+                                <p:selectOneMenu  value="#{uploadController.selected.imageType}" >
+                                    <f:selectItem itemLabel="Select" ></f:selectItem>
+                                    <f:selectItems value="#{productController.findItemsByCodeOrderByDisplay('image_types')}" var="i" itemLabel="#{i.displayName}"
+                                                   itemValue="#{i}" ></f:selectItems>
+                                </p:selectOneMenu>
+
+
+
+                                <p:fileUpload value="#{uploadController.file}" mode="simple" skinSimple="true"/>
+                                <p:commandButton value="Submit" ajax="false"
+                                                 action="#{uploadController.saveAndUploadProductImage()}"  />
+
+                            </p:panelGrid>
+
+                        </p:panelGrid>
+
+
+
+
+
+
+
+                    </h:form>
+                </h:panelGroup>
             </ui:define>
 
         </ui:composition>

@@ -245,19 +245,7 @@ public class ProductController implements Serializable {
         return indexItems;
     }
 
-    public void checkPhnExists() {
-        phnExists = null;
-        if (selected == null) {
-            return;
-        }
-        if (selected.getPhn() == null) {
-            return;
-        }
-        if (selected.getPhn().trim().equals("")) {
-            return;
-        }
-        phnExists = checkPhnExists(selected.getPhn(), selected);
-    }
+    
 
     private void generateSiComponentItems() {
 
@@ -296,85 +284,20 @@ public class ProductController implements Serializable {
 
     }
 
-    public Boolean checkPhnExists(String phn, Product c) {
-        String jpql = "select count(c) from Product c "
-                + " where c.retired=:ret "
-                + " and c.phn=:phn ";
-        Map m = new HashMap();
-        m.put("ret", false);
-        m.put("phn", phn);
-        if (c != null && c.getId() != null) {
-            jpql += " and c <> :product";
-            m.put("product", c);
+    public List<Product>  completeProduct(String qry) {
+        List<Product> cs = new ArrayList<>();
+        if(qry==null){
+            return cs;
         }
-        Long count = getFacade().countByJpql(jpql, m);
-        if (count == null || count == 0l) {
-            return false;
-        } else {
-            return true;
-        }
-
-    }
-
-    public void checkNicExists() {
-        nicExists = null;
-        if (selected == null) {
-            return;
-        }
-        if (selected.getPerson() == null) {
-            return;
-        }
-        if (selected.getPerson().getNic() == null) {
-            return;
-        }
-        if (selected.getPerson().getNic().trim().equals("")) {
-            return;
-        }
-        nicExists = checkNicExists(selected.getPerson().getNic(), selected);
-    }
-
-    public Boolean checkNicExists(String nic, Product c) {
-        String jpql = "select count(c) from Product c "
-                + " where c.retired=:ret "
-                + " and c.person.nic=:nic ";
-        Map m = new HashMap();
-        m.put("ret", false);
-        m.put("nic", nic);
-        if (c != null && c.getPerson() != null && c.getPerson().getId() != null) {
-            jpql += " and c.person <> :person";
-            m.put("person", c.getPerson());
-        }
-        Long count = getFacade().countByJpql(jpql, m);
-        if (count == null || count == 0l) {
-            return false;
-        } else {
-            return true;
-        }
-
-    }
-
-    public void fixClientPersonCreatedAt() {
         String j = "select c from Product c "
-                + " where c.retired=:ret ";
+                + " where c.retired=:ret "
+                + " and (lower(c.name) like :qry or lower(c.sname) like :qry) "
+                + " order by c.name";
         Map m = new HashMap();
         m.put("ret", false);
-        List<Product> cs = getFacade().findByJpql(j, m);
-        for (Product c : cs) {
-
-            if (c.getCreatedAt() == null && c.getPerson().getCreatedAt() != null) {
-                c.setCreatedAt(c.getPerson().getCreatedAt());
-                getFacade().edit(c);
-            } else if (c.getCreatedAt() != null && c.getPerson().getCreatedAt() == null) {
-                c.getPerson().setCreatedAt(c.getCreatedAt());
-                getFacade().edit(c);
-            } else if (c.getCreatedAt() == null && c.getPerson().getCreatedAt() == null) {
-                c.getPerson().setCreatedAt(new Date());
-                c.setCreatedAt(new Date());
-                getFacade().edit(c);
-            }
-
-        }
-
+        m.put("qry", "%" + qry.trim().toLowerCase() + "%");
+        cs = getFacade().findByJpql(j, m);
+        return cs;
     }
 
     public void updateClientCreatedInstitution() {
@@ -477,19 +400,7 @@ public class ProductController implements Serializable {
         return "/systemAdmin/all_clients";
     }
 
-    public void saveSelectedImports() {
-        if (institution == null) {
-            JsfUtil.addErrorMessage("Institution ?");
-            return;
-        }
-        for (Product c : selectedProducts) {
-            c.setCreateInstitution(institution);
-            if (!checkPhnExists(c.getPhn(), null)) {
-                c.setId(null);
-                saveProduct(c);
-            }
-        }
-    }
+    
 
     public void fillClientsWithWrongPhnLength() {
         String j = "select c from Product c where length(c.phn) <>11 order by c.id";
@@ -597,32 +508,7 @@ public class ProductController implements Serializable {
         return toSearchClient();
     }
 
-    public void saveAllImports() {
-        if (institution == null) {
-            JsfUtil.addErrorMessage("Institution ?");
-            return;
-        }
-        for (Product c : importedClients) {
-            c.setCreateInstitution(institution);
-            if (!checkPhnExists(c.getPhn(), null)) {
-                c.setId(null);
-                saveProduct(c);
-            }
-        }
-    }
-
-//    public boolean phnExists(String phn) {
-//        String j = "select c from Product c where c.retired=:ret "
-//                + " and c.phn=:phn";
-//        Map m = new HashMap();
-//        m.put("ret", false);
-//        m.put("phn", phn);
-//        Product c = getFacade().findFirstByJpql(j, m);
-//        if (c == null) {
-//            return false;
-//        }
-//        return true;
-//    }
+    
     public StreamedContent getSelectedImage() {
         //System.err.println("Get Sigature By Id");
         FacesContext context = FacesContext.getCurrentInstance();

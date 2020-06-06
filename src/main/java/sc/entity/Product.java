@@ -33,6 +33,7 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    String strId;
 
     private static final long serialVersionUID = 1L;
 
@@ -381,6 +382,24 @@ public class Product implements Serializable {
         }
         String tn = name + "                                              ";
         return tn.substring(0, 35);
+    }
+    
+    public String getStrId() {
+        if(id==null) {
+            strId = "";
+        }else{
+            strId = id + "";
+        }
+        return strId;
+    }
+
+    public void setStrId(String strId) {
+        if(id==null) {
+            strId = "";
+        }else{
+            strId = id + "";
+        }
+        this.strId = strId;
     }
 
     public String getProductData() {

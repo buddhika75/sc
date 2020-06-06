@@ -25,11 +25,13 @@
 
 
                 <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="#{webUserController.toHome()}" />
-                
+
                 <p:submenu label="Products"  >
                     <p:menuitem ajax="false" value="Search" action="#{productController.toSearchClient()}" />
                     <p:menuitem ajax="false" value="List" action="#{productController.toListAllProducts()}" />
                     <p:menuitem ajax="false" value="Create New" action="#{productController.toAddNewProduct()}"  />
+                    <p:menuitem ajax="false" value="Add Images" action="#{uploadController.toUploadsNewProductImage()}"  />
+
                 </p:submenu>
 
 
@@ -40,7 +42,7 @@
                     <p:menuitem value="Images" action="/upload/index"  ajax="false"  />
                 </p:submenu>
 
-                
+
                 <p:submenu label="Settings"  >
                     <p:menuitem value="Change My Password" action="#{webUserController.toChangeMyPassword()}" ajax="false"  />
                     <p:menuitem value="Change My Details" action="#{webUserController.toChangeMyDetails()}" ajax="false"  />

@@ -33,7 +33,7 @@
                                  <p:outputLabel value="#{item.name}" ></p:outputLabel>
                             </p:column>
                              <p:column headerText="Code">
-                                 <p:outputLabel value="#{item.code}" ></p:outputLabel>
+                                 <p:outputLabel value="#{item.strId}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="File Name">
                                 <p:outputLabel value="#{item.fileName}" ></p:outputLabel>
@@ -41,7 +41,10 @@
                             <p:column headerText="File Type">
                                 <p:outputLabel value="#{item.fileType}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Uploaded At">
+                            <p:column headerText="Image Type" sortBy="#{item.imageType.name}" filterBy="#{item.imageType.name}" filterMatchMode="contains">
+                                 <p:outputLabel value="#{item.imageType.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Uploaded By">
                                 <p:outputLabel value="#{item.creater.person.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Uploaded At">
@@ -50,13 +53,13 @@
                                 </p:outputLabel>
                             </p:column>
                             <p:column headerText="Action">
-                                <p:commandButton value="Change" action="upload" >
+                                <p:commandButton value="Change" action="upload" ajax="false" >
                                     <f:setPropertyActionListener target="#{uploadController.selected}" value="#{item}" ></f:setPropertyActionListener>
                                 </p:commandButton>
                             </p:column>
                             <p:column headerText="Thumbenail">
-                                <p:graphicImage cache="false"  value="#{streamedContentController.imageByCode}" style="height: 50px;" >
-                                    <f:param name="id" value="#{item.code}" />
+                                <p:graphicImage cache="false"  value="#{streamedContentController.imageBySterId}" style="height: 50px;" >
+                                    <f:param name="id" value="#{item.strId}" />
                                 </p:graphicImage>
                             </p:column>
                         </p:dataTable>

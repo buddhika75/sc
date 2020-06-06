@@ -23,7 +23,7 @@
  */
 package sc.entity;
 
-import sc.enums.UploadType;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -69,8 +69,7 @@ public class Upload implements Serializable {
     Date retiredAt;
     String retireComments;
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    @Basic(fetch = FetchType.LAZY)
+    @Basic
     byte[] baImage;
     String fileName;
     String fileType;
@@ -78,8 +77,12 @@ public class Upload implements Serializable {
     String comments;
     @ManyToOne
     private Product project;
-    @Enumerated(EnumType.STRING)
-    private UploadType uploadType;
+    @ManyToOne
+    private Product product;
+    @ManyToOne
+    private Item imageType;
+    private String strId;
+    
     
     
 
@@ -216,13 +219,8 @@ public class Upload implements Serializable {
         this.project = project;
     }
 
-    public UploadType getUploadType() {
-        return uploadType;
-    }
 
-    public void setUploadType(UploadType uploadType) {
-        this.uploadType = uploadType;
-    }
+    
 
     public String getName() {
         return name;
@@ -238,6 +236,40 @@ public class Upload implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Item getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(Item imageType) {
+        this.imageType = imageType;
+    }
+
+    public String getStrId() {
+        if(id==null) {
+            strId = "";
+        }else{
+            strId = id + "";
+        }
+        return strId;
+    }
+
+    public void setStrId(String strId) {
+        if(id==null) {
+            strId = "";
+        }else{
+            strId = id + "";
+        }
+        this.strId = strId;
     }
 
 }

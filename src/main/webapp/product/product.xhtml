@@ -195,21 +195,21 @@
                         </h:form>
 
                         <h:panelGrid columns="1">
-                            <p:panel header="Image width 640" >
+                            <p:panel header="Detail 540 x 560" >
                                 <h:form enctype="multipart/form-data">        
                                     <p:fileUpload value="#{productController.file}" mode="simple" skinSimple="true"/>
                                     <br />
                                     <p:commandButton value="Submit" ajax="false" action="#{productController.saveImage()}"  />
                                 </h:form>
                             </p:panel>
-                            <p:panel header="Thumb 150x150" >
+                            <p:panel header="Thumb 270x270" >
                                 <h:form enctype="multipart/form-data">        
                                     <p:fileUpload value="#{productController.file}" mode="simple" skinSimple="true"/>
                                     <br />
                                     <p:commandButton value="Submit" ajax="false" action="#{productController.saveThumb()}"  />
                                 </h:form>
                             </p:panel>
-                            <p:panel header="Icon 50x50" >
+                            <p:panel header="Icon 120x120" >
                                 <h:form enctype="multipart/form-data">        
                                     <p:fileUpload value="#{productController.file}" mode="simple" skinSimple="true"/>
                                     <br />

@@ -18,6 +18,18 @@
                                 <p:outputLabel value="File Upload" ></p:outputLabel>
                             </f:facet>
 
+                            <p:outputLabel value="ID" >
+                            </p:outputLabel>
+                            <p:outputLabel value="#{uploadController.selected.strId}" ></p:outputLabel>
+
+                            <p:outputLabel value="File Name" >
+                            </p:outputLabel>
+                            <p:outputLabel value="#{uploadController.selected.fileName}" ></p:outputLabel>
+                            
+                             <p:outputLabel value="File Type" >
+                            </p:outputLabel>
+                            <p:outputLabel value="#{uploadController.selected.fileType}" ></p:outputLabel>
+
                             <p:outputLabel value="Name" >
                             </p:outputLabel>
                             <p:inputText value="#{uploadController.selected.name}" ></p:inputText>
@@ -27,7 +39,7 @@
                             <p:inputText value="#{uploadController.selected.code}" ></p:inputText>
 
                             <p:fileUpload value="#{uploadController.file}" mode="simple" skinSimple="true"/>
-                            <p:commandButton value="Submit" ajax="false" action="#{uploadController.saveAndUpload()}"  />
+                            <p:commandButton value="Submit" ajax="false" action="#{uploadController.saveAndUploadSiteImage()}"  />
 
                         </p:panelGrid>
 

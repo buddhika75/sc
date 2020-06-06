@@ -47,6 +47,9 @@
                                 <p:commandButton ajax="false" action="#{productController.toProductProfile()}" value="View Profile" >
                                     <f:setPropertyActionListener target="#{productController.selected}" value="#{item}" ></f:setPropertyActionListener>
                                 </p:commandButton>
+                                <p:commandButton ajax="false" action="#{uploadController.toUploadsNewProductImage()}" value="Manage Images" >
+                                    <f:setPropertyActionListener target="#{uploadController.product}" value="#{item}" ></f:setPropertyActionListener>
+                                </p:commandButton>
                             </p:column>
 
                         </p:dataTable>
