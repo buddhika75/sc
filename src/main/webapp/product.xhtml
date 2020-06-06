@@ -22,7 +22,7 @@
 
         <!-- Breadcrumb Section Begin -->
         <section class="breadcrumb-section"  style="position:relative;" >
-            <p:graphicImage style="position: absolute; z-index: -1; left: 0px;top:0px;padding: 0px;margin: 0px;"
+            <p:graphicImage style="height: 100%; position: absolute; z-index: -1; left: 0px;top:0px;padding: 0px;margin: 0px;"
                             cache="false"  value="#{streamedContentController.imageByCodeInlineWithoutGet('breadcrumb')}"  >
             </p:graphicImage>
             <div class="container">
@@ -49,11 +49,11 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="product__details__pic">
                             <div class="product__details__pic__item">
-                                <p:graphicImage class="product__details__pic__item--large"
-                                                cache="false"  value="#{productController.selectedImage}"  >
+                                <p:graphicImage cache="false"  
+                                                value="#{streamedContentController.imageBySterId}" class="product__details__pic__item--large" >
+                                    <f:param name="id" value="#{productController.selected.getUploadIdForImageType('product_image')}" />
                                 </p:graphicImage>
-                                <img class="product__details__pic__item--large"
-                                     src="img/product/details/product-details-1.jpg" alt=""/>
+                               
                             </div>
                             <div class="product__details__pic__slider owl-carousel">
                                 <img data-imgbigurl="img/product/details/product-details-2.jpg"

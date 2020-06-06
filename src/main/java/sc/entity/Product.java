@@ -25,6 +25,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Product implements Serializable {
 
+    @OneToMany(mappedBy = "product")
+    private List<Upload> uploads;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
     @OrderBy("orderNo")
     private List<SiComponentItem> siComponentItems;
@@ -383,20 +386,20 @@ public class Product implements Serializable {
         String tn = name + "                                              ";
         return tn.substring(0, 35);
     }
-    
+
     public String getStrId() {
-        if(id==null) {
+        if (id == null) {
             strId = "";
-        }else{
+        } else {
             strId = id + "";
         }
         return strId;
     }
 
     public void setStrId(String strId) {
-        if(id==null) {
+        if (id == null) {
             strId = "";
-        }else{
+        } else {
             strId = id + "";
         }
         this.strId = strId;
@@ -438,6 +441,30 @@ public class Product implements Serializable {
 
     public void setSname(String sname) {
         this.sname = sname;
+    }
+
+    public List<Upload> getUploads() {
+        return uploads;
+    }
+
+    public void setUploads(List<Upload> uploads) {
+        this.uploads = uploads;
+    }
+
+    
+    public String getUploadIdForImageType(String imageTypeCode) {
+        if (uploads == null) {
+            return "";
+        }
+        String tid = "";
+        for (Upload u : uploads) {
+            String itc = u.getImageType().getCode();
+
+            if (itc.equals(imageTypeCode)) {
+                tid = u.getStrId();
+            }
+        }
+        return tid;
     }
 
 }

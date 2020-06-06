@@ -27,10 +27,7 @@ package sc.entity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -75,9 +72,9 @@ public class Upload implements Serializable {
     String fileType;
     @Lob
     String comments;
-    @ManyToOne
-    private Product project;
-    @ManyToOne
+
+   
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
     @ManyToOne
     private Item imageType;
@@ -210,17 +207,6 @@ public class Upload implements Serializable {
     public void setComments(String comments) {
         this.comments = comments;
     }
-
-    public Product getProject() {
-        return project;
-    }
-
-    public void setProject(Product project) {
-        this.project = project;
-    }
-
-
-    
 
     public String getName() {
         return name;
