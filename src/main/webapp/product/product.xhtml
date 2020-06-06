@@ -49,146 +49,46 @@
                                 </p:inputText>
                                 <p:spacer ></p:spacer>
 
-
-                                <p:outputLabel value="Featured:" for="fea" />
-                                <p:selectBooleanButton id="fea" onLabel="Yes" offLabel="No" value="#{productController.selected.featured}" title="Name" >
-                                </p:selectBooleanButton>
+                                <p:outputLabel value="Department" for="dep" />
+                                <p:selectOneMenu id="dep"  value="#{productController.selected.department}" >
+                                    <f:selectItem itemLabel="Select" ></f:selectItem>
+                                    <f:selectItems value="#{productController.findItemsByCodeOrderByDisplay('departments')}" var="i" itemLabel="#{i.displayName}"
+                                                   itemValue="#{i}" ></f:selectItems>
+                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                                </p:selectOneMenu>
                                 <p:spacer ></p:spacer>
 
 
+                               
 
-                                <p:selectOneMenu  value="#{productController.item}" >
-                                    <f:selectItem itemLabel="Select" ></f:selectItem>
-                                    <f:selectItems value="#{productController.findItemsByCodeOrderByDisplay('product_data')}" var="i" itemLabel="#{i.displayName}"
-                                                   itemValue="#{i}" ></f:selectItems>
-                                    <p:ajax event="change" process="@this" update="propertyDetails" listener="#{productController.itemChanged}" ></p:ajax>
-                                    <p:ajax event="change" process="@this" update="propertyDetails" listener="#{productController.itemChanged}" ></p:ajax>
-                                </p:selectOneMenu>
+                                <p:outputLabel value="Retail Price" for="rp" />
+                                <p:inputText id="rp" value="#{productController.selected.retailPrice}" >
+                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                                </p:inputText>
+                                <p:spacer ></p:spacer>
 
-<!--                                <p:autoComplete value="#{productController.item}"
-                                                completeMethod="#{itemController.completeProductData}"
-                                                var="i" id="property"
-                                                itemLabel="#{i.name}"
-                                                itemValue="#{i}"
-                                                placeholder="Property">
-                                    <p:ajax event="itemSelect" process="@this" update="propertyDetails" listener="#{productController.itemChanged}" ></p:ajax>
-                                </p:autoComplete>-->
-                                <h:panelGroup >
-                                    <h:panelGroup id="propertyDetails" >
-                                        <h:panelGroup id="gpData" >
-                                            <h:panelGroup rendered="#{productController.siComponentItem.item.renderType eq 'Link'}" >
-                                                <h:panelGroup rendered="#{productController.siComponentItem.item.dataTypeShortText}" >
-                                                    <p:inputText id="itLink" value="#{productController.siComponentItem.shortTextValue}">
-                                                    </p:inputText>
-                                                </h:panelGroup>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{productController.siComponentItem.item.renderType eq 'Input_Text'}" >
-                                                <h:panelGroup rendered="#{productController.siComponentItem.item.dataTypeShortText}" >
-                                                    <p:inputText id="itStC" value="#{productController.siComponentItem.shortTextValue}">
-                                                    </p:inputText>
-                                                </h:panelGroup>
-                                                <h:panelGroup rendered="#{productController.siComponentItem.item.dataTypeInteger}" >
-                                                    <p:inputText id="itIntC" value="#{productController.siComponentItem.integerNumberValue}" >
-                                                    </p:inputText>
-                                                </h:panelGroup>
-                                                <h:panelGroup rendered="#{productController.siComponentItem.item.dataTypeReal}" >
-                                                    <p:inputText id="itRnC" value="#{productController.siComponentItem.realNumberValue}">
-                                                    </p:inputText>
-                                                </h:panelGroup>
-                                                <h:panelGroup rendered="#{productController.siComponentItem.item.dataTypeLong}" >
-                                                    <p:inputText id="itLongC" value="#{productController.siComponentItem.longNumberValue}" >
-                                                    </p:inputText>
-                                                </h:panelGroup>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{productController.siComponentItem.item.renderType eq 'Input_Text_Area'}" >
-                                                <h:inputTextarea id="txtItaL" value="#{productController.siComponentItem.longTextValue}"  >
-                                                </h:inputTextarea>
-                                            </h:panelGroup>
+                                <p:outputLabel value="Discounted Price" for="dp" />
+                                <p:inputText id="dp" value="#{productController.selected.discountPrice}" >
+                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                                </p:inputText>
+                                <p:spacer ></p:spacer>
 
-                                            <h:panelGroup rendered="#{productController.siComponentItem.item.dataTypeItem}" >
-
-                                                <h:panelGroup rendered="#{productController.siComponentItem.item.renderType eq 'Autocomplete'}" >
-                                                    <p:autoComplete id="acItem" value="#{productController.siComponentItem.itemValue}"
-                                                                    completeMethod="#{itemController.completeItemsofParentWithFIlter}"
-                                                                    var="ai" itemLabel="#{ai.name}" itemValue="#{ai}"
-                                                                    maxResults="15" forceSelection="true" 
-                                                                    minQueryLength="3"
-                                                                    >
-                                                        <f:attribute name="filter" value="#{productController.siComponentItem.item.categoryOfAvailableItems.code}" />
-                                                    </p:autoComplete>
-                                                </h:panelGroup>
-
-                                                <h:panelGroup rendered="#{productController.siComponentItem.item.renderType eq 'Drop_Down_Menu'}" >
-                                                    <p:selectOneMenu id="domIc" value="#{productController.siComponentItem.itemValue}" >
-                                                        <f:selectItem itemLabel="Please select" ></f:selectItem>
-                                                        <f:selectItems value="#{itemController.findItemList(productController.siComponentItem.item.categoryOfAvailableItems)}" var="li"
-                                                                       itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
-                                                    </p:selectOneMenu>
-                                                </h:panelGroup>
-
-                                            </h:panelGroup>
-
-                                            <h:panelGroup rendered="#{productController.siComponentItem.item.dataTypeInstitution}" >
-
-                                                <h:panelGroup rendered="#{productController.siComponentItem.item.renderType eq 'Autocomplete'}" >
-                                                    <p:autoComplete id="acIns" value="#{productController.siComponentItem.institutionValue}"
-                                                                    completeMethod="#{institutionController.completeInstitutions}"
-                                                                    var="ins" itemLabel="#{ins.name}" itemValue="#{ins}"
-                                                                    maxResults="15" forceSelection="true" 
-                                                                    minQueryLength="3"
-                                                                    >
-                                                    </p:autoComplete>
-                                                </h:panelGroup>
-
-                                            </h:panelGroup>
-
-
-                                        </h:panelGroup>
-
-
-                                    </h:panelGroup>
-                                </h:panelGroup>
-                                <p:commandButton ajax="false" value="Add" action="#{productController.addNewProperty()}" >
-                                </p:commandButton>
+                                <p:outputLabel value="Descreption:" for="des" />
+                                <p:editor  id="des" required="true" height="400" width="600"
+                                           value="#{productController.selected.description}"  >
+                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                                </p:editor>
+                                <p:spacer ></p:spacer>
+                                
+                                 <p:outputLabel value="Information" for="info" />
+                                <p:editor  id="info" required="true" height="400" width="600"
+                                           value="#{productController.selected.description}"  >
+                                    <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                                </p:editor>
+                                <p:spacer ></p:spacer>
 
                             </p:panelGrid>
 
-
-                            <p:dataTable rendered="true" value="#{productController.selectedItems}" var="i"
-                                         rowKey="#{i.id}"
-                                         rowIndexVar="n"
-                                         id="tbl"
-                                         >
-                                <p:column headerText="Order No" style="width: 3rem;">
-                                    <p:inputText value="#{i.orderNo}" >
-                                        <f:ajax event="blur" execute="@this" render="@all" listener="#{productController.saveAllImports()}" ></f:ajax>
-                                    </p:inputText>
-                                </p:column>
-                                <p:column headerText="Property" style="text-align: left; width: 20rem;">
-                                    <p:outputLabel value="#{i.item.displayName}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Value"  style="text-align: left;">
-                                    <p:outputLabel value="#{i.valueAsString}" ></p:outputLabel>
-                                </p:column>
-
-                                <p:column headerText="Actions"  style="width: 18rem;">
-                                    <p:commandButton ajax="false" value="Remove" action="#{productController.retireSelectedSiItem()}" >
-                                        <f:setPropertyActionListener value="#{i}" target="#{productController.siComponentItem}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-
-                                    <p:commandButton ajax="false" value="Up" action="#{productController.moveSiItemUp()}" >
-                                        <f:setPropertyActionListener value="#{i}" target="#{productController.siComponentItem}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-
-                                    <p:commandButton ajax="false" value="Down" action="#{productController.moveSiItemDown()}" >
-                                        <f:setPropertyActionListener value="#{i}" target="#{productController.siComponentItem}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-
-
-
-                                </p:column>
-
-                            </p:dataTable>
 
 
 

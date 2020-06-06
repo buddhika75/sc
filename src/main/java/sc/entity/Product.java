@@ -44,6 +44,9 @@ public class Product implements Serializable {
 
     @Column(length = 45)
     private String sname;
+    
+    @ManyToOne
+    private Item department;
 
     @Transient
     private String shortNameTmp;
@@ -53,6 +56,10 @@ public class Product implements Serializable {
 
     @Lob
     private String description;
+    
+    private Double retailPrice;
+    
+    private Double discountPrice;
 
     private long viewCount;
 
@@ -452,6 +459,8 @@ public class Product implements Serializable {
     }
 
     
+    
+    
     public String getUploadIdForImageType(String imageTypeCode) {
         if (uploads == null) {
             return "";
@@ -465,6 +474,30 @@ public class Product implements Serializable {
             }
         }
         return tid;
+    }
+
+    public Double getRetailPrice() {
+        return retailPrice;
+    }
+
+    public void setRetailPrice(Double retailPrice) {
+        this.retailPrice = retailPrice;
+    }
+
+    public Double getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(Double discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public Item getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Item department) {
+        this.department = department;
     }
 
 }
