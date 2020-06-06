@@ -48,11 +48,12 @@ public class Product implements Serializable {
     @ManyToOne
     private Item department;
 
-    @Transient
-    private String shortNameTmp;
 
     @Transient
     String productData;
+    
+    @Lob
+    private String intro;
 
     @Lob
     private String description;
@@ -63,12 +64,18 @@ public class Product implements Serializable {
     private Double retailPrice;
     
     private Double discountPrice;
+    
+    @ManyToOne
+    private Item weightUnit;
+    private Double weight;
+    
+    private String weightString;
 
     private long viewCount;
 
-    
+    private int reviewCount;
 
-    
+    private double rating = 4.5;
 
     private boolean featured;
 
@@ -391,6 +398,8 @@ public class Product implements Serializable {
     public void setDiscountPrice(Double discountPrice) {
         this.discountPrice = discountPrice;
     }
+    
+    
 
     public Item getDepartment() {
         return department;
@@ -404,8 +413,60 @@ public class Product implements Serializable {
         return information;
     }
 
+    
+    
     public void setInformation(String information) {
         this.information = information;
     }
 
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
+    }
+
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public Item getWeightUnit() {
+        return weightUnit;
+    }
+
+    public void setWeightUnit(Item weightUnit) {
+        this.weightUnit = weightUnit;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public String getWeightString() {
+        return weightString;
+    }
+
+    public void setWeightString(String weightString) {
+        this.weightString = weightString;
+    }
+
+    
+    
 }

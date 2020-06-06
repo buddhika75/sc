@@ -34,7 +34,7 @@
                                 </p:commandButton>
                             </p:panelGrid>
 
-                            <h:panelGrid columns="2" >
+                            <h:panelGrid columns="2" styleClass="alignTop" >
 
                                 <p:outputLabel value="Name:"  />
                                 <p:outputLabel value="#{productController.selected.name}" title="Name" >
@@ -60,14 +60,32 @@
                                 </p:outputLabel>
 
 
+
+                                <p:outputLabel value="Weight"  />
+                                <p:outputLabel  value="#{productController.selected.weight}" >
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Weight Unit"  />
+                                <p:outputLabel  value="#{productController.selected.weightUnit.name}" >
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Weight in Words"  />
+                                <p:outputLabel  value="#{productController.selected.weightString}" >
+                                </p:outputLabel>
+
+                                <p:outputLabel value="Intro:"  />
+                                <p:outputLabel  id="intro" escape="false"
+                                                value="#{productController.selected.intro}"  >
+                                </p:outputLabel>
+
                                 <p:outputLabel value="Descreption:"  />
-                                <p:outputLabel  id="des" 
+                                <p:outputLabel  id="des" escape="false"
                                                 value="#{productController.selected.description}"  >
                                 </p:outputLabel>
 
 
                                 <p:outputLabel value="Information"  />
-                                <p:outputLabel  id="info" 
+                                <p:outputLabel  id="info" escape="false"
                                                 value="#{productController.selected.information}"  >
                                 </p:outputLabel>
 

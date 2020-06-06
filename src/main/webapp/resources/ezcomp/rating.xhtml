@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="rating" type="java.lang.Double" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:panelGroup rendered="#{cc.attrs.rating le 0.5}" >
+            <i class="fa fa-star-half-o"></i>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{cc.attrs.rating gt 0.5 and cc.attrs.rating le 1.0 }" >
+            <i class="fa fa-star"></i>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{cc.attrs.rating gt 1.0 and cc.attrs.rating le 1.5 }" >
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half-o"></i>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{cc.attrs.rating gt 1.5 and cc.attrs.rating le 2.0 }" >
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{cc.attrs.rating gt 2.0 and cc.attrs.rating le 2.5 }" >
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half-o"></i>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{cc.attrs.rating gt 2.5 and cc.attrs.rating le 3.0 }" >
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{cc.attrs.rating gt 3.0 and cc.attrs.rating le 3.5 }" >
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half-o"></i>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{cc.attrs.rating gt 3.5 and cc.attrs.rating le 4.0 }" >
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{cc.attrs.rating gt 4.0 and cc.attrs.rating le 4.5 }" >
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half-o"></i>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{cc.attrs.rating gt 4.5 }" >
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+        </h:panelGroup>
+
+
+
+    </cc:implementation>
+</html>

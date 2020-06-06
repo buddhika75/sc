@@ -60,6 +60,29 @@
                             </p:inputText>
 
 
+                            <p:outputLabel value="Weight" for="wt" />
+                            <p:inputText id="wt" value="#{productController.selected.weight}" >
+                                <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                            </p:inputText>
+
+                            <p:outputLabel value="Department" for="wu" />
+                            <p:selectOneMenu id="wu"  value="#{productController.selected.weightUnit}" >
+                                <f:selectItem itemLabel="Select" ></f:selectItem>
+                                <f:selectItems value="#{itemController.findChildrenItemsByParentCode('units')}" var="i" itemLabel="#{i.name}"
+                                               itemValue="#{i}" ></f:selectItems>
+                                <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Weight in Words" for="wtw" />
+                            <p:inputText id="wtw" value="#{productController.selected.weightString}" >
+                                <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
+                            </p:inputText>
+
+                            <p:outputLabel value="Intro:" for="intro" />
+                            <p:editor  id="intro"  height="200"  style="width: 98%;margin: auto;"
+                                       value="#{productController.selected.intro}"  >
+                            </p:editor>
+
                             <p:outputLabel value="Descreption:" for="des" />
                             <p:editor  id="des"  height="400"  style="width: 98%;margin: auto;"
                                        value="#{productController.selected.description}"  >

@@ -77,6 +77,7 @@ public class ProductController implements Serializable {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Variables">
     private List<Product> items = null;
+    private List<Product> relatedProducts = null;
     private List<Product> selectedProducts = null;
     private Product featuredProduct;
     private Product selected;
@@ -503,8 +504,7 @@ public class ProductController implements Serializable {
         }
         return lst;
     }
-    
-    
+
     private List<Product> listProductsOfDepartment(Item dept) {
         List<Product> lst;
         String j = "Select p from Product p "
@@ -527,6 +527,19 @@ public class ProductController implements Serializable {
 
     public void setDepartment(Item department) {
         this.department = department;
+    }
+
+    public List<Product> getRelatedProducts() {
+        if (selected != null && selected.getDepartment() != null) {
+            relatedProducts = listProductsOfDepartment(selected.getDepartment());
+        }else{
+            relatedProducts = new ArrayList<>();
+        }
+        return relatedProducts;
+    }
+
+    public void setRelatedProducts(List<Product> relatedProducts) {
+        this.relatedProducts = relatedProducts;
     }
 
     // </editor-fold>

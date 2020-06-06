@@ -33,16 +33,15 @@
                             <div class="breadcrumb__option">
                                 <h:form >
                                     <h:commandLink action="index" >Home</h:commandLink>
-                                    <h:commandLink action="#{productController.toDepartmentProducts()}" >
+                                    <h:commandLink action="#{productController.toDepartmentProducts()}"
+                                                   value="#{productController.selected.department.name}">
                                         <f:setPropertyActionListener value="#{productController.selected.department}" 
                                                                      target="#{productController.department}" >
                                         </f:setPropertyActionListener>
                                     </h:commandLink>
+                                    <span>Product Details</span>
                                 </h:form>
-                                
-                                <a href="./index.html">Home</a>
-                                <a href="./index.html">Vegetables</a>
-                                <span>Vegetable’s Package</span>
+
                             </div>
                         </div>
                     </div>
@@ -64,33 +63,30 @@
                                 </p:graphicImage>
 
                             </div>
-                            <div class="product__details__pic__slider owl-carousel">
-                                <img data-imgbigurl="img/product/details/product-details-2.jpg"
-                                     src="img/product/details/thumb-1.jpg" alt=""/>
-                                <img data-imgbigurl="img/product/details/product-details-3.jpg"
-                                     src="img/product/details/thumb-2.jpg" alt=""/>
-                                <img data-imgbigurl="img/product/details/product-details-5.jpg"
-                                     src="img/product/details/thumb-3.jpg" alt=""/>
-                                <img data-imgbigurl="img/product/details/product-details-4.jpg"
-                                     src="img/product/details/thumb-4.jpg" alt=""/>
-                            </div>
+                            <h:panelGroup rendered="false" >
+                                <div class="product__details__pic__slider owl-carousel">
+                                    <img data-imgbigurl="img/product/details/product-details-2.jpg"
+                                         src="img/product/details/thumb-1.jpg" alt=""/>
+                                    <img data-imgbigurl="img/product/details/product-details-3.jpg"
+                                         src="img/product/details/thumb-2.jpg" alt=""/>
+                                    <img data-imgbigurl="img/product/details/product-details-5.jpg"
+                                         src="img/product/details/thumb-3.jpg" alt=""/>
+                                    <img data-imgbigurl="img/product/details/product-details-4.jpg"
+                                         src="img/product/details/thumb-4.jpg" alt=""/>
+                                </div>
+                            </h:panelGroup>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="product__details__text">
-                            <h3>Vetgetable’s Package</h3>
+                            <h3>#{productController.selected.department.name}</h3>
                             <div class="product__details__rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-half-o"></i>
-                                <span>(18 reviews)</span>
+                                <ez:rating rating="#{productController.selected.rating}"/>    
+                                <span>(#{productController.selected.reviewCount} reviews)</span>
                             </div>
-                            <div class="product__details__price">$50.00</div>
-                            <p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam
-                                vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet
-                                quam vehicula elementum sed sit amet dui. Proin eget tortor risus.</p>
+                            <div class="product__details__price">Rs. #{productController.selected.retailPrice}</div>
+                            <h:outputLabel value="#{productController.selected.intro}" escape="false" >
+                            </h:outputLabel>
                             <div class="product__details__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
@@ -103,15 +99,7 @@
                             <ul>
                                 <li><b>Availability</b> <span>In Stock</span></li>
                                 <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
-                                <li><b>Weight</b> <span>0.5 kg</span></li>
-                                <li><b>Share on</b>
-                                    <div class="share">
-                                        <a href="#"><i class="fa fa-facebook"></i></a>
-                                        <a href="#"><i class="fa fa-twitter"></i></a>
-                                        <a href="#"><i class="fa fa-instagram"></i></a>
-                                        <a href="#"><i class="fa fa-pinterest"></i></a>
-                                    </div>
-                                </li>
+                                <li><b>Weight</b> <span>#{productController.selected.weightString}</span></li>
                             </ul>
                         </div>
                     </div>
