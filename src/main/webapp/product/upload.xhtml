@@ -17,6 +17,7 @@
                         <p:panelGrid columns="2" styleClass="alignTop" >
                             <f:facet name="header" >
                                 <p:outputLabel value="#{uploadController.product.name} Images" ></p:outputLabel>
+                                <p:commandButton value="Back" action="select" ajax="false" ></p:commandButton>
                             </f:facet>
 
                             <p:dataTable value="#{uploadController.productImages}" var="item" 
@@ -39,6 +40,9 @@
                                     <p:commandButton value="Change" action="upload" ajax="false" >
                                         <f:setPropertyActionListener target="#{uploadController.selected}" value="#{item}" ></f:setPropertyActionListener>
                                     </p:commandButton>
+                                    <p:commandButton value="Remove" action="#{uploadController.removeSelected()}" ajax="false" >
+                                        <f:setPropertyActionListener target="#{uploadController.selected}" value="#{item}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
                                 </p:column>
                                 <p:column headerText="Thumbenail">
                                     <p:graphicImage cache="false"  value="#{streamedContentController.imageBySterId}" style="height: 50px;" >
@@ -59,12 +63,12 @@
                                 </p:outputLabel>
                                 <p:outputLabel value="#{uploadController.selected.strId}" >
                                 </p:outputLabel>
-                                
+
                                 <p:outputLabel value="File Name" >
                                 </p:outputLabel>
                                 <p:outputLabel value="#{uploadController.selected.fileName}" >
                                 </p:outputLabel>
-                                
+
                                 <p:outputLabel value="File Type" >
                                 </p:outputLabel>
                                 <p:outputLabel value="#{uploadController.selected.fileType}" >
@@ -86,7 +90,7 @@
                                 </p:outputLabel>
                                 <p:selectOneMenu  value="#{uploadController.selected.imageType}" >
                                     <f:selectItem itemLabel="Select" ></f:selectItem>
-                                    <f:selectItems value="#{itemController.findChildrenItemsByParentCode('image_types')}" var="i" itemLabel="#{i.displayName}"
+                                    <f:selectItems value="#{itemController.findChildrenItemsByParentCode('image_types')}" var="i" itemLabel="#{i.name}"
                                                    itemValue="#{i}" ></f:selectItems>
                                 </p:selectOneMenu>
 

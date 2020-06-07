@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,12 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Product implements Serializable {
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.ALL)
     private List<Upload> uploads;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
-    @OrderBy("orderNo")
-    private List<SiComponentItem> siComponentItems;
 
 // <editor-fold defaultstate="collapsed" desc="Attributes">
     @Id
@@ -44,31 +37,30 @@ public class Product implements Serializable {
 
     @Column(length = 45)
     private String sname;
-    
+
     @ManyToOne
     private Item department;
 
-
     @Transient
     String productData;
-    
+
     @Lob
     private String intro;
 
     @Lob
     private String description;
-    
+
     @Lob
     private String information;
-    
+
     private Double retailPrice;
-    
+
     private Double discountPrice;
-    
+
     @ManyToOne
     private Item weightUnit;
     private Double weight;
-    
+
     private String weightString;
 
     private long viewCount;
@@ -153,8 +145,6 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    
-
     public WebUser getCreatedBy() {
         return createdBy;
     }
@@ -235,20 +225,7 @@ public class Product implements Serializable {
         this.retiredReversedAt = retiredReversedAt;
     }
 
-   
-
 // </editor-fold>
-    public List<SiComponentItem> getSiComponentItems() {
-        if (siComponentItems == null) {
-            siComponentItems = new ArrayList<>();
-        }
-        return siComponentItems;
-    }
-
-    public void setSiComponentItems(List<SiComponentItem> siComponentItems) {
-        this.siComponentItems = siComponentItems;
-    }
-
     public Institution getCreateInstitution() {
         return createInstitution;
     }
@@ -281,8 +258,6 @@ public class Product implements Serializable {
         this.viewCount = viewCount;
     }
 
-   
-
     public boolean isFeatured() {
         return featured;
     }
@@ -290,8 +265,6 @@ public class Product implements Serializable {
     public void setFeatured(boolean featured) {
         this.featured = featured;
     }
-
-   
 
     public String getShortNameTmp() {
         if (name == null) {
@@ -323,33 +296,7 @@ public class Product implements Serializable {
         return productData;
     }
 
-    public String findSlutionData(String code) {
-        productData = "";
-        for (SiComponentItem sici : getSiComponentItems()) {
-            if (sici.getItem().getCode().equals(code) && !sici.isRetired()) {
-                productData += sici.getValueAsString() + " ";
-            };
-        }
-        if (productData == null) {
-            productData = "";
-        }
-        productData = productData.trim();
-        return productData;
-    }
-
     public String getSname() {
-        if (sname == null || sname.trim().equals("")) {
-            String tm;
-            if (name == null) {
-                tm = "                                                                     ";
-            } else {
-                tm = name + "                                                                     ";
-            }
-            sname = tm.substring(0, 26);
-        }
-        if (sname.length() > 26) {
-            sname = sname.substring(0, 26);
-        }
         return sname;
     }
 
@@ -358,6 +305,9 @@ public class Product implements Serializable {
     }
 
     public List<Upload> getUploads() {
+        if (uploads == null) {
+            uploads = new ArrayList<>();
+        }
         return uploads;
     }
 
@@ -365,21 +315,20 @@ public class Product implements Serializable {
         this.uploads = uploads;
     }
 
-    
-    
-    
     public String getUploadIdForImageType(String imageTypeCode) {
-        if (uploads == null) {
+        System.out.println("imageTypeCode = " + imageTypeCode);
+        if (getUploads() == null) {
             return "";
         }
         String tid = "";
         for (Upload u : getUploads()) {
             String itc = u.getImageType().getCode();
-
+            System.out.println("itc = " + itc);
             if (itc.equals(imageTypeCode)) {
                 tid = u.getStrId();
             }
         }
+        System.out.println("tid = " + tid);
         return tid;
     }
 
@@ -398,8 +347,6 @@ public class Product implements Serializable {
     public void setDiscountPrice(Double discountPrice) {
         this.discountPrice = discountPrice;
     }
-    
-    
 
     public Item getDepartment() {
         return department;
@@ -413,8 +360,6 @@ public class Product implements Serializable {
         return information;
     }
 
-    
-    
     public void setInformation(String information) {
         this.information = information;
     }
@@ -467,6 +412,4 @@ public class Product implements Serializable {
         this.weightString = weightString;
     }
 
-    
-    
 }

@@ -102,8 +102,8 @@ public class UploadController implements Serializable {
 
     public String saveAndUploadProductImage() {
         saveAndUpload();
-        Long tpid =getSelected().getId();
-        setSelected(getFacade().find(tpid));
+        Long tpid = getSelected().getId();
+        selected = null;
         return "/product/select";
     }
 
@@ -112,9 +112,16 @@ public class UploadController implements Serializable {
         return "/upload/upload_list";
     }
 
-    public String saveAndUpload() {
-        if(getSelected()==null) {
-            return "";
+    public void removeSelected() {
+        if (selected == null) {
+            return;
+        }
+        getFacade().remove(selected);
+    }
+
+    public void saveAndUpload() {
+        if (getSelected() == null) {
+            return;
         }
         if (getSelected().getId() == null) {
             getFacade().create(getSelected());
@@ -128,11 +135,11 @@ public class UploadController implements Serializable {
         }
         InputStream in;
         if (file == null || "".equals(file.getFileName())) {
-            return "";
+            return;
         }
         if (file == null) {
             JsfUtil.addErrorMessage("Please select an image");
-            return "";
+            return;
         }
         if (selected.getImageType() == null) {
             Item imageType = itemController.findItemByCode("site_image");
@@ -140,14 +147,13 @@ public class UploadController implements Serializable {
         }
         if (getSelected() == null) {
             JsfUtil.addErrorMessage("Please select an Upload");
-            return "";
+            return;
         }
         if (getSelected().getId() == null) {
             getFacade().create(getSelected());
         } else {
             getFacade().edit(getSelected());
         }
-
         try {
             in = getFile().getInputstream();
             File f = new File(getSelected().getId().toString() + Math.rint(100) + "");
@@ -173,10 +179,10 @@ public class UploadController implements Serializable {
             } else {
                 getFacade().edit(getSelected());
             }
-            return toUploadsNewSiteImage();
+            return;
         } catch (IOException e) {
             System.out.println("Error " + e.getMessage());
-            return "";
+            return;
         }
 
     }

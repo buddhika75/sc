@@ -32,9 +32,9 @@
                                 <ul>
                                     <ui:repeat value="#{itemController.findChildrenItemsByParentCode('departments')}" var="c" >
                                         <li>
-                                            <h:commandLink  action="#{productController.searchByPropertyValuePublic()}" >
+                                            <h:commandLink  action="#{productController.searchByName()}" >
                                                 #{c.name}
-                                                <f:setPropertyActionListener target="#{productController.indexItem}" value="#{c}" ></f:setPropertyActionListener>
+                                                <f:setPropertyActionListener target="#{productController.department}" value="#{c}" ></f:setPropertyActionListener>
                                             </h:commandLink>
                                         </li>
                                     </ui:repeat>
@@ -67,7 +67,7 @@
                         <h:panelGroup rendered="#{cc.attrs.image}" >
                             <div class="hero__item" style="position:relative;" >
                                 <p:graphicImage style="position: absolute; z-index: -1; left: 0px;top:0px;padding: 0px;margin: 0px;"
-                                                cache="false"  value="#{streamedContentController.imageByCodeInlineWithoutGet('hero_banner')}"  >
+                                                cache="false"  value="#{streamedContentController.imageByCodeInlineWithoutGet('home_image')}"  >
                                 </p:graphicImage>
                                 <div class="hero__text">
                                     <span>#{itemController.findItemNameByCode('index_topic')}</span>

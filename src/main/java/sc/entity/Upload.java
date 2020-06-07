@@ -27,6 +27,7 @@ package sc.entity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -74,7 +75,7 @@ public class Upload implements Serializable {
     String comments;
 
    
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.REFRESH)
     private Product product;
     @ManyToOne
     private Item imageType;

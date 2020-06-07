@@ -53,6 +53,7 @@ import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
+import sc.entity.Upload;
 // </editor-fold>
 
 @Named
@@ -234,6 +235,24 @@ public class ProductController implements Serializable {
             return toSelectProduct();
         }
     }
+    
+    public String searchByDepartment() {
+        selectedProducts = listProductsByDepartment(department);
+        if (selectedProducts == null || selectedProducts.isEmpty()) {
+            JsfUtil.addErrorMessage("No Results Found. Try different search criteria.");
+            return "";
+        }
+        if (selectedProducts.size() == 1) {
+            selected = selectedProducts.get(0);
+            selectedProducts = null;
+            clearSearchByName();
+            return toProductProfile();
+        } else {
+            selected = null;
+            clearSearchByName();
+            return toSelectProduct();
+        }
+    }
 
     public void clearSearchByName() {
         searchingId = "";
@@ -246,13 +265,25 @@ public class ProductController implements Serializable {
     }
 
     public String saveProduct() {
-
         saveProduct(selected);
         JsfUtil.addSuccessMessage("Saved.");
-        applicationController.fillCategoryData();
-        selected.setSiComponentItems(null);
         selected = getFacade().find(selected.getId());
         return toProductProfile();
+    }
+    
+    public String reloadProduct() {
+        if (selected == null) {
+            return "";
+        }
+        Long tid = selected.getId();
+        selected=null;
+        selected = getFacade().find(tid);
+        if(selected!=null){
+            for(Upload u: selected.getUploads()){
+                System.out.println("u = " + u.getStrId());
+            }
+        }
+        return "";
     }
 
     public void saveProductSilantly() {
@@ -540,6 +571,22 @@ public class ProductController implements Serializable {
 
     public void setRelatedProducts(List<Product> relatedProducts) {
         this.relatedProducts = relatedProducts;
+    }
+
+    private List<Product> listProductsByDepartment(Item dept) {
+        List<Product> lst;
+        String j = "Select p from Product p "
+                + " where p.retired<>:ret "
+                + " and p.department = :q "
+                + " order by p.name";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("q",  dept);
+        lst = getFacade().findByJpql(j, m);
+        if (lst == null) {
+            lst = new ArrayList<>();
+        }
+        return lst;
     }
 
     // </editor-fold>

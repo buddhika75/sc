@@ -101,44 +101,7 @@ public class ApplicationController {
         return popularProducts;
     }
 
-    public void fillCategoryData() {
-        featuredProducts = null;
-        popularProducts = null;
-        getFeaturedProducts();
-        getPopularProducts();
-        String j;
-        Map m = new HashMap();
-
-        j = "select count(s) from Product s where s.retired<>:ret";
-        m.put("ret", true);
-
-        numberOfProducts = getProductFacade().countByJpql(j, m);
-
-        m = new HashMap();
-        j = "select i from Item i where i.retired<>:ret and i.parent.code=:code";
-        m.put("code", "product_categories");
-        m.put("ret", true);
-
-        categories = getItemFacade().findByJpql(j, m);
-
-        for (Item i : categories) {
-            m = new HashMap();
-            j = "select count(distinct si) from SiComponentItem si"
-                    + " join si.product s "
-                    + " where si.retired<>:ret "
-                    + " and si.itemValue=:item ";
-
-            m.put("item", i);
-            m.put("ret", true);
-            Long temLng = getProductFacade().countByJpql(j, m);
-            System.out.println("i = " + i.getCode());
-            if (temLng == null) {
-                temLng = 0l;
-            }
-            i.setProductCountTemp(temLng);
-        }
-
-    }
+    
 
     public Long productForCategoryCount(Item cat) {
 
@@ -209,12 +172,7 @@ public class ApplicationController {
         return demoSetup;
     }
 
-    public Long getNumberOfProducts() {
-        if (numberOfProducts == null) {
-            fillCategoryData();
-        }
-        return numberOfProducts;
-    }
+   
 
     public List<Item> getCategories() {
         return categories;
