@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <h:head>
+        <ez:head/>
+    </h:head>
+    <h:body>
+        <ez:preloader/>
+
+        <ez:Humberger/>
+
+        <ez:header/>
+
+        <ez:hero/>
+
+        <!-- Breadcrumb Section Begin -->
+        <section class="breadcrumb-section"  style="position:relative;" >
+            <p:graphicImage style="height: 100%; position: absolute; z-index: -1; left: 0px;top:0px;padding: 0px;margin: 0px;"
+                            cache="false"  value="#{streamedContentController.imageByCodeInlineWithoutGet('product_banner')}"  >
+            </p:graphicImage>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="breadcrumb__text">
+                            <h2>Contact Us</h2>
+                            <div class="breadcrumb__option">
+
+                                <h:form >
+                                    <h:commandLink action="index" >Home</h:commandLink>
+                                </h:form>
+
+                                <span>Contact Us</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Breadcrumb Section End -->
+
+        <!-- Contact Section Begin -->
+        <section class="contact spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                        <div class="contact__widget">
+                            <span class="icon_phone"></span>
+                            <h4>Phone</h4>
+                            <p>+01-3-8888-6868</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                        <div class="contact__widget">
+                            <span class="icon_pin_alt"></span>
+                            <h4>Address</h4>
+                            <p>60-49 Road 11378 New York</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                        <div class="contact__widget">
+                            <span class="icon_clock_alt"></span>
+                            <h4>Open time</h4>
+                            <p>10:00 am to 23:00 pm</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 text-center">
+                        <div class="contact__widget">
+                            <span class="icon_mail_alt"></span>
+                            <h4>Email</h4>
+                            <p>#{itemController.findItemNameByCode('site_email')}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact Section End -->
+
+
+
+        <ez:footer/>
+
+
+
+        <ez:jsplugins/>
+
+    </h:body>
+</html>
+

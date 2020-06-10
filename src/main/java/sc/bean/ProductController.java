@@ -80,6 +80,7 @@ public class ProductController implements Serializable {
     private List<Product> items = null;
     private List<Product> relatedProducts = null;
     private List<Product> selectedProducts = null;
+    private List<Product> popularProducts = null;
     private Product featuredProduct;
     private Product selected;
     private Long idFrom;
@@ -201,6 +202,7 @@ public class ProductController implements Serializable {
         System.out.println("searchByNamePublic");
         System.out.println("searchingName = " + searchingName);
         selectedProducts = listProductsByName(searchingName);
+        department =null;
         System.out.println("selectedProducts = " + selectedProducts.size());
         if (selectedProducts == null || selectedProducts.isEmpty()) {
             selected = null;
@@ -239,19 +241,16 @@ public class ProductController implements Serializable {
     public String searchByDepartment() {
         selectedProducts = listProductsByDepartment(department);
         if (selectedProducts == null || selectedProducts.isEmpty()) {
-            JsfUtil.addErrorMessage("No Results Found. Try different search criteria.");
-            return "";
+            selected = null;
+            return "/searched_products_empty";
         }
         if (selectedProducts.size() == 1) {
             selected = selectedProducts.get(0);
-            selectedProducts = null;
-            clearSearchByName();
-            return toProductProfile();
-        } else {
-            selected = null;
-            clearSearchByName();
-            return toSelectProduct();
+            return "/product";
         }
+        selected = null;
+        return "/searched_products";
+
     }
 
     public void clearSearchByName() {
@@ -573,6 +572,8 @@ public class ProductController implements Serializable {
         this.relatedProducts = relatedProducts;
     }
 
+    
+    
     private List<Product> listProductsByDepartment(Item dept) {
         List<Product> lst;
         String j = "Select p from Product p "
@@ -587,6 +588,18 @@ public class ProductController implements Serializable {
             lst = new ArrayList<>();
         }
         return lst;
+    }
+
+    public List<Product> getPopularProducts() {
+        if(popularProducts==null){
+            String j = "select p from Product p order by p.viewCount desc";
+            popularProducts = getFacade().findByJpql(j,12);
+        }
+        return popularProducts;
+    }
+
+    public void setPopularProducts(List<Product> popularProducts) {
+        this.popularProducts = popularProducts;
     }
 
     // </editor-fold>

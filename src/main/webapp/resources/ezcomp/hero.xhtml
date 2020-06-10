@@ -32,7 +32,7 @@
                                 <ul>
                                     <ui:repeat value="#{itemController.findChildrenItemsByParentCode('departments')}" var="c" >
                                         <li>
-                                            <h:commandLink  action="#{productController.searchByName()}" >
+                                            <h:commandLink  action="#{productController.searchByDepartment()}" >
                                                 #{c.name}
                                                 <f:setPropertyActionListener target="#{productController.department}" value="#{c}" ></f:setPropertyActionListener>
                                             </h:commandLink>
