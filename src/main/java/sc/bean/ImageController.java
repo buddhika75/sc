@@ -5,7 +5,6 @@
  */
 package sc.bean;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -19,14 +18,8 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
-import sc.util.JsfUtil;
-import sc.entity.SiComponentItem;
-import sc.entity.Item;
-import sc.enums.DataRepresentationType;
 import sc.facade.ComponentFacade;
 import org.primefaces.event.CaptureEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 /**
  *

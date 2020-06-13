@@ -7,7 +7,6 @@ import java.io.InputStream;
 import sc.util.JsfUtil;
 import sc.util.JsfUtil.PersistAction;
 import sc.facade.ItemFacade;
-import org.apache.commons.lang.WordUtils;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -27,7 +26,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
-import javax.persistence.Transient;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -437,7 +435,6 @@ public class ItemController implements Serializable {
             i = new Item();
             i.setName(q);
             i.setCode(q.trim().toLowerCase());
-            i.setDataType(SelectionDataType.Short_Text);
             i.setCreatedAt(new Date());
             getFacade().create(i);
         }

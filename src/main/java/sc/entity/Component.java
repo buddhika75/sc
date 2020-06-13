@@ -460,20 +460,7 @@ public class Component implements Serializable {
         this.mimeType = mimeType;
     }
 
-    public SelectionDataType getSelectionDataType() {
-        if (selectionDataType == null) {
-            if (item != null) {
-                selectionDataType = item.getDataType();
-            }else{
-                selectionDataType = SelectionDataType.Short_Text;
-            }
-        }
-        return selectionDataType;
-    }
-
-    public void setSelectionDataType(SelectionDataType selectionDataType) {
-        this.selectionDataType = selectionDataType;
-    }
+    
 
     public Double getTopPercent() {
         return topPercent;

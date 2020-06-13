@@ -1,17 +1,12 @@
 package sc.bean;
 
 // <editor-fold defaultstate="collapsed" desc="Import">
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import sc.entity.Product;
 import sc.util.JsfUtil;
 import sc.util.JsfUtil.PersistAction;
 import sc.facade.ProductFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,31 +23,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
-import javax.persistence.TemporalType;
-import jxl.Cell;
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
 
 import sc.entity.Institution;
 import sc.entity.Item;
-import sc.entity.Person;
-import sc.entity.SiComponentItem;
-
-import sc.enums.EncounterType;
-
-import sc.enums.RenderType;
-import sc.facade.ComponentFacade;
-
-import sc.pojcs.YearMonthDay;
-import java.io.ByteArrayInputStream;
 import java.util.Random;
-import org.apache.commons.io.IOUtils;
-import org.primefaces.component.tabview.TabView;
-import org.primefaces.event.TabChangeEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 import sc.entity.Upload;
 // </editor-fold>
 

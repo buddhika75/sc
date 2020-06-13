@@ -5,7 +5,6 @@ import sc.entity.Institution;
 import sc.entity.Item;
 import sc.entity.Upload;
 import sc.facade.InstitutionFacade;
-import sc.facade.ProjectInstitutionFacade;
 import sc.facade.ProjectSourceOfFundFacade;
 import sc.facade.UploadFacade;
 import sc.facade.WebUserFacade;
@@ -32,7 +31,6 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import sc.entity.UserPrivilege;
-import sc.enums.EncounterType;
 import sc.enums.Privilege;
 import sc.enums.PrivilegeTreeNode;
 import sc.facade.UserPrivilegeFacade;
@@ -41,9 +39,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.model.map.DefaultMapModel;
-import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
-import org.primefaces.model.map.Marker;
 
 @Named("webUserController")
 @SessionScoped
@@ -58,8 +54,6 @@ public class WebUserController implements Serializable {
     private InstitutionFacade institutionFacade;
     @EJB
     private UploadFacade uploadFacade;
-    @EJB
-    private ProjectInstitutionFacade projectInstitutionFacade;
     @EJB
     private ProjectSourceOfFundFacade projectSourceOfFundFacade;
     @EJB
@@ -1126,9 +1120,6 @@ public class WebUserController implements Serializable {
         return projectSourceOfFundFacade;
     }
 
-    public ProjectInstitutionFacade getProjectInstitutionFacade() {
-        return projectInstitutionFacade;
-    }
 
     public TreeNode getAllPrivilegeRoot() {
         return allPrivilegeRoot;

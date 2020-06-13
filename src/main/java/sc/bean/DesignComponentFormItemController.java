@@ -64,9 +64,6 @@ public class DesignComponentFormItemController implements Serializable {
         for(DesignComponentFormItem fi:items){
             if(fi.getItem()!=null){
                 Item i = fi.getItem();
-                if(fi.getSelectionDataType()!=null){
-                    i.setDataType(fi.getSelectionDataType());
-                }
                 getItemFacade().edit(i);
             }
         }
