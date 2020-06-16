@@ -104,7 +104,10 @@ public class UploadController implements Serializable {
         saveAndUpload();
         Long tpid = getSelected().getId();
         selected = null;
-        return "/product/select";
+        productImages = null;
+        getProductImages();
+        toUploadsNewProductImage();
+        return "";
     }
 
     public String saveAndUploadSiteImage() {

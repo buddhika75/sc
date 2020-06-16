@@ -43,24 +43,6 @@
                         <p:inputTextarea id="descreption"
                                          value="#{itemController.selected.descreption}" title="Name" />
 
-                        <p:outputLabel value="Data Type:" for="selectionDataType" />
-                        <p:selectOneMenu id="selectionDataType" required="true"
-                                         value="#{itemController.selected.dataType}" title="SelectionDataType" >
-                            <f:selectItems value="#{commonController.selectionDataTypes}" ></f:selectItems>
-                        </p:selectOneMenu>
-
-                        <p:outputLabel value="RenderType:" for="renderType" />
-                        <p:selectOneMenu id="renderType" required="true"
-                                         value="#{itemController.selected.renderType}" 
-                                         title="RenderType" >
-                            <f:selectItem itemLabel="Select" ></f:selectItem>
-                            <f:selectItems value="#{commonController.renderTypes}" ></f:selectItems>
-                        </p:selectOneMenu>
-
-
-                        <p:outputLabel value="Multiple Enties Per Product Status" for="multipleEntiesPerForm" />
-                        <p:selectBooleanCheckbox id="multipleEntiesPerForm" value="#{itemController.selected.multipleEntiesPerClientStatus}" ></p:selectBooleanCheckbox>
-
 
 
                         <p:outputLabel value="Parent"  />

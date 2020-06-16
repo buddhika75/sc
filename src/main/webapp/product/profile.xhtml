@@ -29,6 +29,10 @@
                                     <f:setPropertyActionListener 
                                         target="#{uploadController.product}" value="#{productController.selected}" ></f:setPropertyActionListener>
                                 </p:commandButton>
+                                <p:commandLink ajax="false" action="/product"   
+                                               value="View" target="_blank" >
+
+                                </p:commandLink>
                                 <p:commandButton ajax="false" value="To List Products"
                                                  action="#{productController.toListAllProducts()}">
                                 </p:commandButton>
@@ -47,7 +51,7 @@
                                 </p:outputLabel>
 
                                 <p:outputLabel value="Department"  />
-                                <p:outputLabel id="dep"  value="#{productController.selected.department}" >
+                                <p:outputLabel id="dep"  value="#{productController.selected.department.name}" >
                                 </p:outputLabel>
 
                                 <p:outputLabel value="Retail Price" />

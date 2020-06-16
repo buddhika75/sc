@@ -27,6 +27,9 @@
                                          rowsPerPageTemplate="10,20,30,40,50"
 
                                          >
+                                <p:column headerText="ID">
+                                    <p:outputLabel value="#{item.strId}" ></p:outputLabel>
+                                </p:column>
                                 <p:column headerText="File Name">
                                     <p:outputLabel value="#{item.fileName}" ></p:outputLabel>
                                 </p:column>
@@ -45,6 +48,10 @@
                                     </p:commandButton>
                                 </p:column>
                                 <p:column headerText="Thumbenail">
+                                    <h:commandLink value="View" target="_blank"
+                                                   action="#{streamedContentSessionController.toViewImageByStrId}">
+                                        <f:param name="id" value="#{item.strId}" />
+                                    </h:commandLink>
                                     <p:graphicImage cache="false"  value="#{streamedContentController.imageBySterId}" style="height: 50px;" >
                                         <f:param name="id" value="#{item.strId}" />
                                     </p:graphicImage>
@@ -61,8 +68,8 @@
 
                                 <p:outputLabel value="ID" >
                                 </p:outputLabel>
-                                <p:outputLabel value="#{uploadController.selected.strId}" >
-                                </p:outputLabel>
+                                <p:inputText value="#{uploadController.selected.strId}" >
+                                </p:inputText>
 
                                 <p:outputLabel value="File Name" >
                                 </p:outputLabel>

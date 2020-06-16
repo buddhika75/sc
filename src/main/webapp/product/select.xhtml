@@ -24,10 +24,11 @@
                                      rowsPerPageTemplate="10,20,30,40,50"
                                      >
 
-                            <p:column>
+                            <p:column rendered="false">
                                 <f:facet name="header">
                                     <h:outputText value="Icon"/>
                                 </f:facet>
+                                #{item.getUploadIdForImageType('product_icon')}
                                 <p:graphicImage cache="false"  value="#{streamedContentController.imageBySterId}" style="height: 50px;" >
                                     <f:param name="id" value="#{item.getUploadIdForImageType('product_icon')}" />
                                 </p:graphicImage>
@@ -38,6 +39,13 @@
                                     <h:outputText value="Name"/>
                                 </f:facet>
                                 <h:outputText value="#{item.name}"/>
+                            </p:column>
+                            
+                             <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Short Name"/>
+                                </f:facet>
+                                 <h:outputText value="#{item.sname}"/>
                             </p:column>
 
                             <p:column>

@@ -27,10 +27,15 @@
                                 <p:commandButton ajax="false" action="#{productController.saveProduct()}" value="Save" ></p:commandButton>
                                 
                                 <p:commandButton ajax="false" action="#{productController.reloadProduct()}"
-                                                 value="Reload" immediate="true" ></p:commandButton>
+                                                 value="Reload"  ></p:commandButton>
+                           
+                                <p:commandButton ajax="false" action="/product"  onclick="this.form.target='_blank'" 
+                                                 value="View"  ></p:commandButton>
                            
                                 
-                                <p:commandButton ajax="false" action="#{productController.retireSelected()}" value="Remove" immediate="true" ></p:commandButton>
+                                <p:commandButton ajax="false" action="#{productController.retireSelected()}" 
+                                                 onclick="if (!confirm('Really want to do that?')) return false"
+                                                 value="Remove"  ></p:commandButton>
                            
                             </f:facet>
 
@@ -71,7 +76,7 @@
                                 <f:ajax event="blur" execute="@this" listener="#{productController.saveProduct()}" ></f:ajax>
                             </p:inputText>
 
-                            <p:outputLabel value="Department" for="wu" />
+                            <p:outputLabel value="Weight" for="wu" />
                             <p:selectOneMenu id="wu"  value="#{productController.selected.weightUnit}" >
                                 <f:selectItem itemLabel="Select" ></f:selectItem>
                                 <f:selectItems value="#{itemController.findChildrenItemsByParentCode('units')}" var="i" itemLabel="#{i.name}"
