@@ -32,6 +32,10 @@
                     <p:menuitem ajax="false" value="Create New" action="#{productController.toAddNewProduct()}"  />
                     <p:menuitem ajax="false" value="Add Images" action="#{uploadController.toUploadsNewProductImage()}"  />
 
+                    
+                    <p:menuitem ajax="false" value="List" actionListener="#{productController.toListAllProducts()}"
+                                action="/product/list" />
+                    
                 </p:submenu>
 
 
