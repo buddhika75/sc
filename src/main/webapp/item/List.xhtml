@@ -57,12 +57,6 @@
                             <h:outputText value="#{item.code}"/>
                         </p:column>
 
-                        <p:column  filterBy="#{item.dataType}" filterMatchMode="contains" sortBy="#{item.dataType}">
-                            <f:facet name="header">
-                                <h:outputText value="Data Type"/>
-                            </f:facet>
-                            <h:outputText value="#{item.dataType}"/>
-                        </p:column>
 
                         <p:column sortBy="#{item.parent.name}" filterBy="#{item.parent.name}" filterMatchMode="contains">
                             <f:facet name="header">
